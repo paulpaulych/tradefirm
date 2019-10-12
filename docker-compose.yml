@@ -3,10 +3,11 @@ services:
   dbpostgres:
     image: postgres
     volumes:
-      - /home/gambit/docker/volume/pgdata:/var/lib/postgresql
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: pguser
-      POSTGRES_PASSWORD: pguser
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: changeme
       POSTGRES_DB: pgdb
+      DB_NAME: trade_firm

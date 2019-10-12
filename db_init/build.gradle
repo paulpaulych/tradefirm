@@ -16,7 +16,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-jdbc:$springBootVersion")
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile("postgresql:postgresql:9.1-901.jdbc4")
+    compile("org.postgresql:postgresql:$postgresDriverVersion")
 
     testCompile("commons-cli:commons-cli:$commonsCliVersion")
 

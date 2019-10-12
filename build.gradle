@@ -18,6 +18,7 @@ ext{
     lombokVersion='1.18.10'
     commonsCliVersion='1.2'
     springBootVersion='2.1.9.RELEASE'
+    postgresDriverVersion='42.2.8'
 }
 
 dependencies {

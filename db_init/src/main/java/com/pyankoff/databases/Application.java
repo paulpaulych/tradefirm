@@ -1,3 +1,5 @@
+package com.pyankoff.databases;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,9 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class Application {
     public static void main(String[] args){
-        SpringApplication.run(Application.class);
-        log.error("hey pisya");
-        //        Class.forName("org.postgres.Driver");
-//        Connection connection = DriverManager.getConnection("jdbc:postgres:localhost:5432/trade-firm", "user", "changeme");
+        (new SpringApplication()).run(Application.class);
     }
 }
