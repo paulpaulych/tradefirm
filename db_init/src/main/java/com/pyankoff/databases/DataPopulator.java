@@ -1,21 +1,24 @@
 package com.pyankoff.databases;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
 
 @Slf4j
 @Component
 public class DataPopulator {
-    
+
     private JdbcTemplate jdbcTemplate;
 
     private ResourceLoader resourceLoader;
+
     @Autowired
     public void setResourceLoader(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
@@ -49,8 +52,32 @@ public class DataPopulator {
         addOrderProduct();
         addSections();
         addSectionManager();
+        addStorage();
+        addSupplierPriseList();
     }
 
+    private void addSupplierPriseList() throws IOException {
+        log.info("inserting into supplier_price_list");
+        for(int i = 0; i < 500; i++){
+            jdbcTemplate.update("insert into supplier_price_list(supplier_id, product_id, price) values (?, ?, ? ) on conflict do nothing",
+                    intFromRange(1, 60),//supplier
+                    intFromRange(1, 12),//product
+                    BigDecimal.valueOf(500 * (i % 14))//price
+            );
+        }
+    }
+
+    private void addStorage() {
+        log.info("inserting into storage");
+        for(int i = 0; i < 100; i++){
+            jdbcTemplate.update("insert into storage(sales_point_id, product_id, count, price) values (?, ?, ?, ? ) on conflict do nothing",
+                    intFromRange(1, 10),//salespoint
+                    intFromRange(1, 11),//product
+                    intFromRange(0, 500),//count
+                    BigDecimal.valueOf(500 * (i % 14))
+            );
+        }
+    }
     private void addSectionManager() {
         log.info("inserting into section_manager");
         for(int i = 0; i < 100; i++){
@@ -99,7 +126,8 @@ public class DataPopulator {
         log.info("inserting into delivery");
         LocalDateTime date = LocalDateTime.now();
         for(int i = 0; i < 10; i++){
-            jdbcTemplate.update("insert into delivery(date) values (?) on conflict do nothing",
+            jdbcTemplate.update("insert into delivery(supplier_id, date) values (?, ?) on conflict do nothing",
+                    intFromRange(1, 60),
                     date.plusDays(3*i)
             );
         }
@@ -122,7 +150,7 @@ public class DataPopulator {
         LocalDateTime date = LocalDateTime.now();
         for(int i = 0; i < 10; i++){
             jdbcTemplate.update("insert into application(sales_point_id, date) values (?, ?) on conflict do nothing",
-                    intFromRange(1, 40),
+                    intFromRange(1, 10),
                     date.plusHours(3*i));
         }
     }
@@ -141,7 +169,6 @@ public class DataPopulator {
 
     private void addSaleProduct() throws IOException {
         log.info("inserting into sale_product");
-        LocalDateTime date = LocalDateTime.now();
         for(int i = 0; i < 10; i++){
             jdbcTemplate.update("insert into sale_product(sale_id, product_id, count) values (?, ?, ?) on conflict do nothing",
                     intFromRange(1, 10),
@@ -160,15 +187,15 @@ public class DataPopulator {
     }
 
     private void addSuppliers()  throws IOException {
-        log.info("inserting employees");
+        log.info("inserting supplier");
         String string = resourceLoader.load("origins/names.txt");
         String[] names = string.split(" ");
         Collections.reverse(Arrays.asList(names));
 
         for(int i = names.length * 2/ 3; i < names.length; i++){
-            jdbcTemplate.update("insert into employee(name, sales_point_id) values (?, ?) on conflict do nothing",
-                    names[i],
-                    intFromRange(1, 10));
+            jdbcTemplate.update("insert into supplier(company_name) values (?) on conflict do nothing",
+                    names[i]
+            );
         }
     }
     
@@ -185,15 +212,18 @@ public class DataPopulator {
     private void addArea() throws IOException {
         log.info("inserting area");
         for(int i = 0; i < 30; i++){
-            jdbcTemplate.update("insert into area(rent_price, municipal_services_price, stall_count) values (?, ?, ?) on conflict do nothing",
-                    intFromRange(1000, 40000), intFromRange(1000, 15000), intFromRange(1, 100));
+            jdbcTemplate.update("insert into area(square, rent_price, municipal_services_price, stall_count) values (?, ?, ?, ?) on conflict do nothing",
+                    intFromRange(5, 100),
+                    intFromRange(1000, 40000),
+                    intFromRange(1000, 15000),
+                    intFromRange(1, 100));
         }
     }
 
-    public void addSalesPoints() throws IOException {
+    public void addSalesPoints(){
         log.info("inserting sales points");
         String[] types = new String[]{"Магазин", "Универмаг", "Киоск", "Палатка"};
-        for(int i = 0; i < 10; i++){
+        for(int i = 0; i < 40; i++){
             String type = types[intFromRange(0, types.length)];
             jdbcTemplate.update("insert into sales_point(type, area_id) values (?, ?) on conflict do nothing",
                     type,
@@ -208,12 +238,15 @@ public class DataPopulator {
         Collections.reverse(Arrays.asList(names));
 
         for(int i = names.length / 3; i < names.length * 2 / 3; i++){
-            jdbcTemplate.update("insert into employee(name, sales_point_id) values (?, ?) on conflict do nothing", names[i], intFromRange(1, 10));
+            jdbcTemplate.update("insert into employee(name, sales_point_id, salary) values (?, ?, ?) on conflict do nothing",
+                    names[i],
+                    intFromRange(1, 10),
+                    BigDecimal.valueOf(5000 * (i % 14)));
         }
     }
 
     private void addProducts() throws IOException {
-        log.info("inserting area");
+        log.info("inserting products");
         String string = resourceLoader.load("origins/products.txt");
         String[] products = string.split("\n");
         for(String product :Arrays.asList(products)){
@@ -223,6 +256,7 @@ public class DataPopulator {
     }
 
     private void addOrders() {
+        log.info("inserting orders");
         LocalDateTime date = LocalDateTime.now();
         for(int i = 0; i < 30; i++){
             jdbcTemplate.update("insert into \"order\" (date) values ( ? ) on conflict do nothing",

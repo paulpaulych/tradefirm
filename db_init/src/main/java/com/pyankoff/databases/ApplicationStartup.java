@@ -26,12 +26,16 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
             System.out.println("Select action:");
             System.out.println("1. create schema");
             System.out.println("2. populate data");
+            System.out.println("3. 1 and 2");
             Scanner scanner = new Scanner(System.in);
             int action = scanner.nextInt();
 
             if (action == 1) {
                 schemaInitializer.run();
             } else if (action == 2) {
+                dataPopulator.run();
+            } else if(action == 3){
+                schemaInitializer.run();
                 dataPopulator.run();
             } else {
                 System.out.println("Wrong choise");
