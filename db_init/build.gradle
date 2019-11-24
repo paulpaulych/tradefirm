@@ -2,13 +2,14 @@ plugins {
     id 'java'
     id 'idea'
 }
-//apply plugin: 'org.springframework.boot'
-//apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
 sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {

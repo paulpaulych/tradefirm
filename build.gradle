@@ -9,6 +9,10 @@ plugins {
     id 'java'
 }
 
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
 group 'com.pyankoff.'
 version '1.0-SNAPSHOT'
 
