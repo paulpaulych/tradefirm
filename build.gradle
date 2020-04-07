@@ -19,7 +19,7 @@ allprojects{
 
 }
 
-group 'com.pyankoff.'
+group 'paulpaulych.tradefirm'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
@@ -37,4 +37,12 @@ ext{
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
 }
