@@ -16,11 +16,11 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
-    compile("paulpaulych.simple-orm:simple-orm-core:$simpleOrmVersion")
-    compile("paulpaulych.simple-orm:common-utils:$commonUtilsVersion")
+//    compile("paulpaulych.simple-orm:simple-orm-core:$simpleOrmVersion")
+//    compile("paulpaulych.simple-orm:common-utils:$commonUtilsVersion")
 
-    compile files('libs/common-utils-1.0.1.jar')
-    compile files('libs/simple-orm-core-1.1.3.jar')
+    compile files('../libs/common-utils-1.0.1.jar')
+    compile files('../libs/simple-orm-core-1.1.3.jar')
 
     compile("org.springframework.boot:spring-boot-starter:$springBootVersion")
     compile("org.springframework.boot:spring-boot-starter-jdbc:$springBootVersion")
