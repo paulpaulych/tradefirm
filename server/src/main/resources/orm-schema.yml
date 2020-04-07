@@ -1,0 +1,9 @@
+entities:
+  paulpaulych.tradefirm.product.Product:
+    table: product
+    fields:
+      id:
+        isId: true
+        column: product_id
+      name:
+        column: product_name
