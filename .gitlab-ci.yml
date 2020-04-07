@@ -1,0 +1,24 @@
+image: adoptopenjdk/openjdk11
+
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
+build:
+  stage: build
+  script: gradlew --build-cache assemble
+#  cache:
+#    key: "$CI_COMMIT_REF_NAME"
+#    policy: push
+#    paths:
+#      - build
+#      - .gradle
+
+test:
+  stage: test
+  script: gradlew test
+#  cache:
+#    key: "$CI_COMMIT_REF_NAME"
+#    policy: push
+#    paths:
+#      - build
+#      - .gradle
