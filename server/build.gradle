@@ -5,27 +5,42 @@ plugins {
     id "org.springframework.boot"
 }
 
+apply plugin: 'war'
 apply plugin: "kotlin-spring"
+apply plugin: "com.bmuschko.cargo"
 
 group 'paulpaulych.tradefirm'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
-
+//TODO:опубликовать simple-orm в репозиторий и нормально переиспользовать его зависимости
 dependencies {
-
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "org.jetbrains.kotlin:kotlin-reflect"
+    implementation "org.jetbrains.kotlin:kotlin-serialization"
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.14.0")
 
-//    compile("paulpaulych.simple-orm:simple-orm-core:$simpleOrmVersion")
-//    compile("paulpaulych.simple-orm:common-utils:$commonUtilsVersion")
 
     compile files('../libs/common-utils-1.0.1.jar')
-    compile files('../libs/simple-orm-core-1.1.3.jar')
+    compile(files('../libs/simple-orm-core-1.1.3.jar'))
+
+    compile group: 'cglib', name: 'cglib', version: '3.3.0'
+
+    compile("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
+    compile("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
+    compile("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion")
 
     compile("org.springframework.boot:spring-boot-starter:$springBootVersion")
     compile("org.springframework.boot:spring-boot-starter-jdbc:$springBootVersion")
-    compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+    compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion"){
+//        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-databind'
+//        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-dataformat-yaml'
+//        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-module-kotlin'
+//        exclude('com.fasterxml.jackson.module:jackson-module-kotlin')
+//        exclude('com.fasterxml.jackson.dataformat:jackson-dataformat-yaml')
+    }
     compile("org.postgresql:postgresql:$postgresDriverVersion")
+    providedRuntime "org.springframework.boot:spring-boot-starter-tomcat:$springBootVersion"
 
     testCompile("io.kotlintest:kotlintest-runner-junit5:$kotlinTestVersion")
 
@@ -47,3 +62,38 @@ test {
     useJUnitPlatform()
 }
 
+
+bootWar{
+    enabled = true
+}
+
+springBoot{
+    mainClassName = "paulpaulych.tradefirm.AppKt"
+}
+
+cargo{
+    containerId = "jetty9x"
+    port = 8080
+
+    deployable {
+        file = file('build/libs/server-1.0-SNAPSHOT.war')
+        context = 'tradefirm'
+    }
+
+    remote {
+        hostname = '13.49.73.184'
+        port = 8080
+        username = 'jetty'
+        password = 'jetty'
+    }
+
+//    remote {
+//        homeDir = file('build/libs/')
+//        outputFile = file('build/deploying.log')
+//        startStopTimeout = 60000
+////        containerProperties {
+////            property 'cargo.tomcat.ajp.port', 9099
+////        }
+//    }
+
+}
