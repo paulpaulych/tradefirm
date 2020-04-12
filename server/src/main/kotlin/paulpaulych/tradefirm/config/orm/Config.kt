@@ -1,4 +1,4 @@
-package paulpaulych.tradefirm.ormconfig
+package paulpaulych.tradefirm.config.orm
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
@@ -7,7 +7,6 @@ import paulpaulych.utils.ResourceLoader
 import simpleorm.core.RepoRegistry
 import simpleorm.core.RepoRegistryProvider
 import simpleorm.core.delegate.JdbcDelegateCreator
-import simpleorm.core.jdbc.JdbcOperations
 import simpleorm.core.proxy.CglibDelegateProxyGenerator
 import simpleorm.core.proxy.repository.CglibRepoProxyGenerator
 import simpleorm.core.schema.OrmSchema

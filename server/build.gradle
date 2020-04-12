@@ -22,7 +22,7 @@ dependencies {
 
 
     compile files('../libs/common-utils-1.0.1.jar')
-    compile(files('../libs/simple-orm-core-1.1.3.jar'))
+    compile(files("../libs/simple-orm-core-${simpleOrmVersion}.jar"))
 
     compile group: 'cglib', name: 'cglib', version: '3.3.0'
 
@@ -32,17 +32,21 @@ dependencies {
 
     compile("org.springframework.boot:spring-boot-starter:$springBootVersion")
     compile("org.springframework.boot:spring-boot-starter-jdbc:$springBootVersion")
-    compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion"){
-//        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-databind'
-//        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-dataformat-yaml'
-//        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-module-kotlin'
-//        exclude('com.fasterxml.jackson.module:jackson-module-kotlin')
-//        exclude('com.fasterxml.jackson.dataformat:jackson-dataformat-yaml')
-    }
     compile("org.postgresql:postgresql:$postgresDriverVersion")
     providedRuntime "org.springframework.boot:spring-boot-starter-tomcat:$springBootVersion"
 
     testCompile("io.kotlintest:kotlintest-runner-junit5:$kotlinTestVersion")
+
+//    compile("com.expediagroup:graphql-kotlin-schema-generator:$graphqlKotlinVersion")
+    compile("com.expediagroup:graphql-kotlin-spring-server:$graphqlKotlinVersion"){
+        exclude(group: 'com.fasterxml.jackson.module')
+    }
+//    implementation("io.projectreactor:reactor-test:$reactorVersion")
+
+//
+//    implementation ("com.graphql-java:graphql-spring-boot-starter:$graphqlSpringVersion")
+//    implementation ("com.graphql-java:graphiql-spring-boot-starter:$graphqlSpringVersion")
+//    implementation ("com.graphql-java:graphql-java-tools:$graphqlJavaToolsVersion")
 
 }
 

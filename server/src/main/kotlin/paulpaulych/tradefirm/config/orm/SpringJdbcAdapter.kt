@@ -1,4 +1,4 @@
-package paulpaulych.tradefirm.ormconfig
+package paulpaulych.tradefirm.config.orm
 
 import paulpaulych.utils.LoggerDelegate
 import simpleorm.core.jdbc.*
