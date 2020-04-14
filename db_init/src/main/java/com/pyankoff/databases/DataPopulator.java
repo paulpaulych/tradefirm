@@ -110,7 +110,7 @@ public class DataPopulator {
     private void addSectionManager() {
         log.info("inserting into section_manager");
         for(int i = 1; i <=100; i++){
-            jdbcTemplate.update("insert into section_manager(employee_id, section_id) values (?,?) on conflict do nothing",
+            jdbcTemplate.update("insert into section_manager(id, section_id) values (?,?) on conflict do nothing",
                     intFromRange(14, 100),
                     intFromRange(1, 10)
             );
@@ -210,7 +210,7 @@ public class DataPopulator {
         log.info("inserting sellers");
 
         for(int i = 1; i < SELLERS_COUNT; i++){
-            jdbcTemplate.update("insert into seller(employee_id) values (?) on conflict do nothing",
+            jdbcTemplate.update("insert into seller(id) values (?) on conflict do nothing",
                     i);
         }
     }
@@ -233,7 +233,7 @@ public class DataPopulator {
         String string = resourceLoader.load("origins/names.txt");
         String[] names = string.split(" ");
         for(int i = CUSTOMERS_MIN; i <=CUSTOMERS_MAX; i++){
-            jdbcTemplate.update("insert into customer(customer_name) values (?) on conflict do nothing",
+            jdbcTemplate.update("insert into customer(name) values (?) on conflict do nothing",
                     names[i]);
         }
     }
@@ -279,7 +279,7 @@ public class DataPopulator {
         String string = resourceLoader.load("origins/products.txt");
         String[] products = string.split("\n");
         for(String product :Arrays.asList(products)){
-            jdbcTemplate.update("insert into product(product_name) values (?) on conflict do nothing",
+            jdbcTemplate.update("insert into product(name) values (?) on conflict do nothing",
                     product);
         }
     }
