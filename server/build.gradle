@@ -32,9 +32,12 @@ dependencies {
     compile("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion")
 
     compile("org.springframework.boot:spring-boot-starter:$springBootVersion")
+    compile("org.springframework.boot:spring-boot-starter-jetty:$springBootVersion")
     compile("org.springframework.boot:spring-boot-starter-jdbc:$springBootVersion")
+    compile("org.springframework.boot:spring-boot-starter-security:$springBootVersion")
+    compile("org.springframework.security:spring-security-jwt:1.1.0.RELEASE")
+    compile("io.jsonwebtoken:jjwt:0.9.1")
     compile("org.postgresql:postgresql:$postgresDriverVersion")
-    providedRuntime "org.springframework.boot:spring-boot-starter-tomcat:$springBootVersion"
 
     testCompile("io.kotlintest:kotlintest-runner-junit5:$kotlinTestVersion")
 
