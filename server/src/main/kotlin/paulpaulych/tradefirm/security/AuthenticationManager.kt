@@ -19,10 +19,8 @@ class AuthenticationManager(
 
     override fun authenticate(authentication: Authentication): Mono<Authentication> {
         val token =  authentication.credentials.toString()
-        log.info("token: $token")
         val jwtUser = jwtValidator.validate(token)
                 ?: return Mono.empty()
-        log.info("jwtUser: $jwtUser")
         val authorities = listOf(SimpleGrantedAuthority(jwtUser.role))
         val auth = UsernamePasswordAuthenticationToken(jwtUser.userName, jwtUser.password, authorities)
         return Mono.just(auth)

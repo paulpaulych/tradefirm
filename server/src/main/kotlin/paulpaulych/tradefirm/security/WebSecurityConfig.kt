@@ -2,6 +2,7 @@ package paulpaulych.tradefirm.security
 
 import org.springframework.context.annotation.Bean
 import org.springframework.http.HttpStatus
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
 import org.springframework.security.config.web.server.ServerHttpSecurity
@@ -45,11 +46,10 @@ class WebSecurityConfig(
                 .authenticationManager(authenticationManager)
                 .securityContextRepository(securityContextRepository)
                 .authorizeExchange()
-//                    .pathMatchers(HttpMethod.OPTIONS).permitAll()
                     .pathMatchers("/login", "/playground").permitAll()
-                    .pathMatchers("/graphql").hasAuthority("ADMIN")
-//                    .pathMatchers("/graphql").authenticated()
-//                    .anyExchange().authenticated()
+//                    .pathMatchers("/security").permitAll()
+//                    .pathMatchers("/graphql").permitAll()
+                    .anyExchange().authenticated()
                 .and().build()
     }
 

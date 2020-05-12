@@ -1,6 +1,6 @@
 import {CellChangedEvent} from 'ag-grid-community/dist/lib/entities/rowNode';
-import {IRepo} from './IRepo';
-import {Grid_common} from './grid_common';
+import {IRepo} from './i_repo';
+import {GridProperties} from './grid_properties';
 
 export class GridCommonComponent<T>{
     protected gridApi;
@@ -11,7 +11,7 @@ export class GridCommonComponent<T>{
     rowData: T[];
     defaultColDef
     columnDefs;
-    constructor(repository: IRepo<T>, properties: Grid_common) {
+    constructor(repository: IRepo<T>, properties: GridProperties) {
         this.repo = repository;
         this.title = properties.title
         this.defaultColDef = {

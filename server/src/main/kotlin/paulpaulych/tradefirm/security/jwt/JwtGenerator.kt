@@ -3,17 +3,18 @@ package paulpaulych.tradefirm.security.jwt
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.stereotype.Component
+import java.time.Instant
+import java.util.*
 
 @Component
 class JwtGenerator {
 
-    fun generate(jwtUser: JwtUser): String {
-        val claims = Jwts.claims()
-                .setSubject(jwtUser.userName)
-        claims["password"] = java.lang.String.valueOf(jwtUser.password)
-        claims["role"] = jwtUser.role
+    fun generate(jwtUser: JwtUser, expiration: Long): String {
         return Jwts.builder()
-                .setClaims(claims)
+                .setSubject(jwtUser.userName)
+                .claim("password", jwtUser.password)
+                .claim("role", jwtUser.role)
+                .setExpiration(Date.from(Instant.ofEpochMilli(expiration)))
                 .signWith(SignatureAlgorithm.HS512, "Graphql")
                 .compact()
     }

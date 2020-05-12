@@ -1,8 +1,8 @@
 import {Component, Injectable, OnDestroy, OnInit} from '@angular/core';
 import {GridCommonComponent} from '../admin/grid-common/grid-common.component';
-import {IRepo} from '../admin/grid-common/IRepo';
+import {IRepo} from '../admin/grid-common/i_repo';
 import {Product} from './product';
-import {Grid_common} from '../admin/grid-common/grid_common';
+import {GridProperties} from '../admin/grid-common/grid_properties';
 import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
 import {Observer} from 'rxjs';
@@ -78,7 +78,7 @@ export class ProductRepo implements IRepo<Product>, OnInit{
 export class ProductsComponent extends GridCommonComponent<Product> implements OnInit{
 
   constructor(repo: ProductRepo) {
-    const properties = new Grid_common()
+    const properties = new GridProperties()
     properties.title = 'Products'
     properties.columnDefs = [
       {

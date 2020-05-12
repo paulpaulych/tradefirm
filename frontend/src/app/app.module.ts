@@ -14,13 +14,17 @@ import {Apollo, APOLLO_OPTIONS, ApolloModule} from 'apollo-angular';
 
 import {HttpLink, HttpLinkModule} from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import { LoginComponent } from './security/login/login.component';
+import {ReactiveFormsModule} from '@angular/forms';
+import {AuthInterceptor} from './security/auth-interceptor.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     MenuComponent,
-    ProductsComponent
+    ProductsComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -33,10 +37,16 @@ import {HttpClientModule} from '@angular/common/http';
     MatMenuModule,
     MatIconModule,
     MatButtonModule,
-    AgGridModule
+    AgGridModule,
+    ReactiveFormsModule
   ],
   providers: [
     ProductRepo,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
     {
       provide: APOLLO_OPTIONS,
       useFactory: (httpLink: HttpLink) => {
@@ -48,7 +58,8 @@ import {HttpClientModule} from '@angular/common/http';
         }
       },
       deps: [HttpLink]
-    }
+    },
+
   ],
   bootstrap: [AppComponent]
 })
