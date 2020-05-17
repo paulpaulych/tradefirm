@@ -40,7 +40,7 @@ select --общий объем некоторого товара по всем �
     distinct(s.supplier_id)
 --      distinct(s.company_name)
 from supplier s
-where 80 <=(
+where ? <= (
     select
         sum(dd.count)
     from delivery d

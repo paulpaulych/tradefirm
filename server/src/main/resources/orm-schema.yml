@@ -117,3 +117,12 @@ entities:
         column: product_id
       count:
         column: count
+
+  paulpaulych.tradefirm.supplier.Supplier:
+    table: supplier
+    fields:
+      id:
+        isId: true
+        column: id
+      companyName:
+        column: company_name
