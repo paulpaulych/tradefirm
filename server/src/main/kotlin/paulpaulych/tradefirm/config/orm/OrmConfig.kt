@@ -7,6 +7,7 @@ import paulpaulych.utils.ResourceLoader
 import simpleorm.core.RepoRegistry
 import simpleorm.core.RepoRegistryProvider
 import simpleorm.core.delegate.JdbcDelegateCreator
+import simpleorm.core.filter.HashMapFilterResolverRepo
 import simpleorm.core.proxy.CglibDelegateProxyGenerator
 import simpleorm.core.proxy.repository.CglibRepoProxyGenerator
 import simpleorm.core.schema.OrmSchema
@@ -15,7 +16,7 @@ import simpleorm.core.sql.SimpleQueryGenerator
 import javax.annotation.PostConstruct
 
 @Configuration
-class Config(
+class OrmConfig(
         @Autowired val jdbcTemplate: JdbcTemplate
 ) {
 
@@ -41,7 +42,8 @@ class Config(
                                 jdbcOperations,
                                 SimpleQueryGenerator()
                         )
-                )
+                ),
+                HashMapFilterResolverRepo(ormSchema)
         )
         RepoRegistryProvider.repoRegistry = RepoRegistry(
                 ormSchema().entities.map {

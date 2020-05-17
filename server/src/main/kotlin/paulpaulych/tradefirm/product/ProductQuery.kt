@@ -1,18 +1,18 @@
 package paulpaulych.tradefirm.product
 
 import com.expediagroup.graphql.spring.operations.Query
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import org.springframework.stereotype.Component
+import paulpaulych.tradefirm.api.*
 import paulpaulych.utils.LoggerDelegate
-import reactor.core.publisher.Mono
 import simpleorm.core.findAll
+import simpleorm.core.findBy
 import simpleorm.core.findById
 
 @Component
-class ProductQuery: Query{
+class ProductQuery(
+        private val filterMapper: GraphQLFilterMapper,
+        private val pageRequestMapper: PageRequestMapper
+): Query{
 
     private val log by LoggerDelegate()
 
@@ -23,6 +23,15 @@ class ProductQuery: Query{
     suspend fun product(id: Long): Product{
         return Product::class.findById(id)
                 ?: error("data not found")
+    }
+
+    suspend fun productPages(filters: List<GraphQLFilter>, pageRequest: PageRequestDTO): ProductDTO{
+        log.info("hello from productPages")
+        val res = Product::class.findBy(
+                filters.map { filterMapper.getFetchFilter(Product::class, it) },
+                pageRequestMapper.getPageRequest(Product::class, pageRequest)
+        )
+        return ProductDTO(res.values, PageInfo(res.values.size))
     }
 
 }

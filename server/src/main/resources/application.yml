@@ -11,5 +11,6 @@ spring:
     driver-class-name: org.postgresql.Driver
 
 graphql:
-  packages: "paulpaulych.tradefirm"
+  packages:
+    - "paulpaulych.tradefirm"
 

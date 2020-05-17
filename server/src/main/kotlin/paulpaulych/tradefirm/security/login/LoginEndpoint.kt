@@ -11,7 +11,6 @@ import paulpaulych.tradefirm.security.jwt.JwtUser
 import paulpaulych.utils.LoggerDelegate
 import reactor.core.publisher.Mono
 
-
 @RestController
 @RequestMapping("/login")
 class LoginEndpoint(
@@ -32,12 +31,20 @@ class LoginEndpoint(
                     log.info("requred: ${it.password}")
                     passwordEncoder.matches(req.password, it.password)}
                 .map {
-                    LoginResponse(jwtGenerator.generate(
-                                JwtUser(
-                                        userName = it.username,
-                                        password = it.password,
-                                        role = it.authorities.first().authority
-                                ), tokenExpiration), tokenExpiration)
+                    val jwtUser = JwtUser(
+                            userName = it.username,
+                            password = it.password,
+                            role = it.authorities.first().authority
+                    )
+                    val token = jwtGenerator.generate(
+                            jwtUser,
+                            tokenExpiration)
+                    LoginResponse(
+                            token,
+                            tokenExpiration,
+                            jwtUser.userName,
+                            jwtUser.role
+                    )
                 }
         }
 }

@@ -37,23 +37,18 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-jdbc:$springBootVersion")
     compile("org.springframework.boot:spring-boot-starter-security:$springBootVersion")
     compile("org.springframework.security:spring-security-jwt:1.1.0.RELEASE")
-//    compile("org.springframework.security:spring-boot-starter-aop:$springBootVersion")
 
     compile("io.jsonwebtoken:jjwt:0.9.1")
     compile("org.postgresql:postgresql:$postgresDriverVersion")
 
-    testCompile("io.kotlintest:kotlintest-runner-junit5:$kotlinTestVersion")
+    testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
+    implementation("io.kotlintest:kotlintest-runner-junit5:3.1.10")
+    testImplementation("io.kotlintest:kotlintest-extensions-spring:3.1.10")
 
-//    compile("com.expediagroup:graphql-kotlin-schema-generator:$graphqlKotlinVersion")
     compile("com.expediagroup:graphql-kotlin-spring-server:$graphqlKotlinVersion"){
         exclude(group: 'com.fasterxml.jackson.module')
     }
 //    implementation("io.projectreactor:reactor-test:$reactorVersion")
-
-//
-//    implementation ("com.graphql-java:graphql-spring-boot-starter:$graphqlSpringVersion")
-//    implementation ("com.graphql-java:graphiql-spring-boot-starter:$graphqlSpringVersion")
-//    implementation ("com.graphql-java:graphql-java-tools:$graphqlJavaToolsVersion")
 
 }
 

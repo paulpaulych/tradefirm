@@ -10,9 +10,9 @@ class ProductMutation: Mutation {
 
     private val log by LoggerDelegate()
 
-    fun saveProduct(product: Product): Product{
+    suspend fun saveProducts(values: List<Product>): List<Product>{
         log.info("saving products")
-        return save(product)
+        return values.map{save(it)}
     }
 
 }
