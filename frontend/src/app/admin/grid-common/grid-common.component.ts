@@ -1,18 +1,22 @@
 import {CellChangedEvent} from 'ag-grid-community/dist/lib/entities/rowNode';
-import {IRepo} from './i_repo';
+import {Filter, IRepo, PageRequest, Sort} from './i_repo';
 import {GridProperties} from './grid_properties';
+import { InfiniteRowModelModule } from '@ag-grid-community/infinite-row-model';
+import {IGetRowsParams} from 'ag-grid';
 
 export class GridCommonComponent<T>{
     protected gridApi;
     protected gridColumnApi;
-    protected repo: IRepo<T>;
+
     loading: boolean;
     title: string
-    rowData: T[];
+    modules = [InfiniteRowModelModule];
     defaultColDef
-    columnDefs;
-    constructor(repository: IRepo<T>, properties: GridProperties) {
-        this.repo = repository;
+    columnDefs
+    rowModelType
+
+    constructor(
+      protected repo: IRepo<T>, properties: GridProperties) {
         this.title = properties.title
         this.defaultColDef = {
           flex: 1,
@@ -20,46 +24,78 @@ export class GridCommonComponent<T>{
           sortable: true,
         };
         this.columnDefs = properties.columnDefs
+        this.rowModelType = "infinite"
     }
+
     onGridReady(params) {
         this.gridApi = params.api;
         this.gridColumnApi = params.columnApi;
-        this.repo.getAll( {
-          next: ({data, loading, errors}) => {
-            if(data) {
-              this.gridApi.setRowData(data && data['products'])
-            }
-            if(errors){
-              console.log(`errors while data fetching: ${errors}`)
-            }
-            this.loading = loading
-          }
-        });
+        this.gridApi.setSortModel()
+        this.gridApi.setDatasource(this.datasource())
     }
+
+    datasource() {
+      return {
+        getRows: (params: IGetRowsParams) => {
+          console.log('[Datasource] - rows requested by grid: ', params);
+          const pageSize = this.gridApi.paginationGetPageSize()
+          const sorts = params.sortModel.map((s)=>{
+              console.log(`sort model: ${JSON.stringify(params.sortModel)}`)
+              return new Sort(s.colId, s.sort.toUpperCase())
+          })
+          if(sorts.length == 0){
+            const defaultSort = new Sort(this.columnDefs[0].field, "ASC")
+            sorts.push(defaultSort)
+          }
+          console.log(`sorts: ${JSON.stringify(sorts)}`)
+          const filters: Filter[] = []
+          const pageRequest = new PageRequest(
+            params.startRow/pageSize,
+            params.endRow,
+            sorts)
+          this.repo.queryForPage(filters, pageRequest)
+            .subscribe({
+              next: ({data, loading, errors}) => {
+                if(data){
+                  console.log(`got: ${JSON.stringify(data)}`)
+                  params.successCallback(data)
+                }
+                if(errors){
+                  console.log(`errors while data fetching: ${errors}`)
+                  params.failCallback()
+                }
+                this.loading = loading
+              }
+            })
+        },
+      };
+    }
+
     cellValueChanged(event: CellChangedEvent) {
         console.trace(`cell update: ${event.oldValue} to ${event.newValue}`)
         console.trace(event.node.data)
 
         const cleaned = JSON.parse(JSON.stringify(event.node.data))
         delete cleaned.__typename
-        this.repo.save(cleaned, {
-          next: ({data, errors}) => {
-            console.log(`data updated: ${data}`)
-            if(data) {
-              alert("changes committed")
-            }
-            if(errors){
-              console.log(`errors while data fetching: ${errors}`)
-            }
-          },
-          error: err => {
-            alert(`
+        this.repo.saveMutation([cleaned])
+          .subscribe({
+            next: ({data, errors}) => {
+              console.log(`data updated: ${data}`)
+              if(data) {
+                alert("changes committed")
+              }
+              if(errors){
+                console.log(`errors while data fetching: ${errors}`)
+              }
+            },
+            error: err => {
+              alert(`
               Error occurred while saving changes: ${err}
               Rollbacking cell editing
             `)
-            this.rollbackCellChange(event)
-          }
-        });
+              this.rollbackCellChange(event)
+            }
+          });
     }
 
     private rollbackCellChange(event: CellChangedEvent){
@@ -68,5 +104,13 @@ export class GridCommonComponent<T>{
       console.log(`value to rollback: ${data}`)
       event.node.setData(data)
     }
+
+    // onPageSizeChanged() {
+    //   var value = document.getElementById('page-size').nodeValue;
+    //   console.log(`cur page size: ${value}`)
+    //   this.gridApi.paginationSetPageSize(Number(value));
+    // }
+
+
 
 }
