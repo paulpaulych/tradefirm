@@ -1,13 +1,19 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import {ProductsComponent} from './products/products.component';
-import {AuthGuard} from './security/auth_guard';
+import { RouterModule } from '@angular/router';
+import {ProductsComponent} from './admin/products/products.component';
+import {AuthGuard} from './security/auth-guard.service';
 import {LoginComponent} from './security/login/login.component';
+import {SalesPointsComponent} from './admin/sales-point/sales-points.component';
 
 const routes = [
   {
     path: "products",
     component: ProductsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "salesPoints",
+    component: SalesPointsComponent,
     canActivate: [AuthGuard]
   },
   {
