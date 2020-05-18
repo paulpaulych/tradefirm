@@ -3,6 +3,7 @@ import {Filter, IRepo, PageRequest, Sort} from './i_repo';
 import {GridProperties} from './grid_properties';
 import { InfiniteRowModelModule } from '@ag-grid-community/infinite-row-model';
 import {IGetRowsParams} from 'ag-grid';
+import {MatColumnDef} from '@angular/material/table';
 
 export class GridCommonComponent<T>{
     protected gridApi;
@@ -23,6 +24,7 @@ export class GridCommonComponent<T>{
           editable: true,
           sortable: true,
         };
+        MatColumnDef
         this.columnDefs = properties.columnDefs
         this.rowModelType = "infinite"
     }
@@ -80,7 +82,7 @@ export class GridCommonComponent<T>{
         this.repo.saveMutation([cleaned])
           .subscribe({
             next: ({data, errors}) => {
-              console.log(`data updated: ${data}`)
+              console.log(`data updated: ${JSON.stringify(data)}`)
               if(data) {
                 alert("changes committed")
               }
@@ -90,9 +92,9 @@ export class GridCommonComponent<T>{
             },
             error: err => {
               alert(`
-              Error occurred while saving changes: ${err}
-              Rollbacking cell editing
-            `)
+                Error occurred while saving changes: ${err}
+                Rollbacking cell editing
+              `);
               this.rollbackCellChange(event)
             }
           });

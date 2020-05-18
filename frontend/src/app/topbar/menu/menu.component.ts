@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-menu',
@@ -7,14 +7,13 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 })
 export class MenuComponent implements OnInit {
 
-  // @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
-
   items = [
     { name: "Продукты", link: "products" },
     { name: "Журнал покупок", link: "sales" },
     { name: "Точки продаж", link: "salesPoints" },
     { name: "Сотрудники", link: "employees" },
-    { name: "Покупатели", link: "customers" }
+    { name: "Покупатели", link: "customers" },
+    { name: "Аналитика", link: "analytics"}
   ]
 
   ngOnInit(): void {

@@ -69,18 +69,21 @@ export class SalesPointsRepo implements IRepo<SalesPoint>, OnInit{
       .pipe(map((r) => {
          r.data.forEach( salesPoint =>{
             if(salesPoint.area){
-              const areaId = salesPoint.area.id
-              delete salesPoint.area
-              salesPoint.areaId = areaId
+              salesPoint.areaId = salesPoint.area.id
             }
+            delete salesPoint.area
           }
         )
+        console.log(`showing: ${JSON.stringify(r)}`)
         return r
       }))
   }
 
 
   saveMutation(items: SalesPoint[]){
+    console.log(`to save: ${JSON.stringify(items)}`)
+    delete items[0]['area']
+    console.log(`to save: ${JSON.stringify(items)}`)
     return this.apollo.mutate({
       mutation: SAVE_MUTATION,
       variables: {

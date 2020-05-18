@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {GridCommonComponent} from '../grid-common/grid-common.component';
 import {SalesPoint} from './sales-point';
-import {GridProperties} from '../grid-common/grid_properties';
+import {GridProperties, NumberParser} from '../grid-common/grid_properties';
 import {SalesPointsRepo} from './sales-point-repo';
 
 @Component({
@@ -26,7 +26,8 @@ export class SalesPointsComponent extends GridCommonComponent<SalesPoint> implem
             },
             {
                 headerName: 'AreaId',
-                field: 'areaId'
+                field: 'areaId',
+                valueParser: NumberParser
             }
         ];
         super(repo, properties);
