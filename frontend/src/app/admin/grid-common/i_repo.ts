@@ -1,5 +1,6 @@
 import {Product} from '../products/product';
 import {ApolloQueryResult} from 'apollo-client';
+import {Filter} from "./filter";
 
 export interface IRepo<T> {
     queryForAll()
@@ -15,12 +16,6 @@ export function prepareApolloResult(res: ApolloQueryResult<Page<any>>, queryName
     networkStatus: res.networkStatus,
     stale: res.stale
   };
-}
-
-export class Filter {
-  field: string
-  sign: string
-  value
 }
 
 export class PageRequest{

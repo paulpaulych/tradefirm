@@ -19,13 +19,23 @@ export class ProductsComponent extends GridCommonComponent<Product> implements O
         headerName: 'Id',
         field: 'id',
         editable: false,
-        sortable: true
+        filter: 'agNumberColumnFilter',
+        floatingFilter: true,
+        filterParams: {
+          resetButton: true,
+          closeOnApply: true,
+        }
       },
       {
         headerName: 'Name',
         field: 'name',
         editable: true,
-        sortable: true
+        filter: 'agTextColumnFilter',
+        floatingFilter: true,
+        filterParams: {
+          resetButton: true,
+          closeOnApply: true,
+        }
       },
     ]
     super(repo, properties)

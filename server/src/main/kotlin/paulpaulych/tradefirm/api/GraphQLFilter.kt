@@ -1,11 +1,24 @@
 package paulpaulych.tradefirm.api
 
-class GraphQLFilter(
+open class GraphQLFilter(
+        val type: Type,
         val field: String,
-        val sign: Sign,
-        val arg: String
+        val op: Op,
+        val operands: List<String>
 ){
-    enum class Sign{
-        EQ, SUBSTR
+    enum class Op{
+        EQUALS,
+        NOT_EQUALS,
+        LESS,
+        MORE,
+        LESS_EQUALS,
+        MORE_EQUALS,
+        STARTS_WITH,
+        ENDS_WITH,
+        CONTAINS
+    }
+
+    enum class Type{
+        STRING, NUMBER
     }
 }

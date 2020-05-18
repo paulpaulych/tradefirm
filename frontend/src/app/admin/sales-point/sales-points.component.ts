@@ -18,11 +18,23 @@ export class SalesPointsComponent extends GridCommonComponent<SalesPoint> implem
             {
                 headerName: 'Id',
                 field: 'id',
-                editable: false
+                editable: false,
+                filter: 'agNumberColumnFilter',
+                floatingFilter: true,
+                filterParams: {
+                  resetButton: true,
+                  closeOnApply: true,
+                }
             },
             {
                 headerName: 'Type',
-                field: 'type'
+                field: 'type',
+                filter: 'agTextColumnFilter',
+                floatingFilter: true,
+                filterParams: {
+                  resetButton: true,
+                  closeOnApply: true,
+                }
             },
             {
                 headerName: 'AreaId',
