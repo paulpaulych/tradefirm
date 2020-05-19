@@ -1,0 +1,10 @@
+.menuItem{
+
+  text-align: center;
+  vertical-align: center;
+}
+
+.menuBox{
+  float: left;
+  background-color: #000000;
+}

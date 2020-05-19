@@ -1,0 +1,17 @@
+<h1>{{title}}</h1>
+<ag-grid-angular
+  style="width: 1000px; height: 600px;"
+  class="ag-theme-material"
+
+  animateRows
+  suppressChangeDetection=true
+  [rowModelType]="rowModelType"
+  [modules]="modules"
+  [defaultColDef]="defaultColDef"
+  [columnDefs]="columnDefs"
+  [pagination]="true"
+  [paginationPageSize]="10"
+  (gridReady)="onGridReady($event)"
+  (cellValueChanged)="cellValueChanged($event)"
+>
+</ag-grid-angular>

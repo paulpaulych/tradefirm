@@ -1,3 +1,3 @@
-/logs/
-/.gradle/
-/databases/.gradle/
+.logs/
+.gradle/
+.idea/
