@@ -39,7 +39,8 @@ export class SalesPointsComponent extends GridCommonComponent<SalesPoint> implem
             {
                 headerName: 'AreaId',
                 field: 'areaId',
-                valueParser: NumberParser
+                valueParser: NumberParser,
+                sortable: false
             }
         ];
         super(repo, properties);

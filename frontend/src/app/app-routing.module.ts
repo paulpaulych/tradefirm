@@ -4,7 +4,7 @@ import {ProductsComponent} from './admin/products/products.component';
 import {AuthGuard} from './security/auth-guard.service';
 import {LoginComponent} from './security/login/login.component';
 import {SalesPointsComponent} from './admin/sales-point/sales-points.component';
-import {AnalyticsComponent} from './analytics/analytics.component';
+import {AnalyticsComponent} from './admin/analytics/analytics.component';
 
 const routes = [
   {

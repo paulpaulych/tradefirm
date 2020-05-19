@@ -1,4 +1,4 @@
-package paulpaulych.tradefirm.api
+package paulpaulych.tradefirm.apicore
 
 open class GraphQLFilter(
         val type: Type,

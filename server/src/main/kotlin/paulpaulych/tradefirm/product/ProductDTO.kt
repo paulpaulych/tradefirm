@@ -1,6 +1,6 @@
 package paulpaulych.tradefirm.product
 
-import paulpaulych.tradefirm.api.PageInfo
+import paulpaulych.tradefirm.apicore.PageInfo
 
 data class ProductDTO (
     val values: List<Product>,

@@ -4,6 +4,8 @@ import com.expediagroup.graphql.annotations.GraphQLDescription
 import com.expediagroup.graphql.annotations.GraphQLName
 import com.expediagroup.graphql.spring.operations.Query
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Isolation
+import org.springframework.transaction.annotation.Transactional
 import paulpaulych.tradefirm.customer.Customer
 import paulpaulych.tradefirm.product.Product
 import paulpaulych.tradefirm.supplier.Supplier
@@ -13,6 +15,7 @@ import simpleorm.core.query
 
 @Component
 @GraphQLName("Analytics")
+@Transactional(isolation = Isolation.REPEATABLE_READ)
 class AnalyticsQuery: Query {
 
     @GraphQLDescription("Поставщики которые поставляли определенный продукт хотя бы раз")

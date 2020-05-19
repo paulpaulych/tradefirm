@@ -1,9 +1,10 @@
 import {Injectable, OnInit} from '@angular/core';
-import {Filter, IRepo, Page, PageRequest, prepareApolloResult} from '../grid-common/i_repo';
+import {IRepo, Page, PageRequest, prepareApolloResult} from '../grid-common/i_repo';
 import {SalesPoint} from './sales-point';
 import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
 import {map} from 'rxjs/operators';
+import {Filter} from "../grid-common/filter";
 
 const GET_ALL = gql`
   query{

@@ -22,7 +22,7 @@ import { UserInfoComponent } from './topbar/userinfo/user-info.component';
 import { TopbarComponent } from './topbar/topbar.component';
 import {SalesPointsComponent} from './admin/sales-point/sales-points.component';
 import {ProductRepo} from './admin/products/product-repo.service';
-import { AnalyticsComponent } from './analytics/analytics.component';
+import { AnalyticsComponent } from './admin/analytics/analytics.component';
 
 @NgModule({
   declarations: [

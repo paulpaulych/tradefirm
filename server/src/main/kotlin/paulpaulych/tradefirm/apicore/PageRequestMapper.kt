@@ -1,4 +1,4 @@
-package paulpaulych.tradefirm.api
+package paulpaulych.tradefirm.apicore
 
 import org.springframework.stereotype.Service
 import simpleorm.core.pagination.PageRequest

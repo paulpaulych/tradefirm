@@ -1,4 +1,4 @@
-package paulpaulych.tradefirm.api
+package paulpaulych.tradefirm.apicore
 
 data class SortDTO (
         val field: String,

@@ -17,12 +17,12 @@ public class DataPopulator {
     private static final int SALES_POINT_COUNT = 10;
     private static final int SALES_COUNT = 500;
     private static final int PRODUCT_COUNT = 12;
-    private static final int SUPPLIER_PRICE_COUNT = 10000;
+    private static final int SUPPLIER_PRICE_COUNT = 700;
     private static final int ORDER_COUNT = 50;
     private static final int DELIVERY_COUNT = 100;
     private static final int ORDER_PRODUCT_COUNT = 3000;
     private static final int DELIVERY_DISTRIBUTION_COUNT = 1000;
-    private static final int SALE_PRODUCT_COUNT = 10000;
+    private static final int SALE_PRODUCT_COUNT = 4600;
 
     private static final int SELLERS_MIN = 101;
     private static final int SELLERS_MAX = 150;
@@ -64,16 +64,16 @@ public class DataPopulator {
     }
 
     public void run() throws IOException {
-        addSuppliers();
-        addCustomers();
-        addArea();
-        addOrders();
-        addProducts();
-        addSalesPoints();
-        addEmployee();
-        addSellers();
-        addSales();
-        addSaleProduct();
+//        addSuppliers();
+//        addCustomers();
+//        addArea();
+//        addOrders();
+//        addProducts();
+//        addSalesPoints();
+//        addEmployee();
+//        addSellers();
+//        addSales();
+//        addSaleProduct();
         addApplication();
         addApplicationProduct();
         addDelivery();
