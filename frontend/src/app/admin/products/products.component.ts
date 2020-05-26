@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {GridCommonComponent} from '../grid-common/grid-common.component';
+import {GridBaseComponent} from '../grid-common/grid-base.component';
 import {Product} from './product';
 import {GridProperties} from '../grid-common/grid_properties';
 import {ProductRepo} from './product-repo.service';
@@ -9,7 +9,7 @@ import {ProductRepo} from './product-repo.service';
   templateUrl: '../grid-common/grid-common.component.html',
   styleUrls: ['../grid-common/grid_common.component.css']
 })
-export class ProductsComponent extends GridCommonComponent<Product> implements OnInit{
+export class ProductsComponent extends GridBaseComponent<Product> implements OnInit{
 
   constructor(repo: ProductRepo) {
     const properties = new GridProperties()
