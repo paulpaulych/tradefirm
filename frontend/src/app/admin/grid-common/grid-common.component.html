@@ -6,6 +6,7 @@
   animateRows
   suppressChangeDetection=true
   [rowModelType]="rowModelType"
+  [gridOptions]="gridOptions"
   [modules]="modules"
   [defaultColDef]="defaultColDef"
   [columnDefs]="columnDefs"
@@ -15,3 +16,18 @@
   (cellValueChanged)="cellValueChanged($event)"
 >
 </ag-grid-angular>
+
+<button (click)="showInsertGrid()">Show insert grid</button>
+<div *ngIf="isInsertGridEnabled">
+  <button (click)="insertGrid.addRow()">Add row</button>
+  <button *ngIf="isInsertGridEnabled"
+          (click)="insertGrid.onInsertClicked()">Insert</button>
+  <ag-grid-angular *ngIf="isInsertGridEnabled"
+                   style="width: 1000px; height: 600px;"
+                   class="ag-theme-material"
+                   [defaultColDef]="insertGrid.defaultColDef"
+                   [columnDefs]="insertGrid.columnDefs"
+                   (gridReady)="insertGrid.onGridReady($event)"
+                   [modules]="insertGrid.modules"
+  ></ag-grid-angular>
+</div>

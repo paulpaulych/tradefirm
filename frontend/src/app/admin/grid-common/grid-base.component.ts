@@ -4,11 +4,12 @@ import {GridProperties} from './grid_properties';
 import {InfiniteRowModelModule} from '@ag-grid-community/infinite-row-model';
 import {IGetRowsParams} from 'ag-grid';
 import {Filter, prepareFilter} from "./filter";
+import {InsertGrid, InsertGridProperties} from "./insert-grid";
 
-export class GridCommonComponent<T> {
+export class GridBaseComponent<T> {
   protected gridApi;
   protected gridColumnApi;
-
+  gridOptions;
   loading: boolean;
   title: string
   modules = [InfiniteRowModelModule];
@@ -16,8 +17,11 @@ export class GridCommonComponent<T> {
   columnDefs
   rowModelType
 
+  isInsertGridEnabled: boolean = false
+  insertGrid: InsertGrid<T> = null
+
   constructor(
-    protected repo: IRepo<T>, properties: GridProperties) {
+    protected repo: IRepo<T>, properties: GridProperties){
     this.title = properties.title
     this.defaultColDef = {
       flex: 1,
@@ -26,6 +30,9 @@ export class GridCommonComponent<T> {
     };
     this.columnDefs = properties.columnDefs
     this.rowModelType = "infinite"
+    this.gridOptions = {
+      cacheBlockSize: 10
+    }
   }
 
   onGridReady(params) {
@@ -52,8 +59,8 @@ export class GridCommonComponent<T> {
         const filters: Filter[] = Object.keys(params.filterModel)
             .map((column) => prepareFilter(column, params.filterModel[column]))
         const pageRequest = new PageRequest(
-          params.startRow / pageSize,
-          params.endRow,
+          params.startRow / this.gridOptions.cacheBlockSize,
+          this.gridOptions.cacheBlockSize,
           sorts)
         this.repo.queryForPage(filters, pageRequest)
           .subscribe({
@@ -107,5 +114,27 @@ export class GridCommonComponent<T> {
     event.node.setData(data)
   }
 
+  showInsertGrid() {
+    let insertGridColDefs = []
+    this.columnDefs
+      .filter((cd) => cd.editable !== false)
+      .forEach((cd)=>{
+        insertGridColDefs.push({
+          headerName: cd.headerName,
+          field: cd.field,
+          valueParser: cd.valueParser
+        })
+      })
+    const insertGridProperties = new InsertGridProperties()
+    insertGridProperties.colDefs = insertGridColDefs
+    const onInsertCallback = ()=>{
+      //TODO: чета не работает обновление таблицы
+      this.gridApi.purgeInfiniteCache(null)
+    }
+    this.insertGrid = new InsertGrid<T>(this.repo, onInsertCallback, insertGridProperties)
+    this.isInsertGridEnabled = true
+  }
+
 }
+
 

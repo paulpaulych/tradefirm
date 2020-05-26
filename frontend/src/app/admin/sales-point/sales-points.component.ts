@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {GridCommonComponent} from '../grid-common/grid-common.component';
+import {GridBaseComponent} from '../grid-common/grid-base.component';
 import {SalesPoint} from './sales-point';
 import {GridProperties, NumberParser} from '../grid-common/grid_properties';
 import {SalesPointsRepo} from './sales-point-repo';
@@ -9,7 +9,7 @@ import {SalesPointsRepo} from './sales-point-repo';
     templateUrl: '../grid-common/grid-common.component.html',
     styleUrls: ['../grid-common/grid_common.component.css']
 })
-export class SalesPointsComponent extends GridCommonComponent<SalesPoint> implements OnInit {
+export class SalesPointsComponent extends GridBaseComponent<SalesPoint> implements OnInit {
 
     constructor(repo: SalesPointsRepo) {
         const properties = new GridProperties();
@@ -49,5 +49,4 @@ export class SalesPointsComponent extends GridCommonComponent<SalesPoint> implem
     ngOnInit() {
 
     }
-
 }

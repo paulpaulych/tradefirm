@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
+import {environment} from "../../environments/environment";
 
 const AUTH_TOKEN = "auth_token"
 const AUTH_EXPIRES_AT = "auth_exp"
@@ -16,7 +17,7 @@ export class AuthService {
   role: string
 
   login(username: string, password: string) {
-    const loginRes = this.http.post('http://localhost:3000/login', { username, password })
+    const loginRes = this.http.post(environment.authUrl, { username, password })
     loginRes.subscribe(
       res => this.setSession(res)
     )

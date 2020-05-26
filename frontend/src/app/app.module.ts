@@ -10,7 +10,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {ProductsComponent} from './admin/products/products.component';
 import {AgGridModule} from 'ag-grid-angular';
-import {Apollo, APOLLO_OPTIONS, ApolloModule} from 'apollo-angular';
+import {APOLLO_OPTIONS, ApolloModule} from 'apollo-angular';
 
 import {HttpLink, HttpLinkModule} from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
@@ -23,6 +23,7 @@ import { TopbarComponent } from './topbar/topbar.component';
 import {SalesPointsComponent} from './admin/sales-point/sales-points.component';
 import {ProductRepo} from './admin/products/product-repo.service';
 import { AnalyticsComponent } from './admin/analytics/analytics.component';
+import {environment} from "../environments/environment";
 
 @NgModule({
   declarations: [
@@ -64,7 +65,7 @@ import { AnalyticsComponent } from './admin/analytics/analytics.component';
         return {
           cache: new InMemoryCache(),
           link: httpLink.create({
-            uri: "http://localhost:3000/graphql"
+            uri: environment.backendUrl
           })
         }
       },
