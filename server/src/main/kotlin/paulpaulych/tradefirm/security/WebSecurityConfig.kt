@@ -2,13 +2,15 @@ package paulpaulych.tradefirm.security
 
 import org.springframework.context.annotation.Bean
 import org.springframework.http.HttpStatus
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
 import org.springframework.security.config.web.server.ServerHttpSecurity
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.server.SecurityWebFilterChain
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
+import org.springframework.web.cors.reactive.CorsConfigurationSource
 import org.springframework.web.server.ServerWebExchange
 import reactor.core.publisher.Mono
 
@@ -37,6 +39,9 @@ class WebSecurityConfig(
                             }
                     }
                 .and()
+                .cors()
+                    .configurationSource(corsConfigurationSource())
+                .and()
                 .csrf()
                     .disable()
                 .formLogin()
@@ -47,8 +52,6 @@ class WebSecurityConfig(
                 .securityContextRepository(securityContextRepository)
                 .authorizeExchange()
                     .pathMatchers("/login", "/playground").permitAll()
-//                    .pathMatchers("/security").permitAll()
-//                    .pathMatchers("/graphql").permitAll()
                     .anyExchange().authenticated()
                 .and().build()
     }
@@ -56,6 +59,17 @@ class WebSecurityConfig(
     @Bean
     fun passwordEncoder(): PasswordEncoder{
         return BCryptPasswordEncoder(12)
+    }
+
+    fun corsConfigurationSource(): CorsConfigurationSource{
+        val config = CorsConfiguration()
+        config.addAllowedOrigin("*")
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("GET");
+        config.addAllowedMethod("POST");
+        val configurationSource = UrlBasedCorsConfigurationSource()
+        configurationSource.registerCorsConfiguration("/*", config)
+        return configurationSource
     }
 
 

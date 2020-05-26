@@ -23,6 +23,7 @@ import { TopbarComponent } from './topbar/topbar.component';
 import {SalesPointsComponent} from './admin/sales-point/sales-points.component';
 import {ProductRepo} from './admin/products/product-repo.service';
 import { AnalyticsComponent } from './admin/analytics/analytics.component';
+import {environment} from "../environments/environment";
 
 @NgModule({
   declarations: [
@@ -64,7 +65,7 @@ import { AnalyticsComponent } from './admin/analytics/analytics.component';
         return {
           cache: new InMemoryCache(),
           link: httpLink.create({
-            uri: "http://localhost:3000/graphql"
+            uri: environment.backendUrl
           })
         }
       },
