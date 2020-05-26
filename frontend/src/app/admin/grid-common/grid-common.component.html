@@ -1,21 +1,28 @@
 <h1>{{title}}</h1>
-<ag-grid-angular
-  style="width: 1000px; height: 600px;"
-  class="ag-theme-material"
+<div>
+  <ag-grid-angular
+    style="width: 1000px; height: 600px;"
+    class="ag-theme-material"
 
-  animateRows
-  suppressChangeDetection=true
-  [rowModelType]="rowModelType"
-  [gridOptions]="gridOptions"
-  [modules]="modules"
-  [defaultColDef]="defaultColDef"
-  [columnDefs]="columnDefs"
-  [pagination]="true"
-  [paginationPageSize]="10"
-  (gridReady)="onGridReady($event)"
-  (cellValueChanged)="cellValueChanged($event)"
->
-</ag-grid-angular>
+    animateRows
+    suppressChangeDetection=true
+    [rowModelType]="rowModelType"
+    [gridOptions]="gridOptions"
+    [modules]="modules"
+    [defaultColDef]="defaultColDef"
+    [columnDefs]="columnDefs"
+    [pagination]="true"
+    [paginationPageSize]="10"
+    [rowSelection]="rowSelection"
+    [rowMultiSelectWithClick]="true"
+
+    (selectionChanged)="onSelectionChanged($event)"
+    (gridReady)="onGridReady($event)"
+    (cellValueChanged)="cellValueChanged($event)"
+  >
+  </ag-grid-angular>
+  <button *ngIf="deleteButtonEnabled" (click)="onDeleteClicked()">Удалить выбранное</button>
+</div>
 
 <button (click)="showInsertGrid()">Show insert grid</button>
 <div *ngIf="isInsertGridEnabled">

@@ -24,6 +24,12 @@ const SAVE_MUTATION = gql`
   }
 `
 
+const DELETE_MUTATION = gql`
+  mutation DeleteSalesPoints($ids: [Long!]!){
+    deleteSalesPoints(ids: $ids)
+  }
+`
+
 const GET_PAGE = gql`
   query SalesPointPages($filters: [GraphQLFilterInput!]!, $pageRequest: PageRequestDTOInput!){
     salesPointsPage(filters: $filters, pageRequest: $pageRequest){
@@ -82,13 +88,21 @@ export class SalesPointsRepo implements IRepo<SalesPoint>, OnInit{
 
 
   saveMutation(items: SalesPoint[]){
-    console.log(`to save: ${JSON.stringify(items)}`)
     delete items[0]['area']
-    console.log(`to save: ${JSON.stringify(items)}`)
     return this.apollo.mutate({
       mutation: SAVE_MUTATION,
       variables: {
         values: items
+      }
+    });
+  }
+
+  deleteMutation(ids) {
+    console.log(`to delete: ${JSON.stringify(ids)}`)
+    return this.apollo.mutate({
+      mutation: DELETE_MUTATION,
+      variables: {
+        ids: ids
       }
     });
   }

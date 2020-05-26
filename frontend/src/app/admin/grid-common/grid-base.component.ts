@@ -16,8 +16,10 @@ export class GridBaseComponent<T> {
   defaultColDef
   columnDefs
   rowModelType
+  rowSelection
+  deleteButtonEnabled = false
 
-  isInsertGridEnabled: boolean = false
+  isInsertGridEnabled = false
   insertGrid: InsertGrid<T> = null
 
   constructor(
@@ -33,6 +35,7 @@ export class GridBaseComponent<T> {
     this.gridOptions = {
       cacheBlockSize: 10
     }
+    this.rowSelection = 'multiple'
   }
 
   onGridReady(params) {
@@ -133,6 +136,38 @@ export class GridBaseComponent<T> {
     }
     this.insertGrid = new InsertGrid<T>(this.repo, onInsertCallback, insertGridProperties)
     this.isInsertGridEnabled = true
+  }
+
+  onSelectionChanged($event: any) {
+    if(this.gridApi.getSelectedRows().length == 0){
+      this.deleteButtonEnabled = false
+    }
+    this.deleteButtonEnabled = true
+  }
+
+  onDeleteClicked() {
+    const selectedRows = this.gridApi.getSelectedRows()
+    const idFieldName = this.columnDefs.find((it)=>it.editable === false).field
+    const ids = selectedRows.map((it)=> it[idFieldName])
+    this.repo.deleteMutation(ids)
+      .subscribe({
+        next: ({data, errors}) => {
+          console.log(`data deleted: ${JSON.stringify(data)}`)
+          if (data) {
+            alert("changes committed")
+            this.gridApi.purgeInfiniteCache()
+          }
+          if (errors) {
+            console.log(`errors while data fetching: ${errors}`)
+          }
+        },
+        error: err => {
+          alert(`
+                  Error occurred while saving changes: ${err}
+                  Rollbacking cell editing
+                `);
+        }
+      });
   }
 
 }

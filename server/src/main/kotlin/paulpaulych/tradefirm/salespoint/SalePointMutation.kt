@@ -3,11 +3,15 @@ package paulpaulych.tradefirm.salespoint
 import com.expediagroup.graphql.spring.operations.Mutation
 import org.springframework.stereotype.Component
 import paulpaulych.tradefirm.area.Area
+import paulpaulych.utils.LoggerDelegate
+import simpleorm.core.delete
 import simpleorm.core.findById
 import simpleorm.core.save
 
 @Component
 class SalePointMutation: Mutation {
+
+    private val log by LoggerDelegate()
 
     //TODO: make transactional
     //TODO: do in batch update
@@ -20,6 +24,13 @@ class SalePointMutation: Mutation {
             }
             save(SalesPoint(it.id, it.type, area))
         }
+    }
+
+    suspend fun deleteSalesPoints(ids: List<Long>): List<Long>{
+        log.info("ids to delete: $ids")
+        println(ids)
+        ids.forEach{ SalesPoint::class.delete(it)}
+        return ids
     }
 
 }
