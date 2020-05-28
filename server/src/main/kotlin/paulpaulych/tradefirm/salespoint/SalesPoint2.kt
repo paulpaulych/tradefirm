@@ -4,15 +4,16 @@ import paulpaulych.tradefirm.area.Area
 import paulpaulych.utils.Open
 
 @Open
-data class SalesPoint(
+data class SalesPoint2(
         val id: Long? = null,
         val type: String,
         val area: Area?
 ){
-    enum class Type {
-        KIOSK,
-        MAGAZIN,
-        PALATKA,
-        UNIVERMAG
-    }
+//    enum class Type {
+//        KIOSK,
+//        MAGAZIN,
+//        PALATKA,
+//        UNIVERMAG
+//    }
 }
+

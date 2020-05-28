@@ -24,7 +24,7 @@ entities:
       stallCount:
         column: stall_count
 
-  paulpaulych.tradefirm.salespoint.SalesPoint:
+  paulpaulych.tradefirm.salespoint.SalesPoint2:
     table: sales_point
     fields:
       id:
@@ -54,9 +54,9 @@ entities:
         column: id
       name:
         column: name
-      salesPoint:
+      salesPoint2:
         manyToOne:
-          className: paulpaulych.tradefirm.salespoint.SalesPoint
+          className: paulpaulych.tradefirm.salespoint.SalesPoint2
           foreignKeyColumn: sales_point_id
       salary:
         column: salary
@@ -71,9 +71,9 @@ entities:
         manyToOne:
           className: paulpaulych.tradefirm.customer.Customer
           foreignKeyColumn: customer_id
-      salesPoint:
+      salesPoint2:
         manyToOne:
-          className: paulpaulych.tradefirm.salespoint.SalesPoint
+          className: paulpaulych.tradefirm.salespoint.SalesPoint2
           foreignKeyColumn: sales_point_id
       seller:
         manyToOne:
@@ -92,9 +92,9 @@ entities:
       id:
         isId: true
         column: id
-      salesPoint:
+      salesPoint2:
         manyToOne:
-          className: paulpaulych.tradefirm.salespoint.SalesPoint
+          className: paulpaulych.tradefirm.salespoint.SalesPoint2
           foreignKeyColumn: sales_point_id
       product:
         manyToOne:

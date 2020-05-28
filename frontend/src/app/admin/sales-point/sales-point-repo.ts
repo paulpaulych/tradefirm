@@ -11,12 +11,13 @@ const GET_ALL = gql`
     salesPoints{
         id
         type
+        areaId
     }
   }
 `
 
 const SAVE_MUTATION = gql`
-  mutation SaveSalesPoints($values: [SalesPointSaveReqInput!]!){
+  mutation SaveSalesPoints($values: [PlainSalesPointInput!]!){
     saveSalesPoints(values: $values){
       id
       type
@@ -36,9 +37,7 @@ const GET_PAGE = gql`
       values{
         id
         type
-        area{
-          id
-        }
+        areaId
       }
       pageInfo{
         pageSize
@@ -73,22 +72,9 @@ export class SalesPointsRepo implements IRepo<SalesPoint>, OnInit{
       })
       .valueChanges
       .pipe(map(r => prepareApolloResult(r, 'salesPointsPage')))
-      .pipe(map((r) => {
-         r.data.forEach( salesPoint =>{
-            if(salesPoint.area){
-              salesPoint.areaId = salesPoint.area.id
-            }
-            delete salesPoint.area
-          }
-        )
-        console.log(`showing: ${JSON.stringify(r)}`)
-        return r
-      }))
   }
 
-
   saveMutation(items: SalesPoint[]){
-    delete items[0]['area']
     return this.apollo.mutate({
       mutation: SAVE_MUTATION,
       variables: {

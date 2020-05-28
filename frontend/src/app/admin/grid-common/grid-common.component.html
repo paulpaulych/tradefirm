@@ -1,7 +1,7 @@
 <h1>{{title}}</h1>
 <div>
   <ag-grid-angular
-    style="width: 1000px; height: 600px;"
+    style="width: 1000px;"
     class="ag-theme-material"
 
     animateRows
@@ -12,29 +12,30 @@
     [defaultColDef]="defaultColDef"
     [columnDefs]="columnDefs"
     [pagination]="true"
-    [paginationPageSize]="10"
+    [paginationPageSize]="pageSize"
     [rowSelection]="rowSelection"
     [rowMultiSelectWithClick]="true"
+    domLayout="autoHeight"
 
     (selectionChanged)="onSelectionChanged($event)"
     (gridReady)="onGridReady($event)"
     (cellValueChanged)="cellValueChanged($event)"
   >
   </ag-grid-angular>
-  <button *ngIf="deleteButtonEnabled" (click)="onDeleteClicked()">Удалить выбранное</button>
+  <button *ngIf="isDeleteButtonEnabled" (click)="onDeleteClicked()">Удалить выбранное</button>
 </div>
 
-<button (click)="showInsertGrid()">Show insert grid</button>
-<div *ngIf="isInsertGridEnabled">
-  <button (click)="insertGrid.addRow()">Add row</button>
-  <button *ngIf="isInsertGridEnabled"
-          (click)="insertGrid.onInsertClicked()">Insert</button>
-  <ag-grid-angular *ngIf="isInsertGridEnabled"
-                   style="width: 1000px; height: 600px;"
+<div>
+  <h2>Вставка</h2>
+  <ag-grid-angular
+                   style="width: 1000px;"
                    class="ag-theme-material"
+                   domLayout="autoHeight"
                    [defaultColDef]="insertGrid.defaultColDef"
                    [columnDefs]="insertGrid.columnDefs"
                    (gridReady)="insertGrid.onGridReady($event)"
                    [modules]="insertGrid.modules"
   ></ag-grid-angular>
+  <button (click)="insertGrid.addRow()">Добавить пустую строку</button>
+  <button (click)="insertGrid.onInsertClicked()">Вставить значения</button>
 </div>
