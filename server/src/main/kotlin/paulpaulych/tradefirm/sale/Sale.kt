@@ -3,7 +3,7 @@ package paulpaulych.tradefirm.sale
 import com.expediagroup.graphql.annotations.GraphQLIgnore
 import paulpaulych.tradefirm.customer.Customer
 import paulpaulych.tradefirm.employee.Employee
-import paulpaulych.tradefirm.salespoint.SalesPoint
+import paulpaulych.tradefirm.salespoint.SalesPoint2
 import paulpaulych.utils.Open
 import java.util.*
 
@@ -11,7 +11,7 @@ import java.util.*
 data class Sale (
         val id: Long? = null,
         val customer: Customer,
-        val salesPoint: SalesPoint,
+        val salesPoint2: SalesPoint2,
         val seller: Employee?,
         @GraphQLIgnore
         val date: Date,

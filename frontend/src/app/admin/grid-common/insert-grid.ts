@@ -7,7 +7,6 @@ export class InsertGridProperties {
 
 export class InsertGrid<T> {
   protected gridApi;
-  protected gridColumnApi;
 
   modules = AllCommunityModules;
   defaultColDef
@@ -26,7 +25,6 @@ export class InsertGrid<T> {
 
   onGridReady(params) {
     this.gridApi = params.api
-    this.gridColumnApi = params.columnApi
     this.gridApi.setRowData([{}])
   }
 
@@ -50,7 +48,7 @@ export class InsertGrid<T> {
       }
     })
     if (data.length == 0){
-      alert("nothing to insert")
+      alert("Сначала добавьте строк для вставки")
       return
     }
     this.repo.saveMutation(data)
@@ -58,19 +56,28 @@ export class InsertGrid<T> {
         next: ({data, errors}) => {
           console.log(`data updated: ${JSON.stringify(data)}`)
           if (data) {
-            alert("changes committed")
-            this.gridApi.setRowData([])
+            showDataCommittedMessage()
+            this.gridApi.setRowData([{}])
             this.onInsertCallback()
           }
           if (errors) {
-            console.log(`errors while data fetching: ${errors}`)
+            showErrorMessage(errors)
           }
         },
         error: err => {
-          alert(`Error occurred while saving changes: ${err}`);
+          showErrorMessage(err)
         }
       });
 
   }
 
+}
+
+export function showDataCommittedMessage(){
+  alert("Изменения применены. Обновите страницу")
+}
+
+export function showErrorMessage(error: any) {
+  console.log(error)
+  alert("Что-то пошло не так. Сохраните лог и отправьте разработчику: p.pyankow@g.nsu.ru")
 }

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import paulpaulych.tradefirm.customer.Customer
 import paulpaulych.tradefirm.employee.Employee
-import paulpaulych.tradefirm.salespoint.SalesPoint
+import paulpaulych.tradefirm.salespoint.SalesPoint2
 import paulpaulych.tradefirm.storage.Storage
 import simpleorm.core.findById
 import simpleorm.core.query
@@ -42,7 +42,7 @@ class SaleMutation: Mutation{
                 null,
                 Customer::class.findById(customerId)
                         ?: error("customer does not exists"),
-                SalesPoint::class.findById(salesPointId)
+                SalesPoint2::class.findById(salesPointId)
                         ?: error("sales point does not exists"),
                 employee,
                 Date()))

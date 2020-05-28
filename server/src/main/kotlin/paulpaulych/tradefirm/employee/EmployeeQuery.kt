@@ -1,24 +1,14 @@
 package paulpaulych.tradefirm.employee
 
 import com.expediagroup.graphql.spring.operations.Query
-import kotlinx.coroutines.runBlocking
-import org.springframework.security.access.annotation.Secured
-import org.springframework.security.access.prepost.PostAuthorize
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.security.core.Authentication
-import org.springframework.security.core.context.ReactiveSecurityContextHolder
 import org.springframework.stereotype.Component
-import paulpaulych.tradefirm.area.Area
-import paulpaulych.tradefirm.salespoint.SalesPoint
-import paulpaulych.tradefirm.security.Role
 import paulpaulych.utils.LoggerDelegate
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.kotlin.core.publisher.toFlux
-import reactor.kotlin.core.publisher.toMono
 import simpleorm.core.findAll
 import simpleorm.core.findById
-import java.math.BigDecimal
 
 @Component
 class EmployeeQuery(

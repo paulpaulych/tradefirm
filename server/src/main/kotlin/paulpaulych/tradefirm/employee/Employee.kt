@@ -1,6 +1,6 @@
 package paulpaulych.tradefirm.employee
 
-import paulpaulych.tradefirm.salespoint.SalesPoint
+import paulpaulych.tradefirm.salespoint.SalesPoint2
 import paulpaulych.utils.Open
 import java.math.BigDecimal
 
@@ -8,7 +8,7 @@ import java.math.BigDecimal
 data class Employee(
         val id: Long? = null,
         val name: String,
-        val salesPoint: SalesPoint,
+        val salesPoint2: SalesPoint2,
         val salary: BigDecimal
 )
 
