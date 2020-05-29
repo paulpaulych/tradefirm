@@ -25,8 +25,8 @@ const SAVE_MUTATION = gql`
 `
 
 const GET_PAGE = gql`
-  query ProductsPages($filters: [GraphQLFilterInput!]!, $pageRequest: PageRequestDTOInput!){
-    productPages(filters: $filters, pageRequest: $pageRequest){
+  query ProductsPages($filter: GraphQLFilterInput, $pageRequest: PageRequestDTOInput!){
+    productPages(filter: $filter, pageRequest: $pageRequest){
       values{
         id
         name
@@ -59,12 +59,12 @@ export class ProductRepo implements IRepo<Product>, OnInit {
       .valueChanges;
   }
 
-  queryForPage(filters: [Filter], pageRequest: PageRequest) {
+  queryForPage(filter: Filter, pageRequest: PageRequest) {
     return this.apollo
       .watchQuery<Page<Product>>({
         query: GET_PAGE,
         variables: {
-          filters: filters,
+          filter: filter,
           pageRequest: pageRequest
         }
       })

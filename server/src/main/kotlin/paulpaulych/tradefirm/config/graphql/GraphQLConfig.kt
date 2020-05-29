@@ -6,8 +6,6 @@ import graphql.execution.instrumentation.tracing.TracingInstrumentation
 import graphql.schema.GraphQLSchema
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import simpleorm.core.schema.naming.INamingStrategy
-import simpleorm.core.schema.naming.toSnakeCase
 
 @Configuration
 class GraphQLConfig {

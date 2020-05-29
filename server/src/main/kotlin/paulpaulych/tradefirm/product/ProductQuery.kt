@@ -25,12 +25,17 @@ class ProductQuery(
                 ?: error("data not found")
     }
 
-    suspend fun productPages(filters: List<GraphQLFilter>, pageRequest: PageRequestDTO): ProductDTO{
+    suspend fun productPages(filter: GraphQLFilter?, pageRequest: PageRequestDTO): ProductDTO{
         log.info("hello from productPages")
-        val res = Product::class.findBy(
-                filters.map { filterMapper.getFetchFilter(Product::class, it) },
-                pageRequestMapper.getPageRequest(Product::class, pageRequest)
-        )
+        val pr = pageRequestMapper.getPageRequest(Product::class, pageRequest)
+        val res = if(filter == null){
+            Product::class.findAll(pr)
+        }else {
+            Product::class.findBy(
+                    filterMapper.getFetchFilter(Product::class, filter),
+                    pr
+            )
+        }
         return ProductDTO(res.values, PageInfo(res.values.size))
     }
 

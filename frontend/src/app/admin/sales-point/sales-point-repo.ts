@@ -32,8 +32,8 @@ const DELETE_MUTATION = gql`
 `
 
 const GET_PAGE = gql`
-  query SalesPointPages($filters: [GraphQLFilterInput!]!, $pageRequest: PageRequestDTOInput!){
-    salesPointsPage(filters: $filters, pageRequest: $pageRequest){
+  query SalesPointPages($filter: GraphQLFilterInput, $pageRequest: PageRequestDTOInput!){
+    salesPointsPage(filter: $filter, pageRequest: $pageRequest){
       values{
         id
         type
@@ -61,12 +61,12 @@ export class SalesPointsRepo implements IRepo<SalesPoint>, OnInit{
       .valueChanges
   }
 
-  queryForPage(filters: Filter[], pageRequest: PageRequest) {
+  queryForPage(filter: Filter, pageRequest: PageRequest) {
     return this.apollo
       .watchQuery<Page<SalesPoint>>({
         query: GET_PAGE,
         variables: {
-          filters: filters,
+          filter: filter,
           pageRequest: pageRequest
         }
       })
