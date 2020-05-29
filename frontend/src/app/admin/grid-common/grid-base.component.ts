@@ -2,7 +2,7 @@ import {CellChangedEvent} from 'ag-grid-community/dist/lib/entities/rowNode';
 import {IRepo, PageRequest, Sort} from './i_repo';
 import {GridProperties} from './grid_properties';
 import {InfiniteRowModelModule} from '@ag-grid-community/infinite-row-model';
-import {Filter, prepareFilter} from "./filter";
+import {Filter, prepareFilterModel} from "./filter";
 import {showErrorMessage, InsertGrid, InsertGridProperties, showDataCommittedMessage} from "./insert-grid";
 import {OnInit} from "@angular/core";
 
@@ -81,13 +81,13 @@ export class GridBaseComponent<T> implements OnInit{
           sorts.push(defaultSort)
         }
         console.log(`filter model: ${JSON.stringify(params.filterModel)}`)
-        const filters: Filter[] = Object.keys(params.filterModel)
-            .map((column) => prepareFilter(column, params.filterModel[column]))
+        const filter = prepareFilterModel(params.filterModel)
+        console.log(`prepared filter: ${JSON.stringify(filter)}`)
         const pageRequest = new PageRequest(
           params.startRow / pageSize,
           pageSize,
           sorts)
-        this.repo.queryForPage(filters, pageRequest)
+        this.repo.queryForPage(filter, pageRequest)
           .subscribe({
             next: ({data, loading, errors}) => {
               if (data) {

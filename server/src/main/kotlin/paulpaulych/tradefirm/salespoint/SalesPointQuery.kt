@@ -3,7 +3,7 @@ package paulpaulych.tradefirm.salespoint
 import com.expediagroup.graphql.spring.operations.Query
 import org.springframework.stereotype.Component
 import paulpaulych.tradefirm.apicore.*
-import paulpaulych.tradefirm.salespoint.j.PlainSalesPoint
+import paulpaulych.tradefirm.product.Product
 import paulpaulych.utils.LoggerDelegate
 import simpleorm.core.findAll
 import simpleorm.core.findBy
@@ -20,12 +20,17 @@ class SalesPointQuery(
         return PlainSalesPoint::class.findAll()
     }
 
-    suspend fun salesPointsPage(filters: List<GraphQLFilter>, pageRequest: PageRequestDTO): SalesPointDTO {
+    suspend fun salesPointsPage(filter: GraphQLFilter?, pageRequest: PageRequestDTO): SalesPointDTO {
         log.info("hello from ")
-        val res = PlainSalesPoint::class.findBy(
-                filters.map { filterMapper.getFetchFilter(PlainSalesPoint::class, it) },
-                pageRequestMapper.getPageRequest(PlainSalesPoint::class, pageRequest)
-        )
+        val pr = pageRequestMapper.getPageRequest(PlainSalesPoint::class, pageRequest)
+        val res = if(filter == null){
+            PlainSalesPoint::class.findAll(pr)
+        } else {
+            PlainSalesPoint::class.findBy(
+                    filterMapper.getFetchFilter(Product::class, filter),
+                    pr
+            )
+        }
         return SalesPointDTO(res.values, PageInfo(res.values.size))
     }
 

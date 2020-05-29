@@ -8,7 +8,7 @@ import simpleorm.core.CachingDefaultRepoFactory
 import simpleorm.core.RepoRegistry
 import simpleorm.core.RepoRegistryProvider
 import simpleorm.core.delegate.JdbcDelegateCreator
-import simpleorm.core.filter.HashMapFilterResolverRepo
+import simpleorm.core.filter.*
 import simpleorm.core.proxy.CglibDelegateProxyGenerator
 import simpleorm.core.proxy.repository.CglibRepoProxyGenerator
 import simpleorm.core.schema.OrmSchema
@@ -17,6 +17,7 @@ import simpleorm.core.schema.naming.toSnakeCase
 import simpleorm.core.schema.yaml.ast.YamlSchemaCreator
 import simpleorm.core.sql.SimpleQueryGenerator
 import javax.annotation.PostConstruct
+import kotlin.reflect.KClass
 
 @Configuration
 class OrmConfig(
@@ -24,20 +25,25 @@ class OrmConfig(
 ) {
 
     private val namingStrategy = PlainObjectNamingStrategy()
+    private val filterResolverRepo: IFilterResolverRepo
+    private val ormSchema: OrmSchema
 
-    fun ormSchema(): OrmSchema{
-        return YamlSchemaCreator(
+    init {
+        this.ormSchema = YamlSchemaCreator(
                 ResourceLoader.loadText("orm-schema.yml"),
                 namingStrategy
         ).create()
+
+        this.filterResolverRepo = HashMapFilterResolverRepo(ormSchema, mapOf(
+                AndFilter::class to AndFilterResolver()
+        ))
     }
 
     @PostConstruct
     fun repoRegistry(){
-        val ormSchema = ormSchema()
         val jdbcOperations = SpringJdbcAdapter(jdbcTemplate)
         val queryGenerator = SimpleQueryGenerator()
-        val filterResolverRepo = HashMapFilterResolverRepo(ormSchema)
+
         val repoProxyGenerator = CglibRepoProxyGenerator(
                 ormSchema,
                 jdbcOperations,
@@ -52,7 +58,7 @@ class OrmConfig(
                 filterResolverRepo
         )
         RepoRegistryProvider.repoRegistry = RepoRegistry(
-                ormSchema().entities.map {
+                ormSchema.entities.map {
                     (kClass, _) -> kClass to repoProxyGenerator.createRepoProxy(kClass)
                 }.toMap(),
                 jdbcOperations,
@@ -73,8 +79,7 @@ class PlainObjectNamingStrategy: INamingStrategy {
     }
 
     override fun toTableName(s: String): String {
-        val s = toSnakeCase(s).removePrefix("plain_")
-        println("table_name: $s")
-        return s
+        return toSnakeCase(s).removePrefix("plain_")
     }
 }
+
