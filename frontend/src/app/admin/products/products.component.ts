@@ -19,23 +19,12 @@ export class ProductsComponent extends GridBaseComponent<Product> implements OnI
         headerName: 'Id',
         field: 'id',
         editable: false,
-        filter: 'agNumberColumnFilter',
-        floatingFilter: true,
-        filterParams: {
-          resetButton: true,
-          closeOnApply: true,
-        }
+        filter: 'agNumberColumnFilter'
       },
       {
         headerName: 'Name',
         field: 'name',
-        editable: true,
-        filter: 'agTextColumnFilter',
-        floatingFilter: true,
-        filterParams: {
-          resetButton: true,
-          closeOnApply: true,
-        }
+        filter: 'agTextColumnFilter'
       },
     ]
     super(repo, properties)

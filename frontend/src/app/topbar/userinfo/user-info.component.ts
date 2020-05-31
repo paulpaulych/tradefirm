@@ -10,7 +10,6 @@ import {Router} from '@angular/router';
 export class UserInfoComponent implements OnInit {
 
   username: string
-  role: string
 
   constructor(private authService: AuthService,
               private router: Router) {}
@@ -21,8 +20,7 @@ export class UserInfoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.username = this.authService.username
-    this.role = this.authService.role
+    this.username = this.authService.getUsername()
   }
 
 }

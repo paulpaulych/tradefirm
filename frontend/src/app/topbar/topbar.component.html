@@ -1,2 +1,4 @@
-<app-menu style="float: left;"></app-menu>
-<app-user-info style="float: left;" *ngIf="isLoggedIn()"></app-user-info>
+<!--<nav class="navBar">-->
+  <app-navigation *ngIf="isLoggedIn()"></app-navigation>
+  <app-user-info class="userInfo" *ngIf="isLoggedIn()"></app-user-info>
+<!--</nav>-->

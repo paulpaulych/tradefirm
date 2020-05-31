@@ -27,7 +27,7 @@ class SalesPointQuery(
             PlainSalesPoint::class.findAll(pr)
         } else {
             PlainSalesPoint::class.findBy(
-                    filterMapper.getFetchFilter(Product::class, filter),
+                    filterMapper.getFetchFilter(PlainSalesPoint::class, filter),
                     pr
             )
         }

@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MenuComponent } from './topbar/menu/menu.component';
+import { NavigationComponent } from './topbar/navigation/navigation.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatIconModule} from '@angular/material/icon';
@@ -24,11 +24,12 @@ import {SalesPointsComponent} from './admin/sales-point/sales-points.component';
 import {ProductRepo} from './admin/products/product-repo.service';
 import { AnalyticsComponent } from './admin/analytics/analytics.component';
 import {environment} from "../environments/environment";
+import { WelcomeComponent } from './welcome/welcome.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MenuComponent,
+    NavigationComponent,
     LoginComponent,
     UserInfoComponent,
     TopbarComponent,
@@ -36,7 +37,9 @@ import {environment} from "../environments/environment";
     ProductsComponent,
     SalesPointsComponent,
 
-    AnalyticsComponent
+    AnalyticsComponent,
+
+    WelcomeComponent
   ],
   imports: [
     BrowserModule,
@@ -71,7 +74,6 @@ import {environment} from "../environments/environment";
       },
       deps: [HttpLink]
     },
-
   ],
   bootstrap: [AppComponent]
 })

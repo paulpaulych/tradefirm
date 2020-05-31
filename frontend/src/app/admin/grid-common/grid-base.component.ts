@@ -2,7 +2,7 @@ import {CellChangedEvent} from 'ag-grid-community/dist/lib/entities/rowNode';
 import {IRepo, PageRequest, Sort} from './i_repo';
 import {GridProperties} from './grid_properties';
 import {InfiniteRowModelModule} from '@ag-grid-community/infinite-row-model';
-import {Filter, prepareFilterModel} from "./filter";
+import {prepareFilterModel} from "./filter";
 import {showErrorMessage, InsertGrid, InsertGridProperties, showDataCommittedMessage} from "./insert-grid";
 import {OnInit} from "@angular/core";
 
@@ -31,6 +31,11 @@ export class GridBaseComponent<T> implements OnInit{
       flex: 1,
       editable: true,
       sortable: true,
+      floatingFilter: true,
+      filterParams: {
+      resetButton: true,
+        closeOnApply: true,
+      }
     };
     this.columnDefs = properties.columnDefs
     this.rowModelType = "infinite"
