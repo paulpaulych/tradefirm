@@ -1,8 +1,8 @@
 -- поставщики которые поставили заданный торав в суммарном объеме больше заданного
 select
     s.id,
-    s.company_name as companyName,
-    t.total_supplied as totallySupplied
+    s.company_name,
+    t.total_supplied as totally_supplied
 from(
         select
             sum(dd.count) as total_supplied,
