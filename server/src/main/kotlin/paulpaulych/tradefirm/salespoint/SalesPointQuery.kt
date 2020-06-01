@@ -6,7 +6,6 @@ import paulpaulych.tradefirm.security.Authorization
 import paulpaulych.tradefirm.security.MyGraphQLContext
 import paulpaulych.tradefirm.security.SellerUser
 import paulpaulych.tradefirm.seller.Seller
-import paulpaulych.tradefirm.storage.StorageItem
 import simpleorm.core.findById
 
 @Component
@@ -18,7 +17,7 @@ class SalesPointQuery : Query {
                 ?.authentication
                 ?: error("context is null")
         val user = auth.principal as SellerUser
-        val seller = Seller::class.findById(user.employeeId)
+        val seller = Seller::class.findById(user.sellerId)
                 ?: error("seller info not found for current user")
         return seller.salesPoint
     }

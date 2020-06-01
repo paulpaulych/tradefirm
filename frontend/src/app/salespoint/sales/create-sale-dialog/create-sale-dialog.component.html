@@ -1,0 +1,57 @@
+<h1 mat-dialog-title>Создание покупки</h1>
+<div
+  style="width: 100%"
+>
+  <mat-form-field
+    style="width: 100%">
+    <mat-label>Выберите покупателя</mat-label>
+    <mat-select (openedChange)="dropFilters()"
+                [(ngModel)]="customerId">
+      <input (keyup)="onCustomerKey($event)">
+      <button (click)="addCustomer()" >
+        <span class="material-icons">add</span>
+      </button>
+      <mat-option *ngFor="let customer of filteredCustomers"
+                  [value]="customer.id">
+        {{customer.id + ": " + customer.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <table *ngFor="let cartItem of cart"
+         style="width: 100%">
+    <tr
+        style="width: 60%">
+      <td>
+        <mat-form-field
+          style="width: 100%" >
+          <mat-label>Выберите продукт</mat-label>
+          <mat-select (openedChange)="dropFilters()"
+                      [(ngModel)]="cartItem.productId">
+            <input (keyup)="onStorageItemKey($event)">
+            <mat-option *ngFor="let storageItem of filteredStorageItems"
+                        [value]="storageItem.productId">
+              {{storageItem.productId + ": " + storageItem.productName}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </td>
+      <td style="width: 40%">
+        <mat-form-field>
+          <mat-label>Кол-во</mat-label>
+          <input matInput [(ngModel)]="cartItem.count">
+        </mat-form-field>
+      </td>
+    </tr>
+  </table>
+  <button (click)="addCartItem()" >
+    <span class="material-icons">add</span>
+  </button>
+  <button (click)="removeCartItem()" >
+    <span class="material-icons">remove</span>
+  </button>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="closeDialog()">Закрыть без сохранения</button>
+<!--  <button mat-button (click)="closeDialog()">Сохранить и закрыть</button>-->
+  <button mat-button (click)="createSale()">Создать</button>
+</div>

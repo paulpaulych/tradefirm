@@ -76,7 +76,7 @@ drop table if exists public.sale_product cascade;
 CREATE TABLE public.sale_product(
  id bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
  sale_id    bigint  REFERENCES public.sale(id) on delete cascade,
- product_id bigint REFERENCES public.product(id) on delete set null,
+ product_id bigint REFERENCES public.product(id) on delete cascade,
  count     integer NOT NULL
 );
 CREATE UNIQUE INDEX PK_SaleProduct ON public.sale_product(

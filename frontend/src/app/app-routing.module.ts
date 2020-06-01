@@ -9,6 +9,7 @@ import {TopbarComponent} from "./topbar/topbar.component";
 import {WelcomeComponent} from "./welcome/welcome.component";
 import {StorageComponent} from "./salespoint/storage/storage.component";
 import {CustomersComponent} from "./salespoint/customers/customers.component";
+import {SalesComponent} from "./salespoint/sales/sales.component";
 
 export const ADMIN_PANEL_PATH = "admin"
 
@@ -53,7 +54,6 @@ export const routes = [
       {
         path: SALES_POINT_PATH,
         children: [
-
           {
             path: "storage",
             component: StorageComponent
@@ -62,7 +62,10 @@ export const routes = [
             path: "customers",
             component: CustomersComponent
           },
-          // { path: "sales" },
+          {
+            path: "sales",
+            component: SalesComponent
+          },
           // { path: "applications" },
           // { path: "deliveries" },
 

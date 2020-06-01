@@ -7,8 +7,8 @@ import simpleorm.core.save
 @Component
 class CustomerMutation: Mutation{
 
-    fun addCustomer(customer: Customer): Customer{
-        return save(customer)
+    fun addCustomer(name: String): Customer{
+        return save(Customer(name = name))
     }
 
 //    fun deleteCustomer(id: Long){

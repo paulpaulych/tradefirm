@@ -16,7 +16,7 @@ import {HttpLink, HttpLinkModule} from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { LoginComponent } from './security/login/login.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AuthInterceptor} from './security/auth-interceptor.service';
 import { UserInfoComponent } from './topbar/userinfo/user-info.component';
 import { TopbarComponent } from './topbar/topbar.component';
@@ -27,6 +27,15 @@ import {environment} from "../environments/environment";
 import { WelcomeComponent } from './welcome/welcome.component';
 import { StorageComponent } from './salespoint/storage/storage.component';
 import { CustomersComponent } from './salespoint/customers/customers.component';
+import {SalesComponent} from './salespoint/sales/sales.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import {SalesInfoDialogComponent} from "./salespoint/sales/sales-info-dialog/sales-info-dialog.component";
+import { CreateSaleDialogComponent } from './salespoint/sales/create-sale-dialog/create-sale-dialog.component';
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {MatSelectModule} from "@angular/material/select";
+import { AddCustomerDialogComponent } from './salespoint/customers/add-customer-dialog/add-customer-dialog.component';
+import { DefaultOptions } from 'apollo-client';
 
 @NgModule({
   declarations: [
@@ -44,23 +53,31 @@ import { CustomersComponent } from './salespoint/customers/customers.component';
     WelcomeComponent,
 
     StorageComponent,
-
-    CustomersComponent
+    CustomersComponent,
+    SalesComponent,
+    SalesInfoDialogComponent,
+    CreateSaleDialogComponent,
+    AddCustomerDialogComponent
   ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    ApolloModule,
-    HttpLinkModule,
-    BrowserModule,
-    AppRoutingModule,
-    NoopAnimationsModule,
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule,
-    AgGridModule,
-    ReactiveFormsModule
-  ],
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        ApolloModule,
+        HttpLinkModule,
+        BrowserModule,
+        AppRoutingModule,
+        NoopAnimationsModule,
+        MatMenuModule,
+        MatIconModule,
+        MatButtonModule,
+        AgGridModule,
+        ReactiveFormsModule,
+        MatDialogModule,
+        MatFormFieldModule,
+        MatInputModule,
+        FormsModule,
+        MatSelectModule
+    ],
   providers: [
     ProductRepo,
     {
@@ -75,7 +92,8 @@ import { CustomersComponent } from './salespoint/customers/customers.component';
           cache: new InMemoryCache(),
           link: httpLink.create({
             uri: environment.backendUrl
-          })
+          }),
+          defaultOptions: DEFAULT_APOLLO_OPTS
         }
       },
       deps: [HttpLink]
@@ -84,3 +102,14 @@ import { CustomersComponent } from './salespoint/customers/customers.component';
   bootstrap: [AppComponent]
 })
 export class AppModule {}
+
+const DEFAULT_APOLLO_OPTS: DefaultOptions = {
+  watchQuery: {
+    fetchPolicy: 'no-cache',
+    errorPolicy: 'ignore',
+  },
+  query: {
+    fetchPolicy: 'no-cache',
+    errorPolicy: 'all',
+  },
+}

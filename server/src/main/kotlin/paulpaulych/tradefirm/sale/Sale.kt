@@ -1,6 +1,5 @@
 package paulpaulych.tradefirm.sale
 
-import com.expediagroup.graphql.annotations.GraphQLIgnore
 import paulpaulych.tradefirm.customer.Customer
 import paulpaulych.tradefirm.seller.Seller
 import paulpaulych.tradefirm.salespoint.SalesPoint
@@ -12,9 +11,8 @@ data class Sale (
         val id: Long? = null,
         val customer: Customer?,
         val salesPoint: SalesPoint,
-        val seller: Seller,
-        @GraphQLIgnore
+        val seller: Seller?,
         val date: Date,
-        val cartItems: List<SaleProduct> = listOf()
+        val cartItems: List<CartItem> = listOf()
 )
 

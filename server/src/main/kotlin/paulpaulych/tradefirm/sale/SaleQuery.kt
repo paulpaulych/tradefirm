@@ -2,19 +2,23 @@ package paulpaulych.tradefirm.sale
 
 import com.expediagroup.graphql.spring.operations.Query
 import org.springframework.stereotype.Component
+import paulpaulych.tradefirm.security.MyGraphQLContext
 import simpleorm.core.findAll
 import simpleorm.core.findById
+import simpleorm.core.query
 
 @Component
 class SaleQuery : Query {
 
-    fun sale(id: Long): Sale{
+    suspend fun sale(id: Long): Sale{
         return Sale::class.findById(id)
                 ?: error("sale not found")
     }
 
-    fun sales(): List<Sale>{
+    suspend fun sales(): List<Sale>{
         return Sale::class.findAll()
     }
 
+
 }
+

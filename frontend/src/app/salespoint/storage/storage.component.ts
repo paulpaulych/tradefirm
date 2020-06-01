@@ -1,24 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Apollo} from "apollo-angular";
-import gql from "graphql-tag";
-import {showErrorMessage} from "../../admin/grid-common/insert-grid";
-import {AllCommunityModules} from "@ag-grid-community/all-modules";
-
-const QUERY = gql`
-  query{
-      salesPoint{
-          id
-          storageItems{
-              product{
-                  id
-                  name
-              }
-              count
-              price
-          }
-      }
-  }
-`
+import {StorageRepoService} from "./storage-repo.service";
 
 @Component({
   selector: 'app-storage',
@@ -48,44 +29,18 @@ export class StorageComponent implements OnInit {
     field: 'price'
   }];
   gridApi
-  // modules = AllCommunityModules
 
-  constructor(private apollo: Apollo) {}
+  constructor(private storageRepoService: StorageRepoService) {}
 
   onGridReady(param){
     this.gridApi = param.api
-    this.queryData()
-      .subscribe({
-        next: ({data, loading, errors}) => {
-          if (data) {
-            console.log(`got: ${JSON.stringify(data)}`)
-            const preparedData = data["salesPoint"]["storageItems"].map(raw => {
-                return {
-                  productId: raw.product.id,
-                  productName: raw.product.name,
-                  count: raw.count,
-                  price: raw.price
-                }
-              }
-            )
-            this.gridApi.setRowData(preparedData)
-          }
-          if (errors) {
-            showErrorMessage(errors)
-          }
-        }
-      })
+    this.storageRepoService.queryData((data)=>{
+      this.gridApi.setRowData(data)
+    })
   }
 
   ngOnInit(): void {
 
-  }
-
-  queryData(){
-    return this.apollo.watchQuery({
-      query: QUERY
-    })
-    .valueChanges
   }
 
 }

@@ -18,7 +18,7 @@ class GraphQLConfig {
             .queryExecutionStrategy(AsyncSerialExecutionStrategy(dataFetcherExceptionHandler))
             .mutationExecutionStrategy(AsyncSerialExecutionStrategy(dataFetcherExceptionHandler))
             .subscriptionExecutionStrategy(SubscriptionExecutionStrategy(dataFetcherExceptionHandler))
-            .instrumentation(TracingInstrumentation())
+//            .instrumentation(TracingInstrumentation())
             .build()
 
 

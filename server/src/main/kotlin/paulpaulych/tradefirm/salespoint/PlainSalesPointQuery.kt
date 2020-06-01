@@ -4,6 +4,7 @@ import com.expediagroup.graphql.spring.operations.Query
 import org.springframework.stereotype.Component
 import paulpaulych.tradefirm.apicore.*
 import paulpaulych.tradefirm.product.Product
+import paulpaulych.tradefirm.security.Authorization
 import paulpaulych.utils.LoggerDelegate
 import simpleorm.core.findAll
 import simpleorm.core.findBy
@@ -16,10 +17,12 @@ class PlainSalesPointQuery(
 
     private val log by LoggerDelegate()
 
+    @Authorization("ROLE_ADMIN")
     fun salesPoints(): List<PlainSalesPoint>{
         return PlainSalesPoint::class.findAll()
     }
 
+    @Authorization("ROLE_ADMIN")
     suspend fun salesPointsPage(filter: GraphQLFilter?, pageRequest: PageRequestDTO): SalesPointDTO {
         log.info("hello from ")
         val pr = pageRequestMapper.getPageRequest(PlainSalesPoint::class, pageRequest)

@@ -39,7 +39,7 @@ entities:
           foreignKeyColumn: area_id
 
   paulpaulych.tradefirm.customer.Customer:
-    table: employee
+    table: customer
     fields:
       id:
         isId: true
@@ -84,7 +84,7 @@ entities:
         column: date
       cartItems:
         oneToMany:
-          className: paulpaulych.tradefirm.sale.SaleProduct
+          className: paulpaulych.tradefirm.sale.CartItem
           keyField: saleId
 
   paulpaulych.tradefirm.storage.StorageItem:
@@ -104,7 +104,7 @@ entities:
       price:
         column: price
 
-  paulpaulych.tradefirm.sale.SaleProduct:
+  paulpaulych.tradefirm.sale.CartItem:
     table: sale_product
     fields:
       id:
@@ -112,8 +112,10 @@ entities:
         column: id
       saleId:
         column: sale_id
-      productId:
-        column: product_id
+      product:
+        manyToOne:
+          className: paulpaulych.tradefirm.product.Product
+          foreignKeyColumn: product_id
       count:
         column: count
 

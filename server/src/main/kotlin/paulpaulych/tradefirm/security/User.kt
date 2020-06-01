@@ -31,5 +31,5 @@ class SellerUser(
         password: String,
         enabled: Boolean,
         roles: List<Role>,
-        val employeeId: Long
+        val sellerId: Long
 ): User(username, password, enabled, roles)
