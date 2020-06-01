@@ -25,6 +25,7 @@ import {ProductRepo} from './admin/products/product-repo.service';
 import { AnalyticsComponent } from './admin/analytics/analytics.component';
 import {environment} from "../environments/environment";
 import { WelcomeComponent } from './welcome/welcome.component';
+import { StorageComponent } from './salespoint/storage/storage.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,9 @@ import { WelcomeComponent } from './welcome/welcome.component';
 
     AnalyticsComponent,
 
-    WelcomeComponent
+    WelcomeComponent,
+
+    StorageComponent
   ],
   imports: [
     BrowserModule,
