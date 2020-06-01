@@ -56,11 +56,6 @@ class WebSecurityConfig(
                 .and().build()
     }
 
-    @Bean
-    fun passwordEncoder(): PasswordEncoder{
-        return BCryptPasswordEncoder(12)
-    }
-
     fun corsConfigurationSource(): CorsConfigurationSource{
         val config = CorsConfiguration()
         config.addAllowedOrigin("*")

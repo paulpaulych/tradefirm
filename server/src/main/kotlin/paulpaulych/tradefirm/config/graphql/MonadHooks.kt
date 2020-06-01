@@ -1,12 +1,12 @@
 package paulpaulych.tradefirm.config.graphql
 
-import com.expediagroup.graphql.execution.FunctionDataFetcher
 import com.expediagroup.graphql.execution.SimpleKotlinDataFetcherFactoryProvider
 import com.expediagroup.graphql.hooks.SchemaGeneratorHooks
 import com.fasterxml.jackson.databind.ObjectMapper
 import graphql.schema.DataFetcherFactory
 import graphql.schema.DataFetchingEnvironment
 import org.springframework.stereotype.Component
+import paulpaulych.tradefirm.security.AuthorizationDataFetcher
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import kotlin.reflect.KFunction
@@ -24,10 +24,13 @@ class MonadHooks : SchemaGeneratorHooks {
 class CustomFunctionDataFetcher(
         target: Any?,
         fn: KFunction<*>,
-        objectMapper: ObjectMapper) : FunctionDataFetcher(target, fn, objectMapper) {
-    override fun get(environment: DataFetchingEnvironment): Any? = when (val result = super.get(environment)) {
-        is Mono<*> -> result.toFuture()
-        else -> result
+        objectMapper: ObjectMapper) : AuthorizationDataFetcher(target, fn, objectMapper) {
+    override fun get(environment: DataFetchingEnvironment): Any? {
+        val result = super.get(environment)
+        when (result) {
+            is Mono<*> -> return result.toFuture()
+            else -> return  result
+        }
     }
 }
 

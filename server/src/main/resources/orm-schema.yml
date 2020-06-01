@@ -24,7 +24,8 @@ entities:
       stallCount:
         column: stall_count
 
-  paulpaulych.tradefirm.salespoint.SalesPoint2:
+
+  paulpaulych.tradefirm.salespoint.SalesPoint:
     table: sales_point
     fields:
       id:
@@ -46,7 +47,7 @@ entities:
       name:
         column: name
 
-  paulpaulych.tradefirm.employee.Employee:
+  paulpaulych.tradefirm.seller.Seller:
     table: employee
     fields:
       id:
@@ -54,9 +55,9 @@ entities:
         column: id
       name:
         column: name
-      salesPoint2:
+      salesPoint:
         manyToOne:
-          className: paulpaulych.tradefirm.salespoint.SalesPoint2
+          className: paulpaulych.tradefirm.salespoint.SalesPoint
           foreignKeyColumn: sales_point_id
       salary:
         column: salary
@@ -71,13 +72,13 @@ entities:
         manyToOne:
           className: paulpaulych.tradefirm.customer.Customer
           foreignKeyColumn: customer_id
-      salesPoint2:
+      salesPoint:
         manyToOne:
-          className: paulpaulych.tradefirm.salespoint.SalesPoint2
+          className: paulpaulych.tradefirm.salespoint.SalesPoint
           foreignKeyColumn: sales_point_id
       seller:
         manyToOne:
-          className: paulpaulych.tradefirm.employee.Employee
+          className: paulpaulych.tradefirm.seller.Seller
           foreignKeyColumn: employee_id
       date:
         column: date
@@ -86,16 +87,14 @@ entities:
           className: paulpaulych.tradefirm.sale.SaleProduct
           keyField: saleId
 
-  paulpaulych.tradefirm.storage.Storage:
+  paulpaulych.tradefirm.storage.StorageItem:
     table: storage
     fields:
       id:
         isId: true
         column: id
-      salesPoint2:
-        manyToOne:
-          className: paulpaulych.tradefirm.salespoint.SalesPoint2
-          foreignKeyColumn: sales_point_id
+      salesPointId:
+        column: sales_point_id
       product:
         manyToOne:
           className: paulpaulych.tradefirm.product.Product

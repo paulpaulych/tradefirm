@@ -2,36 +2,24 @@ package paulpaulych.tradefirm.salespoint
 
 import com.expediagroup.graphql.spring.operations.Query
 import org.springframework.stereotype.Component
-import paulpaulych.tradefirm.apicore.*
-import paulpaulych.tradefirm.product.Product
-import paulpaulych.utils.LoggerDelegate
-import simpleorm.core.findAll
-import simpleorm.core.findBy
+import paulpaulych.tradefirm.security.Authorization
+import paulpaulych.tradefirm.security.MyGraphQLContext
+import paulpaulych.tradefirm.security.SellerUser
+import paulpaulych.tradefirm.seller.Seller
+import paulpaulych.tradefirm.storage.StorageItem
+import simpleorm.core.findById
 
 @Component
-class SalesPointQuery(
-        private val filterMapper: GraphQLFilterMapper,
-        private val pageRequestMapper: PageRequestMapper
-): Query{
+class SalesPointQuery : Query {
 
-    private val log by LoggerDelegate()
-
-    fun salesPoints(): List<PlainSalesPoint>{
-        return PlainSalesPoint::class.findAll()
+    @Authorization("ROLE_USER")
+    fun salesPoint(context: MyGraphQLContext): SalesPoint{
+        val auth = context.securityContext
+                ?.authentication
+                ?: error("context is null")
+        val user = auth.principal as SellerUser
+        val seller = Seller::class.findById(user.employeeId)
+                ?: error("seller info not found for current user")
+        return seller.salesPoint
     }
-
-    suspend fun salesPointsPage(filter: GraphQLFilter?, pageRequest: PageRequestDTO): SalesPointDTO {
-        log.info("hello from ")
-        val pr = pageRequestMapper.getPageRequest(PlainSalesPoint::class, pageRequest)
-        val res = if(filter == null){
-            PlainSalesPoint::class.findAll(pr)
-        } else {
-            PlainSalesPoint::class.findBy(
-                    filterMapper.getFetchFilter(PlainSalesPoint::class, filter),
-                    pr
-            )
-        }
-        return SalesPointDTO(res.values, PageInfo(res.values.size))
-    }
-
 }

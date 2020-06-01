@@ -1,18 +1,18 @@
-package paulpaulych.tradefirm.employee
+package paulpaulych.tradefirm.seller
 
-import paulpaulych.tradefirm.salespoint.SalesPoint2
+import paulpaulych.tradefirm.salespoint.SalesPoint
 import paulpaulych.utils.Open
 import java.math.BigDecimal
 
 @Open
-data class Employee(
+data class Seller(
         val id: Long? = null,
         val name: String,
-        val salesPoint2: SalesPoint2,
+        val salesPoint: SalesPoint,
         val salary: BigDecimal
 )
 
-data class EmployeeInput(
+data class PlainSeller(
         val id: Long? = null,
         val name: String,
         val salesPointId: Long,

@@ -2,7 +2,6 @@ package paulpaulych.tradefirm.security
 
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService
 import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
@@ -16,11 +15,13 @@ class UserService(
 
     @PostConstruct
     fun init() {
-        data["user"] = User(
+
+        data["user"] = SellerUser(
                 "user",
                 passwordEncoder.encode("user"),
                 true,
-                listOf(Role.ROLE_USER))
+                listOf(Role.ROLE_USER),
+                9)
         data["admin"] = User(
                 "admin",
                 passwordEncoder.encode("admin"),
@@ -34,3 +35,4 @@ class UserService(
                 ?:run { return Mono.empty() }
     }
 }
+

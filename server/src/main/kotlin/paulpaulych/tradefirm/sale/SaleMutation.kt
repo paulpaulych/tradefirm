@@ -4,9 +4,9 @@ import com.expediagroup.graphql.spring.operations.Mutation
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import paulpaulych.tradefirm.customer.Customer
-import paulpaulych.tradefirm.employee.Employee
-import paulpaulych.tradefirm.salespoint.SalesPoint2
-import paulpaulych.tradefirm.storage.Storage
+import paulpaulych.tradefirm.seller.Seller
+import paulpaulych.tradefirm.salespoint.SalesPoint
+import paulpaulych.tradefirm.storage.StorageItem
 import simpleorm.core.findById
 import simpleorm.core.query
 import simpleorm.core.save
@@ -16,8 +16,8 @@ import java.util.*
 class SaleMutation: Mutation{
 
     @Transactional
-    fun createSale(customerId: Long, salesPointId: Long,
-                   sellerId: Long?, cartItems: List<CartItem>
+    fun createSale(customerId: Long?, salesPointId: Long,
+                   sellerId: Long, cartItems: List<CartItem>
     ): Sale{
 
         cartItems.forEach { cartItem ->
@@ -31,20 +31,22 @@ class SaleMutation: Mutation{
         }
 
         //если продавец указан и существует, добваим его к покупке
-        val employee = sellerId?.let {
-            Employee::class.findById(it)
+
+        val seller = Seller::class.findById(sellerId)
                 ?: error("employee not found")
+
+        val customer = customerId?.let {
+            Customer::class.findById(customerId)
         }
 
         //сохраняем Sale без списка товаров, получаем saleId
         //здесь save() - это из SimpleOrm
         val saved = save(Sale(
                 null,
-                Customer::class.findById(customerId)
-                        ?: error("customer does not exists"),
-                SalesPoint2::class.findById(salesPointId)
+                customer,
+                SalesPoint::class.findById(salesPointId)
                         ?: error("sales point does not exists"),
-                employee,
+                seller,
                 Date()))
 
         //теперь сохраним список продуктов
@@ -57,8 +59,8 @@ class SaleMutation: Mutation{
         return saved
     }
 
-    private fun findStorage(salesPointId: Long, productId: Long): Storage?{
-        return Storage::class.query(
+    private fun findStorage(salesPointId: Long, productId: Long): StorageItem?{
+        return StorageItem::class.query(
                 "select * from storage where sales_point_id = ? and product_id = ?",
                 listOf(salesPointId, productId)
         ).firstOrNull()
