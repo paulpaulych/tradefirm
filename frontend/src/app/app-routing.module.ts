@@ -8,6 +8,7 @@ import {AnalyticsComponent} from './admin/analytics/analytics.component';
 import {TopbarComponent} from "./topbar/topbar.component";
 import {WelcomeComponent} from "./welcome/welcome.component";
 import {StorageComponent} from "./salespoint/storage/storage.component";
+import {CustomersComponent} from "./salespoint/customers/customers.component";
 
 export const ADMIN_PANEL_PATH = "admin"
 
@@ -57,10 +58,14 @@ export const routes = [
             path: "storage",
             component: StorageComponent
           },
+          {
+            path: "customers",
+            component: CustomersComponent
+          },
           // { path: "sales" },
           // { path: "applications" },
           // { path: "deliveries" },
-          // { path: "customers" }
+
         ]
       }
     ]

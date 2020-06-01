@@ -26,6 +26,7 @@ import { AnalyticsComponent } from './admin/analytics/analytics.component';
 import {environment} from "../environments/environment";
 import { WelcomeComponent } from './welcome/welcome.component';
 import { StorageComponent } from './salespoint/storage/storage.component';
+import { CustomersComponent } from './salespoint/customers/customers.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,9 @@ import { StorageComponent } from './salespoint/storage/storage.component';
 
     WelcomeComponent,
 
-    StorageComponent
+    StorageComponent,
+
+    CustomersComponent
   ],
   imports: [
     BrowserModule,
