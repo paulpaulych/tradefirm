@@ -13,7 +13,7 @@ spring:
 
 graphql:
   packages:
-    - "paulpa ulych.tradefirm"
+    - "paulpaulych.tradefirm"
     - "java.util"
 
 order:
