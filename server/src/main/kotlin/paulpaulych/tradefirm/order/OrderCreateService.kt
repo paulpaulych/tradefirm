@@ -29,6 +29,9 @@ class OrderCreateService(
     fun createOrder(){
         val newApplications = fetchNewApplications()
         log.error("fetched new applications: ${newApplications.size}")
+        if(newApplications.isEmpty()){
+            return
+        }
         val savedOrder = save(Order(date = Date()))
         newApplications.forEach { application ->
             application.items.forEach {applicationItem ->
