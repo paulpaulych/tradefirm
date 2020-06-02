@@ -7,10 +7,6 @@ plugins {
 
 apply plugin: 'war'
 apply plugin: "kotlin-spring"
-apply plugin: "com.bmuschko.cargo"
-
-group 'paulpaulych.tradefirm'
-version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 //TODO:опубликовать simple-orm в репозиторий и нормально переиспользовать его зависимости
@@ -77,31 +73,4 @@ bootWar{
 
 springBoot{
     mainClassName = "paulpaulych.tradefirm.AppKt"
-}
-
-cargo{
-    containerId = "jetty9x"
-    port = 8080
-
-    deployable {
-        file = file('build/libs/server-1.0-SNAPSHOT.war')
-        context = 'tradefirm'
-    }
-
-    remote {
-        hostname = '13.49.73.184'
-        port = 8080
-        username = 'jetty'
-        password = 'jetty'
-    }
-
-//    remote {
-//        homeDir = file('build/libs/')
-//        outputFile = file('build/deploying.log')
-//        startStopTimeout = 60000
-////        containerProperties {
-////            property 'cargo.tomcat.ajp.port', 9099
-////        }
-//    }
-
 }

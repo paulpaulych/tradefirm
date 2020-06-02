@@ -1,0 +1,34 @@
+apply plugin: 'com.moowork.node'
+apply plugin: 'com.github.node-gradle.node'
+
+group 'paulpaulych.tradefirm'
+version '1.0-SNAPSHOT'
+
+node {
+  version = "13.5.0"
+  npmVersion = '6.14.5'
+  download = true
+  workDir = file("${project.buildDir}/node")
+  nodeModulesDir = file("${project.projectDir}")
+}
+
+task clean(type: Delete){
+  delete "dist"
+}
+
+task cleanAll(type: Delete){
+  delete "build"
+  delete "node_modules"
+}
+cleanAll.dependsOn(clean)
+
+
+task build(type: NpmTask) {
+  args = ['run', 'build']
+}
+build.dependsOn(npm_install)
+
+task runLocal(type: NpmTask){
+  args = ['start']
+}
+runLocal.dependsOn(npm_install)
