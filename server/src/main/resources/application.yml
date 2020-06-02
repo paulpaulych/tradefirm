@@ -5,12 +5,22 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/tradefirm
+#    url: jdbc:postgresql://localhost:5432/tradefirm
+    url: jdbc:postgresql://13.49.73.184:5432/tradefirm
     username: postgres
     password: 111111
     driver-class-name: org.postgresql.Driver
 
 graphql:
   packages:
-    - "paulpaulych.tradefirm"
+    - "paulpa ulych.tradefirm"
     - "java.util"
+
+order:
+  create:
+    fixedRateMillis: 60000
+    fetchSize: 5
+
+fakesupplier:
+  createDelivery:
+    fixedRateMillis: 60000

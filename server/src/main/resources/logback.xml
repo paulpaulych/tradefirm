@@ -28,12 +28,12 @@
 
     </appender>
 
-    <logger name="simpleorm" level="debug" additivity="false">
+    <logger name="simpleorm" level="warn" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
     </logger>
 
-    <logger name="java.sql" level="trace" additivity="false">
+    <logger name="java.sql" level="warn" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
     </logger>

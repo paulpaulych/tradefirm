@@ -1,0 +1,42 @@
+<h1 mat-dialog-title>Создание заявки на поставку</h1>
+<div
+  style="width: 100%"
+>
+  <table style="width: 100%"
+         *ngFor="let item of items">
+    <tr
+      style="width: 60%">
+      <td>
+        <mat-form-field
+          style="width: 100%" >
+          <mat-label>Выберите продукт</mat-label>
+          <mat-select (openedChange)="dropFilter()"
+                      [(ngModel)]="item.productId">
+            <input (keyup)="onStorageItemKey($event)">
+            <mat-option *ngFor="let storageItem of filteredStorageItems"
+                        [value]="storageItem.productId">
+              {{storageItem.productId + ": " + storageItem.productName}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </td>
+      <td style="width: 40%">
+        <mat-form-field>
+          <mat-label>Кол-во</mat-label>
+          <input matInput [(ngModel)]="item.count">
+        </mat-form-field>
+      </td>
+    </tr>
+  </table>
+  <button (click)="addApplicationItem()" >
+    <span class="material-icons">add</span>
+  </button>
+  <button (click)="removeApplicationItem()" >
+    <span class="material-icons">remove</span>
+  </button>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="closeDialog()">Закрыть без сохранения</button>
+  <!--  <button mat-button (click)="closeDialog()">Сохранить и закрыть</button>-->
+  <button mat-button (click)="createApplication()">Создать</button>
+</div>

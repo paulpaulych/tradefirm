@@ -127,3 +127,84 @@ entities:
         column: id
       companyName:
         column: company_name
+
+  paulpaulych.tradefirm.application.Application:
+    table: application
+    fields:
+      id:
+        isId: true
+        column: id
+      salesPoint:
+        manyToOne:
+          className: paulpaulych.tradefirm.salespoint.SalesPoint
+          foreignKeyColumn: sales_point_id
+      date:
+        column: date
+      newFlag:
+        column: is_new
+
+  paulpaulych.tradefirm.application.ApplicationItem:
+    table: application_product
+    fields:
+      id:
+        isId: true
+        column: id
+      product:
+        manyToOne:
+          className: paulpaulych.tradefirm.product.Product
+          foreignKeyColumn: product_id
+      application:
+        manyToOne:
+          className: paulpaulych.tradefirm.application.Application
+          foreignKeyColumn: application_id
+      count:
+        column: count
+
+
+
+  paulpaulych.tradefirm.order.Order:
+    table: orders
+    fields:
+      id:
+        isId: true
+        column: id
+      date:
+        column: date
+
+  paulpaulych.tradefirm.order.OrderItem:
+    table: order_product
+    fields:
+      id:
+        isId: true
+        column: id
+      order:
+        manyToOne:
+          className: paulpaulych.tradefirm.order.Order
+          foreignKeyColumn: order_id
+      product:
+        manyToOne:
+          className: paulpaulych.tradefirm.product.Product
+          foreignKeyColumn: product_id
+      salesPoint:
+        manyToOne:
+          className: paulpaulych.tradefirm.salespoint.SalesPoint
+          foreignKeyColumn: sales_point_id
+      count:
+        column: count
+
+  paulpaulych.tradefirm.delivery.Delivery:
+    table: delivery
+    fields:
+      id:
+        isId: true
+        column: id
+      order:
+        manyToOne:
+          className: paulpaulych.tradefirm.order.Order
+          foreignKeyColumn: order_id
+      supplier:
+        manyToOne:
+          className: paulpaulych.tradefirm.supplier.Supplier
+          foreignKeyColumn: supplier_id
+      date:
+        column: date

@@ -79,5 +79,5 @@ export function showDataCommittedMessage(){
 
 export function showErrorMessage(error: any) {
   console.log(error)
-  alert("Что-то пошло не так. Сохраните лог и отправьте разработчику: p.pyankow@g.nsu.ru")
+  alert("Что-то пошло не так. Сохраните лог и отправьте разработчику: p.pyankov@g.nsu.ru")
 }

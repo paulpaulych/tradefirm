@@ -36,6 +36,8 @@ import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
 import { AddCustomerDialogComponent } from './salespoint/customers/add-customer-dialog/add-customer-dialog.component';
 import { DefaultOptions } from 'apollo-client';
+import { ApplicationsComponent } from './salespoint/applications/applications.component';
+import { CreateApplicationDialogComponent } from './salespoint/applications/create-application-dialog/create-application-dialog.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +59,9 @@ import { DefaultOptions } from 'apollo-client';
     SalesComponent,
     SalesInfoDialogComponent,
     CreateSaleDialogComponent,
-    AddCustomerDialogComponent
+    AddCustomerDialogComponent,
+    ApplicationsComponent,
+    CreateApplicationDialogComponent
   ],
     imports: [
         BrowserModule,

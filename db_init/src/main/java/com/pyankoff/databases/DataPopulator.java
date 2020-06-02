@@ -36,7 +36,7 @@ public class DataPopulator {
     private static final int SUPPLIERS_MIN = 0;
     private static final int SUPPLIERS_MAX = 50;
     private static final int SUPPLIER_COUNT = SUPPLIERS_MAX - SUPPLIERS_MIN - 1;
-
+    private static final int APPLICATION_COUNT = 100;
 
     private JdbcTemplate jdbcTemplate;
 
@@ -64,21 +64,21 @@ public class DataPopulator {
     }
 
     public void run() throws IOException {
-//        addSuppliers();
-//        addCustomers();
-//        addArea();
+        addSuppliers();
+        addCustomers();
+        addArea();
 //        addOrders();
-//        addProducts();
-//        addSalesPoints();
-//        addEmployee();
-//        addSellers();
-//        addSales();
-//        addSaleProduct();
+        addProducts();
+        addSalesPoints();
+        addEmployee();
+        addSellers();
+        addSales();
+        addSaleProduct();
         addApplication();
         addApplicationProduct();
-        addDelivery();
-        addDeliveryDictributions();
-        addOrderProduct();
+//        addDelivery();
+//        addDeliveryDictributions();
+//        addOrderProduct();
 //        addSections();
 //        addSectionManager();
         addStorage();
@@ -103,7 +103,7 @@ public class DataPopulator {
                     intFromRange(1, SALES_POINT_COUNT),//salespoint
                     intFromRange(1, PRODUCT_COUNT),//product
                     intFromRange(1, 500),//count
-                    decimalFromRange(-300, 1000)
+                    decimalFromRange(30, 1500)
             );
         }
     }
@@ -126,17 +126,18 @@ public class DataPopulator {
         }
     }
 
-    private void addOrderProduct() {
-        log.info("inserting into order_product");
-        LocalDateTime date = LocalDateTime.now();
-        for(int i = 1; i <=ORDER_PRODUCT_COUNT; i++){
-            jdbcTemplate.update("insert into order_product(order_id, product_id, count) values (?, ?, ?) on conflict do nothing",
-                    intFromRange(1, ORDER_COUNT),
-                    intFromRange(1, PRODUCT_COUNT),
-                    intFromRange(1, 100)
-            );
-        }
-    }
+//    private void addOrderProduct() {
+//        log.info("inserting into order_product");
+//        LocalDateTime date = LocalDateTime.now();
+//        for(int i = 1; i <=ORDER_PRODUCT_COUNT; i++){
+//            jdbcTemplate.update("insert into order_product(order_id, product_id, sales_point_id, count) values (?, ?, ?, ?) on conflict do nothing",
+//                    intFromRange(1, ORDER_COUNT),
+//                    intFromRange(1, PRODUCT_COUNT),
+//                    intFromRange(1, SALES_POINT_COUNT),
+//                    intFromRange(1, 100)
+//            );
+//        }
+//    }
 
     private void addDeliveryDictributions(){
         log.info("inserting into delivery_distribution");
@@ -165,29 +166,32 @@ public class DataPopulator {
 
     private void addApplicationProduct(){
         log.info("inserting into application_product");
-        for(int i = 1; i <=10; i++){
-            jdbcTemplate.update("insert into application_product(application_id, product_id, count) values (?, ?, ?) on conflict do nothing",
-                    intFromRange(1, 10),
-                    intFromRange(1, PRODUCT_COUNT),
-                    intFromRange(100, 500)
-            );
+        for(int i = 1; i <= APPLICATION_COUNT; i++){
+            int itemsCount = intFromRange(4, 7);
+            for(int j = 1; j <= itemsCount; j++){
+                jdbcTemplate.update("insert into application_product(application_id, product_id, count) values (?, ?, ?) on conflict do nothing",
+                        i,
+                        intFromRange(1, PRODUCT_COUNT),
+                        intFromRange(1, 10) * 10
+                );
+            }
         }
     }
 
     private void addApplication(){
         log.info("inserting into application");
         LocalDateTime date = LocalDateTime.now();
-        for(int i = 1; i <=10; i++){
+        for(int i = 1; i <= APPLICATION_COUNT; i++){
             jdbcTemplate.update("insert into application(sales_point_id, date) values (?, ?) on conflict do nothing",
                     intFromRange(1, SALES_POINT_COUNT),
-                    date.plusHours(3*i));
+                    date.minusMonths(3*i).minusHours(i*3));
         }
     }
 
     private void addSales(){
         log.info("inserting into sales");
         LocalDateTime date = LocalDateTime.now();
-        for(int i = 1; i <=SALES_COUNT; i++){
+        for(int i = 1; i <= SALES_COUNT; i++){
             jdbcTemplate.update("insert into sale(customer_id, sales_point_id, employee_id, date) values (?, ?, ?, ?) on conflict do nothing",
                     intFromRange(1, CUSTOMER_COUNT),
                     intFromRange(1, SALES_POINT_COUNT),
@@ -284,13 +288,13 @@ public class DataPopulator {
         }
     }
 
-    private void addOrders() {
-        log.info("inserting orders");
-        LocalDateTime date = LocalDateTime.now();
-        for(int i = 1; i <=ORDER_COUNT; i++){
-            jdbcTemplate.update("insert into \"order\" (date) values ( ? ) on conflict do nothing",
-                date.minusDays(i)
-            );
-        }
-    }
+//    private void addOrders() {
+//        log.info("inserting orders");
+//        LocalDateTime date = LocalDateTime.now();
+//        for(int i = 1; i <=ORDER_COUNT; i++){
+//            jdbcTemplate.update("insert into \"order\" (date) values ( ? ) on conflict do nothing",
+//                date.minusDays(i)
+//            );
+//        }
+//    }
 }

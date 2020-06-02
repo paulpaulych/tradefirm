@@ -10,6 +10,7 @@ import {WelcomeComponent} from "./welcome/welcome.component";
 import {StorageComponent} from "./salespoint/storage/storage.component";
 import {CustomersComponent} from "./salespoint/customers/customers.component";
 import {SalesComponent} from "./salespoint/sales/sales.component";
+import {ApplicationsComponent} from "./salespoint/applications/applications.component";
 
 export const ADMIN_PANEL_PATH = "admin"
 
@@ -66,7 +67,10 @@ export const routes = [
             path: "sales",
             component: SalesComponent
           },
-          // { path: "applications" },
+          {
+            path: "applications",
+            component: ApplicationsComponent
+          },
           // { path: "deliveries" },
 
         ]

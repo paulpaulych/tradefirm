@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {MatDialog, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 import {Apollo} from "apollo-angular";
 import gql from "graphql-tag";
 import {showErrorMessage} from "../../../admin/grid-common/insert-grid";
 import {StorageRepoService} from "../../storage/storage-repo.service";
 import {CustomersRepoService} from "../../customers/customers-repo.service";
 import {AddCustomerDialogComponent} from "../../customers/add-customer-dialog/add-customer-dialog.component";
+import {FormBuilder, Validators} from "@angular/forms";
 
 class CartItem {
   productId
@@ -55,13 +56,16 @@ export class CreateSaleDialogComponent implements OnInit {
 
   customers
   filteredCustomers
+  form = this.formBuilder.group({})
 
   constructor(
     private dialogRef: MatDialogRef<CreateSaleDialogComponent>,
     private apollo: Apollo,
     private storageRepoService: StorageRepoService,
     private customersRepoService: CustomersRepoService,
-    private dialog: MatDialog) { }
+    private dialog: MatDialog,
+    private formBuilder: FormBuilder
+  ) { }
 
   ngOnInit(): void {
     this.loadStorageItems()
@@ -87,6 +91,11 @@ export class CreateSaleDialogComponent implements OnInit {
   }
 
   createSale(){
+    const isValid = this.isCartValid((s)=>alert(s))
+    if(!isValid){
+      return
+    }
+
     this.apollo.mutate({
       mutation: CREATE_SALE_MUTATION,
       variables: {
@@ -137,7 +146,7 @@ export class CreateSaleDialogComponent implements OnInit {
     this.cart.pop()
   }
 
-  addCustomer() {
+  openAddCustomerDialog() {
     const dialogRef = this.dialog.open(AddCustomerDialogComponent, {
       width: '60%'
     });
@@ -145,5 +154,29 @@ export class CreateSaleDialogComponent implements OnInit {
         this.loadCustomers()
         this.dropFilters()
     })
+  }
+
+
+  isCartValid(onError: (string)=>void){
+    const emptyItems = this.cart.filter((it)=>{
+      return !it["productId"] || !it["count"]
+    })
+    if(emptyItems.length != 0){
+      onError("Сперва заполните все поля")
+      return false
+    }
+
+    const productsSet = new Set(this.cart.map((it)=> {
+      return it["productId"];
+    }))
+    if(productsSet.size != this.cart.length){
+      onError("Продукты не должны повторяться")
+      return false
+    }
+    return true
+  }
+
+  private checkIfInteger(value){
+    return ((parseFloat(value) == parseInt(value)) && !isNaN(value));
   }
 }

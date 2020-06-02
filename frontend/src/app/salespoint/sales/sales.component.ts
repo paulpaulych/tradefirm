@@ -87,7 +87,6 @@ export class SalesComponent implements OnInit {
   }
 
   openSaleInfoDialog(){
-    console.log(`selected rows: ${JSON.stringify(this.gridApi.getSelectedRows())}`)
     const dialogRef = this.dialog.open(SalesInfoDialogComponent, {
       width: '50%',
       data: {id: this.gridApi.getSelectedRows()[0]["id"]}
@@ -95,7 +94,6 @@ export class SalesComponent implements OnInit {
   }
 
   openCreateSaleDialog() {
-    console.log(`selected rows: ${JSON.stringify(this.gridApi.getSelectedRows())}`)
     const dialogRef = this.dialog.open(CreateSaleDialogComponent, {
       width: '60%'
     });

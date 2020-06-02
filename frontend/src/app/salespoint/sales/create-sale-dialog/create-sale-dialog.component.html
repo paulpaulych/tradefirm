@@ -8,9 +8,7 @@
     <mat-select (openedChange)="dropFilters()"
                 [(ngModel)]="customerId">
       <input (keyup)="onCustomerKey($event)">
-      <button (click)="addCustomer()" >
-        <span class="material-icons">add</span>
-      </button>
+      <button (click)="openAddCustomerDialog()" >Добавить покупателя</button>
       <mat-option *ngFor="let customer of filteredCustomers"
                   [value]="customer.id">
         {{customer.id + ": " + customer.name}}
@@ -38,7 +36,7 @@
       <td style="width: 40%">
         <mat-form-field>
           <mat-label>Кол-во</mat-label>
-          <input matInput [(ngModel)]="cartItem.count">
+          <input type="number" matInput [(ngModel)]="cartItem.count">
         </mat-form-field>
       </td>
     </tr>
@@ -53,5 +51,5 @@
 <div mat-dialog-actions>
   <button mat-button (click)="closeDialog()">Закрыть без сохранения</button>
 <!--  <button mat-button (click)="closeDialog()">Сохранить и закрыть</button>-->
-  <button mat-button (click)="createSale()">Создать</button>
+  <button mat-button *ngIf="form.valid" (click)="createSale()">Создать</button>
 </div>
