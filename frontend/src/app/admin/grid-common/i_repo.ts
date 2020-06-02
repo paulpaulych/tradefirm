@@ -4,8 +4,9 @@ import {Filter} from "./filter";
 
 export interface IRepo<T> {
     queryForAll()
-    queryForPage(filters: Filter[], pageRequest: PageRequest)
-    saveMutation(items: Product[])
+    queryForPage(filter: Filter, pageRequest: PageRequest)
+    saveMutation(items: Product[]),
+    deleteMutation(ids: any[])
 }
 
 export function prepareApolloResult(res: ApolloQueryResult<Page<any>>, queryName: string){

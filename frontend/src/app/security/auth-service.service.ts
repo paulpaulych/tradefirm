@@ -5,6 +5,13 @@ import {environment} from "../../environments/environment";
 
 const AUTH_TOKEN = "auth_token"
 const AUTH_EXPIRES_AT = "auth_exp"
+const AUTH_ROLE = "auth_role"
+const AUTH_USERNAME = "auth_username"
+
+class LoginCallback {
+  success: ()=>void
+  error: (any)=>void
+}
 
 @Injectable({
   providedIn: 'root'
@@ -13,27 +20,31 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  username: string
-  role: string
-
-  login(username: string, password: string) {
+  login(username: string, password: string, callback: LoginCallback) {
     const loginRes = this.http.post(environment.authUrl, { username, password })
-    loginRes.subscribe(
-      res => this.setSession(res)
-    )
-    return loginRes
+    loginRes.subscribe({
+      next: (data)=> {
+        this.setSession(data)
+        callback.success()
+      },
+      error: err => {
+        callback.error(err)
+      }
+    })
   }
 
   private setSession(authResult) {
     localStorage.setItem(AUTH_TOKEN, authResult.token);
     localStorage.setItem(AUTH_EXPIRES_AT, authResult.expiration );
-    this.username = authResult.username;
-    this.role = authResult.role;
+    localStorage.setItem(AUTH_ROLE, authResult.role);
+    localStorage.setItem(AUTH_USERNAME, authResult.username );
   }
 
   logout() {
     localStorage.removeItem(AUTH_TOKEN);
     localStorage.removeItem(AUTH_EXPIRES_AT);
+    localStorage.removeItem(AUTH_ROLE);
+    localStorage.removeItem(AUTH_USERNAME);
     return new Observable()
   }
 
@@ -49,5 +60,14 @@ export class AuthService {
   private getExpiration() {
     return localStorage.getItem(AUTH_EXPIRES_AT);
   }
+
+  public getUsername(){
+    return localStorage.getItem(AUTH_USERNAME)
+  }
+
+  public getRole(){
+    return localStorage.getItem(AUTH_ROLE)
+  }
+
 }
 

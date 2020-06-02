@@ -19,3 +19,19 @@ export class AuthGuard implements CanActivate {
     return false;
   }
 }
+
+@Injectable({ providedIn: 'root' })
+export class AdminAuthGuard implements CanActivate {
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) { }
+
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    if(this.authService.getRole() != "ROLE_ADMIN"){
+      alert("Страница недоступна для пользователя вас")
+      return false
+    }
+    return true;
+  }
+}

@@ -106,31 +106,11 @@ label {
   padding-right: 4px;
 }
 
-/* Top Bar */
 
-app-topbar {
-  width: 100%;
-  height: 6%;
-  background-color: #1976d2;
-  padding: 16px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  /*align-items: center;*/
-  vertical-align: center;
-}
-
-app-topbar h1 {
-  color: white;
-  margin: 0;
-}
-
-app-user-info {
-  display: flex;
-  flex-direction: row;
-  position: relative;
-  margin-right: 0;
-}
+/*app-topbar h1 {*/
+/*  color: white;*/
+/*  margin: 0;*/
+/*}*/
 
 /* Checkout Cart, Shipping Prices */
 
@@ -147,11 +127,3 @@ app-user-info {
 /*  background-color: #EEEEEE;*/
 /*}*/
 
-
-
-
-/*
-Copyright Google LLC. All Rights Reserved.
-Use of this source code is governed by an MIT-style license that
-can be found in the LICENSE file at http://angular.io/license
-*/

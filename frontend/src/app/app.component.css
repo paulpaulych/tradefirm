@@ -1,0 +1,17 @@
+
+app-topbar {
+  width: 100%;
+  min-height: 100px;
+  background-color: #1976d2;
+  padding: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  /*align-items: center;*/
+  vertical-align: center;
+
+  color: white;
+  position: relative;
+  horiz-align: center;
+  text-align: center;
+}

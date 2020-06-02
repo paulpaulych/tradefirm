@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>Добавить покупателя</h1>
+<mat-form-field>
+  <mat-label>Имя покупателя</mat-label>
+  <input matInput [(ngModel)]="customerName">
+</mat-form-field>
+<div mat-dialog-actions>
+  <button mat-button (click)="closeDialog()">Закрыть</button>
+  <!--  <button mat-button (click)="closeDialog()">Сохранить и закрыть</button>-->
+  <button mat-button (click)="addCustomer()">Создать</button>
+</div>

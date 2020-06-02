@@ -1,0 +1,24 @@
+
+<div>
+  <h2>Журнал покупок</h2>
+  <ag-grid-angular
+    style="width: 1000px"
+    class="ag-theme-material"
+
+    animateRows
+    [defaultColDef]="defaultColDef"
+    [columnDefs]="columnDefs"
+    rowSelection="single"
+    pagination=true
+    paginationPageSize=10
+
+    [rowMultiSelectWithClick]="true"
+    domLayout="autoHeight"
+
+    (gridReady)="onGridReady($event)"
+  >
+  </ag-grid-angular>
+  <button (click)="openCreateSaleDialog()">Создать покупку</button>
+  <button *ngIf="gridApi && gridApi.getSelectedRows().length != 0"
+          (click)="openSaleInfoDialog()">Подробнее о покупке</button>
+</div>

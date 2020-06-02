@@ -19,6 +19,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-reflect"
     implementation "org.jetbrains.kotlin:kotlin-serialization"
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-reactor'
+
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.14.0")
 
 

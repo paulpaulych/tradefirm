@@ -19,28 +19,18 @@ export class SalesPointsComponent extends GridBaseComponent<SalesPoint> implemen
                 headerName: 'Id',
                 field: 'id',
                 editable: false,
-                filter: 'agNumberColumnFilter',
-                floatingFilter: true,
-                filterParams: {
-                  resetButton: true,
-                  closeOnApply: true,
-                }
+                filter: 'agNumberColumnFilter'
             },
             {
                 headerName: 'Type',
                 field: 'type',
-                filter: 'agTextColumnFilter',
-                floatingFilter: true,
-                filterParams: {
-                  resetButton: true,
-                  closeOnApply: true,
-                }
+                filter: 'agTextColumnFilter'
             },
             {
                 headerName: 'AreaId',
                 field: 'areaId',
                 valueParser: NumberParser,
-                sortable: false
+                filter: 'agNumberColumnFilter'
             }
         ];
         super(repo, properties);

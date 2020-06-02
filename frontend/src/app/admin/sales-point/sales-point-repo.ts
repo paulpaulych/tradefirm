@@ -11,12 +11,13 @@ const GET_ALL = gql`
     salesPoints{
         id
         type
+        areaId
     }
   }
 `
 
 const SAVE_MUTATION = gql`
-  mutation SaveSalesPoints($values: [SalesPointSaveReqInput!]!){
+  mutation SaveSalesPoints($values: [PlainSalesPointInput!]!){
     saveSalesPoints(values: $values){
       id
       type
@@ -24,15 +25,19 @@ const SAVE_MUTATION = gql`
   }
 `
 
+const DELETE_MUTATION = gql`
+  mutation DeleteSalesPoints($ids: [Long!]!){
+    deleteSalesPoints(ids: $ids)
+  }
+`
+
 const GET_PAGE = gql`
-  query SalesPointPages($filters: [GraphQLFilterInput!]!, $pageRequest: PageRequestDTOInput!){
-    salesPointsPage(filters: $filters, pageRequest: $pageRequest){
+  query SalesPointPages($filter: GraphQLFilterInput, $pageRequest: PageRequestDTOInput!){
+    salesPointsPage(filter: $filter, pageRequest: $pageRequest){
       values{
         id
         type
-        area{
-          id
-        }
+        areaId
       }
       pageInfo{
         pageSize
@@ -56,39 +61,34 @@ export class SalesPointsRepo implements IRepo<SalesPoint>, OnInit{
       .valueChanges
   }
 
-  queryForPage(filters: Filter[], pageRequest: PageRequest) {
+  queryForPage(filter: Filter, pageRequest: PageRequest) {
     return this.apollo
       .watchQuery<Page<SalesPoint>>({
         query: GET_PAGE,
         variables: {
-          filters: filters,
+          filter: filter,
           pageRequest: pageRequest
         }
       })
       .valueChanges
       .pipe(map(r => prepareApolloResult(r, 'salesPointsPage')))
-      .pipe(map((r) => {
-         r.data.forEach( salesPoint =>{
-            if(salesPoint.area){
-              salesPoint.areaId = salesPoint.area.id
-            }
-            delete salesPoint.area
-          }
-        )
-        console.log(`showing: ${JSON.stringify(r)}`)
-        return r
-      }))
   }
 
-
   saveMutation(items: SalesPoint[]){
-    console.log(`to save: ${JSON.stringify(items)}`)
-    delete items[0]['area']
-    console.log(`to save: ${JSON.stringify(items)}`)
     return this.apollo.mutate({
       mutation: SAVE_MUTATION,
       variables: {
         values: items
+      }
+    });
+  }
+
+  deleteMutation(ids) {
+    console.log(`to delete: ${JSON.stringify(ids)}`)
+    return this.apollo.mutate({
+      mutation: DELETE_MUTATION,
+      variables: {
+        ids: ids
       }
     });
   }

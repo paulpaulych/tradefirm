@@ -1,0 +1,16 @@
+.menuItem{
+  text-align: center;
+  vertical-align: center;
+  background-color: white;
+  border-radius: 6px;
+  /*position: relative;*/
+  position: relative;
+  margin: 20px;
+  /*left: 20px;*/
+}
+
+
+.menuBox{
+  float: left;
+  /*background-color: #000000;*/
+}

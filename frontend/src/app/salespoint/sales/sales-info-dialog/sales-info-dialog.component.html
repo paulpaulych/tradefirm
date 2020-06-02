@@ -1,0 +1,20 @@
+<h1 mat-dialog-title>Покупка № {{id}}</h1>
+<div *ngIf="data" mat-dialog-content>
+  <h3>Покупатель: ИД: {{data.customer.id}}, Имя: {{data.customer.name}}</h3>
+  <h3>Продавец: ИД: {{data.seller.id}}, Имя: {{data.seller.name}}</h3>
+  <ag-grid-angular
+    style="width: 100%"
+    class="ag-theme-material"
+    [defaultColDef]="defaultColDef"
+    [columnDefs]="columnDefs"
+    [rowData]="cart"
+    domLayout="autoHeight">
+  </ag-grid-angular>
+</div>
+<!--  <mat-form-field>-->
+<!--    <mat-label>Favorite Animal</mat-label>-->
+<!--    <input matInput [(ngModel)]="data.animal">-->
+<!--  </mat-form-field>-->
+<div mat-dialog-actions>
+  <button mat-button (click)="onOkClick()">Ok</button>
+</div>

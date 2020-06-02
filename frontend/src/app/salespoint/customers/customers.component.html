@@ -1,0 +1,18 @@
+<h1>Склад</h1>
+<ag-grid-angular
+  style="width: 100%"
+  class="ag-theme-material"
+
+  animateRows
+  [defaultColDef]="defaultColDef"
+  [columnDefs]="columnDefs"
+
+  pagination=true
+  paginationPageSize=10
+
+  [rowMultiSelectWithClick]="true"
+  domLayout="autoHeight"
+
+  (gridReady)="onGridReady($event)"
+>
+</ag-grid-angular>

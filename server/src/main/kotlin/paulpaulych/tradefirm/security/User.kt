@@ -4,7 +4,7 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
-class User(
+open class User(
         private val username: String,
         private val password: String,
         private val enabled: Boolean,
@@ -25,3 +25,11 @@ class User(
     override fun isAccountNonLocked(): Boolean = false
 
 }
+
+class SellerUser(
+        username: String,
+        password: String,
+        enabled: Boolean,
+        roles: List<Role>,
+        val sellerId: Long
+): User(username, password, enabled, roles)
