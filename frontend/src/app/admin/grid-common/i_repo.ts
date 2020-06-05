@@ -1,6 +1,6 @@
-import {Product} from '../products/product';
-import {ApolloQueryResult} from 'apollo-client';
-import {Filter} from "./filter";
+import {Product} from "../products/product"
+import {ApolloQueryResult} from "apollo-client"
+import {Filter} from "./filter"
 
 export interface IRepo<T> {
     queryForAll()
@@ -11,12 +11,9 @@ export interface IRepo<T> {
 
 export function prepareApolloResult(res: ApolloQueryResult<Page<any>>, queryName: string){
   return {
-    data: res.data[queryName]['values'],
-    errors: res.errors,
-    loading: res.errors,
-    networkStatus: res.networkStatus,
-    stale: res.stale
-  };
+    data: res.data[queryName].values,
+    loading: res.errors
+  }
 }
 
 export class PageRequest{

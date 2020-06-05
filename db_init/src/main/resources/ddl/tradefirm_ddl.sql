@@ -120,23 +120,35 @@ CREATE TABLE public.delivery(
  supplier_id bigint,
  date       timestamp NOT NULL
 );
---  public.delivery_distribution
-drop table if exists public.delivery_distribution cascade;
-CREATE TABLE public.delivery_distribution(
+--  public.shop_delivery
+drop table if exists public.shop_delivery cascade;
+CREATE TABLE public.shop_delivery(
  id            bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
  delivery_id   bigint NOT NULL REFERENCES public.delivery(id) on delete cascade,
- product_id    bigint NOT NULL REFERENCES public.product(id) on delete cascade ,
- sales_point_id bigint NOT NULL REFERENCES public.sales_point(id) on delete cascade ,
- count        bigint NOT NULL
+ sales_point_id bigint NOT NULL REFERENCES public.sales_point(id) on delete cascade,
+ date       timestamp NOT NULL
 );
-CREATE UNIQUE INDEX pk_delivery_distribution ON public.delivery_distribution (
+CREATE UNIQUE INDEX pk_shop_delivery ON public.shop_delivery (
  delivery_id,
- product_id,
  sales_point_id
 );
-CREATE INDEX fkIdx_delivery_distribution__delivery_id ON public.delivery_distribution( delivery_id);
-CREATE INDEX fkIdx_delivery_distribution__product_id ON public.delivery_distribution( product_id);
-CREATE INDEX fkIdx_delivery_distribution__sales_point_id ON public.delivery_distribution ( sales_point_id);
+CREATE INDEX fkIdx_shop_delivery__delivery_id ON public.shop_delivery( delivery_id);
+CREATE INDEX fkIdx_shop_delivery__sales_point_id ON public.shop_delivery ( sales_point_id);
+
+--  public.shop_delivery_items
+drop table if exists public.shop_delivery_items cascade;
+CREATE TABLE public.shop_delivery_items(
+ id        bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
+ shop_delivery_id   bigint REFERENCES public.shop_delivery(id) on delete cascade,
+ product_id bigint REFERENCES public.product(id) on delete cascade,
+ count     integer NOT NULL
+);
+CREATE UNIQUE INDEX pkInd_shop_delivery__product ON public.shop_delivery_items(
+ shop_delivery_id,
+ product_id
+);
+CREATE INDEX fkIdx_product__shop_delivery_id ON public.shop_delivery_items( shop_delivery_id);
+CREATE INDEX fkIdx_shop_delivery__product_id ON public.shop_delivery_items( product_id);
 
 --  public.OrderProduct
 drop table if exists public.order_product cascade;

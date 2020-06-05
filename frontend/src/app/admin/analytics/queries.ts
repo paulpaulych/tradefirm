@@ -1,13 +1,13 @@
-import {AnalyticsQuery} from './analyticsQuery';
-import gql from 'graphql-tag';
+import {AnalyticsQuery} from "./analyticsQuery"
+import gql from "graphql-tag"
 
 export const ANALYTICS_QUERY_LIST: AnalyticsQuery[] = [
   {
-    id: 'suppliersByProduct',
-    name: 'Поставщики которые поставляли определенный продукт хотя бы раз',
+    id: "suppliersByProduct",
+    name: "Поставщики которые поставляли определенный продукт хотя бы раз",
     params: [{
-      readableName: 'ID продукта',
-      name: 'productId',
+      readableName: "ID продукта",
+      name: "productId",
       value: 2
     }],
     query: gql`query Analytics($productId: Long!){
@@ -18,21 +18,21 @@ export const ANALYTICS_QUERY_LIST: AnalyticsQuery[] = [
         }`,
     columnDefs: [
       {
-        headerName: 'ID поставщика',
-        field: 'id'
+        headerName: "ID поставщика",
+        field: "id"
       },
       {
-        headerName: 'Название компании',
-        field: 'companyName'
+        headerName: "Название компании",
+        field: "companyName"
       }
     ]
   },
   {
-    id: 'customersByProduct',
-    name: 'Покупатели, хотя бы раз покупавшие заданный товар',
+    id: "customersByProduct",
+    name: "Покупатели, хотя бы раз покупавшие заданный товар",
     params: [{
-      readableName: 'ID продукта',
-      name: 'productId',
+      readableName: "ID продукта",
+      name: "productId",
       value: 2
     }],
     query: gql`query Analytics($productId: Long!){
@@ -43,27 +43,27 @@ export const ANALYTICS_QUERY_LIST: AnalyticsQuery[] = [
         }`,
     columnDefs: [
       {
-        headerName: 'ID покупателя',
-        field: 'id'
+        headerName: "ID покупателя",
+        field: "id"
       },
       {
-        headerName: 'Имя',
-        field: 'name'
+        headerName: "Имя",
+        field: "name"
       }
     ]
   },
   {
-    id: 'suppliersByProductAndVolume',
-    name: 'Поставщики которые поставили заданный торав в суммарном объеме больше заданного',
+    id: "suppliersByProductAndVolume",
+    name: "Поставщики которые поставили заданный торав в суммарном объеме больше заданного",
     params: [
       {
-        readableName: 'ID продукта',
-        name: 'productId',
+        readableName: "ID продукта",
+        name: "productId",
         value: 2
       },
       {
-        readableName: 'Мин кол-во единиц товара',
-        name: 'volume',
+        readableName: "Мин кол-во единиц товара",
+        name: "volume",
         value: 0
       },
 
@@ -78,17 +78,17 @@ export const ANALYTICS_QUERY_LIST: AnalyticsQuery[] = [
       }`,
     columnDefs: [
       {
-        headerName: 'ID постащика',
-        field: 'id'
+        headerName: "ID постащика",
+        field: "id"
       },
       {
-        headerName: 'Название компании',
-        field: 'companyName'
+        headerName: "Название компании",
+        field: "companyName"
       },
       {
-        headerName: 'Всего поставлено единиц',
-        field: 'totallySupplied'
+        headerName: "Всего поставлено единиц",
+        field: "totallySupplied"
       }
     ]
   }
-];
+]

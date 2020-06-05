@@ -160,9 +160,7 @@ entities:
       count:
         column: count
 
-
-
-  paulpaulych.tradefirm.order.Order:
+  paulpaulych.tradefirm.order.SupplierOrder:
     table: orders
     fields:
       id:
@@ -171,15 +169,15 @@ entities:
       date:
         column: date
 
-  paulpaulych.tradefirm.order.OrderItem:
+  paulpaulych.tradefirm.order.SupplierOrderItem:
     table: order_product
     fields:
       id:
         isId: true
         column: id
-      order:
+      supplierOrder:
         manyToOne:
-          className: paulpaulych.tradefirm.order.Order
+          className: paulpaulych.tradefirm.order.SupplierOrder
           foreignKeyColumn: order_id
       product:
         manyToOne:
@@ -198,13 +196,54 @@ entities:
       id:
         isId: true
         column: id
-      order:
+      supplierOrder:
         manyToOne:
-          className: paulpaulych.tradefirm.order.Order
+          className: paulpaulych.tradefirm.order.SupplierOrder
           foreignKeyColumn: order_id
       supplier:
         manyToOne:
           className: paulpaulych.tradefirm.supplier.Supplier
           foreignKeyColumn: supplier_id
+      date:
+        column: date
+
+
+  paulpaulych.tradefirm.delivery.ShopDeliveryItem:
+    table: shop_delivery_items
+    fields:
+      id:
+        isId: true
+        column: id
+      product:
+        manyToOne:
+          className: paulpaulych.tradefirm.product.Product
+          foreignKeyColumn: product_id
+      count:
+        column: count
+      shopDeliveryId:
+        column: shop_delivery_id
+
+
+  paulpaulych.tradefirm.delivery.ShopDelivery:
+    table: shop_delivery
+    fields:
+      id:
+        isId: true
+        column: id
+        manyToOne:
+          className: paulpaulych.tradefirm.supplier.Supplier
+          foreignKeyColumn: supplier_id
+      delivery:
+        manyToOne:
+          className: paulpaulych.tradefirm.delivery.Delivery
+          foreignKeyColumn: delivery_id
+      items:
+        oneToMany:
+          className: paulpaulych.tradefirm.delivery.ShopDeliveryItem
+          keyField: shopDeliveryId
+      salesPoint:
+        manyToOne:
+          className: paulpaulych.tradefirm.salespoint.SalesPoint
+          foreignKeyColumn: sales_point_id
       date:
         column: date

@@ -1,10 +1,7 @@
 package paulpaulych.tradefirm.security.login
-
+import org.springframework.http.HttpStatus
 import org.springframework.security.crypto.password.PasswordEncoder
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import paulpaulych.tradefirm.security.UserService
 import paulpaulych.tradefirm.security.jwt.JwtGenerator
 import paulpaulych.tradefirm.security.jwt.JwtUser
@@ -26,11 +23,11 @@ class LoginEndpoint(
         val tokenExpiration = System.currentTimeMillis() + 46000000
 
         return userService.findByUsername(req.username)
-                .filter{
-                    log.info("got: ${passwordEncoder.encode(req.password)}")
-                    log.info("requred: ${it.password}")
-                    passwordEncoder.matches(req.password, it.password)}
                 .map {
+                    val matches = passwordEncoder.matches(req.password, it.password)
+                    if (!matches) {
+                        throw NotAuthenticatedException()
+                    }
                     val jwtUser = JwtUser(
                             userName = it.username,
                             password = it.password,
@@ -46,6 +43,8 @@ class LoginEndpoint(
                             jwtUser.role
                     )
                 }
-        }
+    }
 }
 
+@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+class NotAuthenticatedException: RuntimeException()

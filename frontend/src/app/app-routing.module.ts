@@ -1,16 +1,17 @@
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import {ProductsComponent} from './admin/products/products.component';
-import {AdminAuthGuard, AuthGuard} from './security/auth-guard.service';
-import {LoginComponent} from './security/login/login.component';
-import {SalesPointsComponent} from './admin/sales-point/sales-points.component';
-import {AnalyticsComponent} from './admin/analytics/analytics.component';
-import {TopbarComponent} from "./topbar/topbar.component";
-import {WelcomeComponent} from "./welcome/welcome.component";
-import {StorageComponent} from "./salespoint/storage/storage.component";
-import {CustomersComponent} from "./salespoint/customers/customers.component";
-import {SalesComponent} from "./salespoint/sales/sales.component";
-import {ApplicationsComponent} from "./salespoint/applications/applications.component";
+import { NgModule } from "@angular/core"
+import { RouterModule } from "@angular/router"
+import {ProductsComponent} from "./admin/products/products.component"
+import {AdminAuthGuard, AuthGuard} from "./security/auth-guard.service"
+import {LoginComponent} from "./security/login/login.component"
+import {SalesPointsComponent} from "./admin/sales-point/sales-points.component"
+import {AnalyticsComponent} from "./admin/analytics/analytics.component"
+import {TopbarComponent} from "./topbar/topbar.component"
+import {WelcomeComponent} from "./welcome/welcome.component"
+import {StorageComponent} from "./salespoint/storage/storage.component"
+import {CustomersComponent} from "./salespoint/customers/customers.component"
+import {SalesComponent} from "./salespoint/sales/sales.component"
+import {ApplicationsComponent} from "./salespoint/applications/applications.component"
+import {DeliveryComponent} from "./salespoint/delivery/delivery.component"
 
 export const ADMIN_PANEL_PATH = "admin"
 
@@ -71,7 +72,10 @@ export const routes = [
             path: "applications",
             component: ApplicationsComponent
           },
-          // { path: "deliveries" },
+          {
+            path: "deliveries",
+            component: DeliveryComponent
+          },
 
         ]
       }

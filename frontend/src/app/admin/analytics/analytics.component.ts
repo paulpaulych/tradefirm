@@ -1,21 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import gql from 'graphql-tag';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AnalyticsQuery} from './analyticsQuery';
-import {ANALYTICS_QUERY_LIST} from './queries';
-import {Apollo} from 'apollo-angular';
+import { Component, OnInit } from "@angular/core"
+import gql from "graphql-tag"
+import {FormBuilder, FormGroup, Validators} from "@angular/forms"
+import {AnalyticsQuery} from "./analyticsQuery"
+import {ANALYTICS_QUERY_LIST} from "./queries"
+import {Apollo} from "apollo-angular"
 
 @Component({
-  selector: 'app-analytics',
-  templateUrl: './analytics.component.html',
-  styleUrls: ['./analytics.component.css']
+  selector: "app-analytics",
+  templateUrl: "./analytics.component.html",
+  styleUrls: ["./analytics.component.css"]
 })
 export class AnalyticsComponent implements OnInit {
 
   queries: AnalyticsQuery[] = ANALYTICS_QUERY_LIST
 
   activeQuery: AnalyticsQuery = null
-  form: FormGroup;
+  form: FormGroup
   defaultColDef
   columnDefs = null
   rowData
@@ -29,7 +29,7 @@ export class AnalyticsComponent implements OnInit {
       flex: 1,
       editable: false,
       sortable: true,
-    };
+    }
 
   }
 
@@ -54,13 +54,9 @@ export class AnalyticsComponent implements OnInit {
       variables: params
     })
       .valueChanges
-      .subscribe((res)=>{
-        if(res.data){
-          console.log("got analytics query result: " + JSON.stringify(res.data))
-          this.activateGrid(res.data[this.activeQuery.id])
-        }else{
-          console.log("errors while analytics result: " + JSON.stringify(res.errors))
-        }
+      .subscribe(({data}) => {
+        console.log("got analytics query result: " + JSON.stringify(data))
+        this.activateGrid(data[this.activeQuery.id])
       }
      )
   }

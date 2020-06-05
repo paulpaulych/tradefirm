@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
-import {Apollo} from "apollo-angular";
-import {showErrorMessage} from "../../admin/grid-common/insert-grid";
-import gql from "graphql-tag";
+import { Injectable } from "@angular/core"
+import {Apollo} from "apollo-angular"
+import {showErrorMessage} from "../../admin/grid-common/insert-grid"
+import gql from "graphql-tag"
 
 const QUERY = gql`
   query{
     salesPoint{
+      id
       applications{
         id
         date
@@ -16,7 +17,7 @@ const QUERY = gql`
 `
 
 const ADD_MUTATION = gql`
-  mutation AddCustomer($items: [ApplicationItemInput!]!){
+  mutation AddApplication($items: [ApplicationItemInput!]!){
     createApplication(items: $items){
       id
       date
@@ -32,22 +33,20 @@ const ADD_MUTATION = gql`
 `
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class ApplicationRepoService {
   constructor(private apollo: Apollo) { }
 
   queryData(subscribe){
-    return this.apollo.watchQuery({
+    return this.apollo.watchQuery<any>({
       query: QUERY
     })
       .valueChanges
-      .subscribe({
-        next: ({data, loading, errors}) => {
-          if (data) {
+      .subscribe(({data, loading}) => {
             console.log(`got: ${JSON.stringify(data)}`)
-            const preparedData = data["salesPoint"]["applications"]
-              .map((it)=>{
+            const preparedData = data.salesPoint.applications
+              .map((it) => {
                 return {
                   id: it.id,
                   date: it.date,
@@ -55,19 +54,14 @@ export class ApplicationRepoService {
                 }
               })
             subscribe(preparedData)
-          }
-          if (errors) {
-            showErrorMessage(errors)
-          }
-        }
       })
   }
 
   createApplication(items){
-    return this.apollo.mutate({
+    return this.apollo.mutate<any>({
       mutation: ADD_MUTATION,
       variables: {
-        items: items
+        items
       }
     })
   }

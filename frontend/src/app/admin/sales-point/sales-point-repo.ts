@@ -1,10 +1,10 @@
-import {Injectable, OnInit} from '@angular/core';
-import {IRepo, Page, PageRequest, prepareApolloResult} from '../grid-common/i_repo';
-import {SalesPoint} from './sales-point';
-import {Apollo} from 'apollo-angular';
-import gql from 'graphql-tag';
-import {map} from 'rxjs/operators';
-import {Filter} from "../grid-common/filter";
+import {Injectable, OnInit} from "@angular/core"
+import {IRepo, Page, PageRequest, prepareApolloResult} from "../grid-common/i_repo"
+import {SalesPoint} from "./sales-point"
+import {Apollo} from "apollo-angular"
+import gql from "graphql-tag"
+import {map} from "rxjs/operators"
+import {Filter} from "../grid-common/filter"
 
 const GET_ALL = gql`
   query{
@@ -47,9 +47,9 @@ const GET_PAGE = gql`
 `
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
-export class SalesPointsRepo implements IRepo<SalesPoint>, OnInit{
+export class SalesPointsRepo implements IRepo<SalesPoint>{
 
   constructor(private apollo: Apollo) {}
 
@@ -66,21 +66,21 @@ export class SalesPointsRepo implements IRepo<SalesPoint>, OnInit{
       .watchQuery<Page<SalesPoint>>({
         query: GET_PAGE,
         variables: {
-          filter: filter,
-          pageRequest: pageRequest
+          filter,
+          pageRequest
         }
       })
       .valueChanges
-      .pipe(map(r => prepareApolloResult(r, 'salesPointsPage')))
+      .pipe(map(r => prepareApolloResult(r, "salesPointsPage")))
   }
 
   saveMutation(items: SalesPoint[]){
-    return this.apollo.mutate({
+    return this.apollo.mutate<any>({
       mutation: SAVE_MUTATION,
       variables: {
         values: items
       }
-    });
+    })
   }
 
   deleteMutation(ids) {
@@ -88,13 +88,9 @@ export class SalesPointsRepo implements IRepo<SalesPoint>, OnInit{
     return this.apollo.mutate({
       mutation: DELETE_MUTATION,
       variables: {
-        ids: ids
+        ids
       }
-    });
-  }
-
-  ngOnInit(): void {
-
+    })
   }
 
 }

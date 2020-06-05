@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import {ADMIN_PANEL_PATH, SALES_POINT_PATH} from "../app-routing.module";
-import {AuthService} from "./auth-service.service";
+import { Injectable } from "@angular/core"
+import {ADMIN_PANEL_PATH, SALES_POINT_PATH} from "../app-routing.module"
+import {AuthService} from "./auth-service.service"
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class RoleAuthoritiesService {
 
@@ -36,7 +36,7 @@ export class RoleAuthoritiesService {
 
   getNavigationBarContent(role){
     const content = this.navigationBarContent[role]
-    if(content){
+    if (content){
       return content
     }
     return this.navigationBarContent.default
@@ -45,7 +45,7 @@ export class RoleAuthoritiesService {
   welcomePage(role){
     console.log(role)
     const content = this.welcomePagePath[role]
-    if(content){
+    if (content){
       return content
     }
     return this.welcomePagePath.default

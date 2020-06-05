@@ -1,14 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import {MatDialogRef} from "@angular/material/dialog";
-import {StorageRepoService} from "../../storage/storage-repo.service";
-import {showErrorMessage} from "../../../admin/grid-common/insert-grid";
-import {AddCustomerDialogComponent} from "../../customers/add-customer-dialog/add-customer-dialog.component";
-import {ApplicationRepoService} from "../application-repo.service";
+import { Component, OnInit } from "@angular/core"
+import {MatDialogRef} from "@angular/material/dialog"
+import {StorageRepoService} from "../../storage/storage-repo.service"
+import {showErrorMessage} from "../../../admin/grid-common/insert-grid"
+import {ApplicationRepoService} from "../application-repo.service"
 
 @Component({
-  selector: 'app-create-application-dialog',
-  templateUrl: './create-application-dialog.component.html',
-  styleUrls: ['./create-application-dialog.component.css']
+  selector: "app-create-application-dialog",
+  templateUrl: "./create-application-dialog.component.html",
+  styleUrls: ["./create-application-dialog.component.css"]
 })
 export class CreateApplicationDialogComponent implements OnInit {
 
@@ -27,35 +26,33 @@ export class CreateApplicationDialogComponent implements OnInit {
   }
 
   loadStorageItems(){
-    this.storageRepoService.queryData(data=>{
+    this.storageRepoService.queryData(data => {
       this.storageItems = data
       this.filteredStorageItems = this.storageItems
     })
   }
 
   closeDialog() {
-    this.dialogRef.close();
+    this.dialogRef.close()
   }
 
   createApplication(){
     this.applicationRepoService.createApplication(this.items)
       .subscribe(({ data }) => {
         this.closeDialog()
-        alert(`Заявка успешно добавлена: ${JSON.stringify(data["createApplication"])}`)
-      },(error) => {
-        showErrorMessage(error)
+        alert(`Заявка успешно добавлена: ${JSON.stringify(data.createApplication)}`)
       })
   }
 
   onStorageItemKey(value) {
-    this.filteredStorageItems = this.filterStorageItemsByProductName(value.target.value);
+    this.filteredStorageItems = this.filterStorageItemsByProductName(value.target.value)
   }
 
   filterStorageItemsByProductName(value: string) {
-    let filter = value.toLowerCase();
+    const filter = value.toLowerCase()
     return this.storageItems.filter(storageItem =>
       storageItem.productName.toLowerCase().startsWith(filter)
-    );
+    )
   }
 
   dropFilter(){

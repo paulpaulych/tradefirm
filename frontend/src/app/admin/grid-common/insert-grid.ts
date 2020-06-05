@@ -1,25 +1,25 @@
-import {IRepo} from "./i_repo";
-import { AllCommunityModules } from '@ag-grid-community/all-modules';
+import {IRepo} from "./i_repo"
+import { AllCommunityModules } from "@ag-grid-community/all-modules"
 
 export class InsertGridProperties {
   colDefs = []
 }
 
 export class InsertGrid<T> {
-  protected gridApi;
+  protected gridApi
 
-  modules = AllCommunityModules;
+  modules = AllCommunityModules
   defaultColDef
   columnDefs
 
   constructor(
     protected repo: IRepo<T>,
-    protected onInsertCallback: ()=>void,
+    protected onInsertCallback: () => void,
     properties: InsertGridProperties) {
     this.defaultColDef = {
       editable: true,
       sortable: true,
-    };
+    }
     this.columnDefs = properties.colDefs
   }
 
@@ -30,44 +30,34 @@ export class InsertGrid<T> {
 
   addRow(){
     const data = []
-    this.gridApi.forEachNode((node, index)=>{
+    this.gridApi.forEachNode((node, index) => {
       data.push(node.data)
     })
     data.push({})
-    this.gridApi.setRowData(data);
+    this.gridApi.setRowData(data)
   }
 
   onInsertClicked(){
-    let data = []
-    this.gridApi.forEachNode((node, index) =>{
-      if(Object.keys(node.data).length !== 0){
+    const data = []
+    this.gridApi.forEachNode((node, index) => {
+      if (Object.keys(node.data).length !== 0){
         const cleaned = JSON.parse(JSON.stringify(node.data))
         delete cleaned.__typename
         console.log(JSON.stringify(cleaned))
         data.push(cleaned)
       }
     })
-    if (data.length == 0){
+    if (data.length === 0){
       alert("Сначала добавьте строк для вставки")
       return
     }
     this.repo.saveMutation(data)
-      .subscribe({
-        next: ({data, errors}) => {
+      .subscribe(({data}) => {
           console.log(`data updated: ${JSON.stringify(data)}`)
-          if (data) {
-            showDataCommittedMessage()
-            this.gridApi.setRowData([{}])
-            this.onInsertCallback()
-          }
-          if (errors) {
-            showErrorMessage(errors)
-          }
-        },
-        error: err => {
-          showErrorMessage(err)
-        }
-      });
+          showDataCommittedMessage()
+          this.gridApi.setRowData([{}])
+          this.onInsertCallback()
+      })
 
   }
 

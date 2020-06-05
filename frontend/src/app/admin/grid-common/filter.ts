@@ -1,4 +1,4 @@
-import {error} from "@angular/compiler/src/util";
+import {error} from "@angular/compiler/src/util"
 
 export class Filter {
   type: string
@@ -11,12 +11,12 @@ export class Filter {
 
 export function prepareFilterModel(filterModel): Filter {
   const columns = Object.keys(filterModel)
-  if(columns.length == 0){
+  if (columns.length == 0){
     return null
   }
   return columns
     .map((column) => prepareColumnFilter(column, filterModel[column]))
-    .reduce((prevFilter, curFilter)=>{
+    .reduce((prevFilter, curFilter) => {
       return {
         type: "STRUCTURAL",
         left: prevFilter,
@@ -29,7 +29,7 @@ export function prepareFilterModel(filterModel): Filter {
 }
 
 function prepareColumnFilter(column, filterParams): Filter{
-  if(filterParams.operator == "AND" || filterParams.operator == "AND"){
+  if (filterParams.operator == "AND" || filterParams.operator == "AND"){
     return structuralFilter(column, filterParams)
   }
   return {

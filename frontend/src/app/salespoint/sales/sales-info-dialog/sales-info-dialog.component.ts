@@ -1,8 +1,8 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {Apollo} from "apollo-angular";
-import {showErrorMessage} from "../../../admin/grid-common/insert-grid";
-import gql from "graphql-tag";
+import {Component, Inject, OnInit} from "@angular/core"
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog"
+import {Apollo} from "apollo-angular"
+import {showErrorMessage} from "../../../admin/grid-common/insert-grid"
+import gql from "graphql-tag"
 
 
 const SALE_INFO_QUERY = gql`
@@ -33,9 +33,9 @@ export interface SaleInfoDialogData{
 }
 
 @Component({
-  selector: 'app-sales-info-dialog',
-  templateUrl: './sales-info-dialog.component.html',
-  styleUrls: ['./sales-info-dialog.component.css']
+  selector: "app-sales-info-dialog",
+  templateUrl: "./sales-info-dialog.component.html",
+  styleUrls: ["./sales-info-dialog.component.css"]
 })
 export class SalesInfoDialogComponent implements OnInit{
 
@@ -47,21 +47,21 @@ export class SalesInfoDialogComponent implements OnInit{
   defaultColDef = {
     editable: false,
     sortable: false
-  };
+  }
   columnDefs = [
     {
-      headerName: 'Продукт ИД)',
-      field: 'id'
+      headerName: "Продукт ИД)",
+      field: "id"
     },
     {
-      headerName: 'Наименование',
-      field: 'name'
+      headerName: "Наименование",
+      field: "name"
     },
     {
-      headerName: 'Кол-во',
-      field: 'count'
+      headerName: "Кол-во",
+      field: "count"
     }
-  ];
+  ]
 
   constructor(
     public dialogRef: MatDialogRef<SalesInfoDialogComponent>,
@@ -71,36 +71,30 @@ export class SalesInfoDialogComponent implements OnInit{
   }
 
   onOkClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close()
   }
 
   ngOnInit(): void {
-    this.apollo.watchQuery({
+    this.apollo.watchQuery<any>({
       query: SALE_INFO_QUERY,
       variables: {
         id: this.id
       }
     })
       .valueChanges
-      .subscribe({
-        next: ({data, loading, errors}) => {
+      .subscribe(({data, loading, errors}) => {
           if (data) {
             console.log(`got: ${JSON.stringify(data)}`)
-            this.cart = data["sale"]["cartItems"].map((c)=>{
+            this.cart = data.sale.cartItems.map((c) => {
               return {
                 id: c.product.id,
                 name: c.product.name,
                 count: c.count
               }
             })
-            this.data = data["sale"]
+            this.data = data.sale
           }
-          if (errors) {
-            showErrorMessage(errors)
-          }
-        }
       })
-
   }
 
 }

@@ -1,10 +1,10 @@
-import {Injectable, OnInit} from '@angular/core';
-import {IRepo, Page, PageRequest, prepareApolloResult} from '../grid-common/i_repo';
-import {Product} from './product';
-import {Apollo} from 'apollo-angular';
-import {map} from 'rxjs/operators';
-import gql from "graphql-tag";
-import {Filter} from "../grid-common/filter";
+import {Injectable, OnInit} from "@angular/core"
+import {IRepo, Page, PageRequest, prepareApolloResult} from "../grid-common/i_repo"
+import {Product} from "./product"
+import {Apollo} from "apollo-angular"
+import {map} from "rxjs/operators"
+import gql from "graphql-tag"
+import {Filter} from "../grid-common/filter"
 
 const GET_ALL = gql`
   query{
@@ -45,7 +45,7 @@ const DELETE_MUTATION = gql`
 `
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class ProductRepo implements IRepo<Product>, OnInit {
 
@@ -56,7 +56,7 @@ export class ProductRepo implements IRepo<Product>, OnInit {
       .watchQuery<Product>({
         query: GET_ALL,
       })
-      .valueChanges;
+      .valueChanges
   }
 
   queryForPage(filter: Filter, pageRequest: PageRequest) {
@@ -64,12 +64,12 @@ export class ProductRepo implements IRepo<Product>, OnInit {
       .watchQuery<Page<Product>>({
         query: GET_PAGE,
         variables: {
-          filter: filter,
-          pageRequest: pageRequest
+          filter,
+          pageRequest
         }
       })
       .valueChanges
-      .pipe(map(r => prepareApolloResult(r, 'productPages')));
+      .pipe(map(r => prepareApolloResult(r, "productPages")))
   }
 
   saveMutation(items: Product[]) {
@@ -78,7 +78,7 @@ export class ProductRepo implements IRepo<Product>, OnInit {
       variables: {
         values: items
       }
-    });
+    })
   }
 
   ngOnInit(): void {}
@@ -90,6 +90,6 @@ export class ProductRepo implements IRepo<Product>, OnInit {
       variables: {
         values: ids
       }
-    });
+    })
   }
 }

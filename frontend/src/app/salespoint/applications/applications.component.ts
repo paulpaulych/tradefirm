@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import {ApplicationRepoService} from "./application-repo.service";
-import {MatDialog} from "@angular/material/dialog";
-import {CreateApplicationDialogComponent} from "./create-application-dialog/create-application-dialog.component";
+import { Component, OnInit } from "@angular/core"
+import {ApplicationRepoService} from "./application-repo.service"
+import {MatDialog} from "@angular/material/dialog"
+import {CreateApplicationDialogComponent} from "./create-application-dialog/create-application-dialog.component"
 
 @Component({
-  selector: 'app-applications',
-  templateUrl: './applications.component.html',
-  styleUrls: ['./applications.component.css']
+  selector: "app-applications",
+  templateUrl: "./applications.component.html",
+  styleUrls: ["./applications.component.css"]
 })
 export class ApplicationsComponent implements OnInit {
 
@@ -14,20 +14,20 @@ export class ApplicationsComponent implements OnInit {
     editable: false,
     sortable: false,
     resizable: true
-  };
+  }
   columnDefs = [
     {
-      headerName: 'ИД Заявки',
-      field: 'id'
+      headerName: "ИД Заявки",
+      field: "id"
     },
     {
-      headerName: 'Дата',
-      field: 'date'
+      headerName: "Дата",
+      field: "date"
     },
     {
-      headerName: 'Статус обработки',
-      field: 'status'
-    }];
+      headerName: "Статус обработки",
+      field: "status"
+    }]
   gridApi
 
   constructor(private applicationRepoService: ApplicationRepoService,
@@ -35,7 +35,7 @@ export class ApplicationsComponent implements OnInit {
 
   onGridReady(param){
     this.gridApi = param.api
-    this.applicationRepoService.queryData(data =>{
+    this.applicationRepoService.queryData(data => {
       this.gridApi.setRowData(data)
     })
   }
@@ -48,7 +48,7 @@ export class ApplicationsComponent implements OnInit {
 
   openCreateApplicationDialog() {
     const dialogRef = this.dialog.open(CreateApplicationDialogComponent, {
-      width: '60%'
-    });
+      width: "60%"
+    })
   }
 }
