@@ -38,7 +38,7 @@ ext{
     simpleOrmVersion='1.4.15'
     commonUtilsVersion='1.0.1'
     kotestVersion='4.0.5'
-    graphqlKotlinVersion='2.1.0'
+    graphqlKotlinVersion='3.1.0'
     jacksonVersion='2.9.0'
     nodeGradleVersion='2.2.4'
 }

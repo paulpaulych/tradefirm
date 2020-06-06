@@ -8,7 +8,7 @@ CREATE TABLE public.supplier(
 drop table if exists public.customer cascade;
 CREATE TABLE public.customer(
  id   bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
- name varchar(50) NOT NULL
+ name varchar(256) NOT NULL
 );
 -- public.area
 drop table if exists public.area cascade;
@@ -29,33 +29,34 @@ CREATE TABLE public.orders(
 drop table if exists public.product cascade;
 CREATE TABLE public.product(
  id   bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
- name varchar(50) NOT NULL
+ name varchar(256) NOT NULL
 );
 --  public.sales_point
 drop table if exists public.sales_point cascade;
 CREATE TABLE public.sales_point(
  id bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
- type         varchar(50) NOT NULL,
+ type         varchar(256) NOT NULL,
  area_id       bigint NULL REFERENCES public.area(id) on delete set null
 );
 CREATE INDEX sales_point_area_id_fkey ON public.sales_point(area_id);
 
---  public.employee
-drop table if exists public.employee cascade;
-CREATE TABLE public.employee(
- id   bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
- name         varchar(256) NOT NULL,
- sales_point_id bigint NOT NULL,
- salary numeric(64, 2) NOT NULL
-);
-CREATE INDEX fkIdx_employee__sales_point_id ON employee(id);
+-- --  public.employee
+-- drop table if exists public.employee cascade;
+-- CREATE TABLE public.employee(
+--  id   bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
+--  name         varchar(256) NOT NULL,
+--  sales_point_id bigint NOT NULL,
+--  salary numeric(64, 2) NOT NULL
+-- );
+-- CREATE INDEX fkIdx_employee__sales_point_id ON employee(id);
 
 -- Seller
 drop table if exists public.seller cascade;
 CREATE TABLE seller(
- id bigint primary key
-     REFERENCES employee (id)
-        on delete cascade
+ id   bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
+ name         text NOT NULL,
+ sales_point_id bigint NOT NULL,
+ salary numeric(64, 2) NOT NULL
 );
 
 -- public.sale
@@ -64,12 +65,12 @@ CREATE TABLE public.sale(
  id       bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
  customer_id   bigint, -- покупатель может быть не указан
  sales_point_id bigint REFERENCES public.sales_point(id) on delete set null,
- employee_id   bigint REFERENCES seller(id) on delete set null,
+ seller_id   bigint REFERENCES seller(id) on delete set null,
  date         timestamp NOT NULL
 );
 CREATE INDEX fkIdx_sale__customer_id ON public.sale(customer_id);
 CREATE INDEX fkIdx_sale__sales_point_id ON public.sale(sales_point_id);
-CREATE INDEX fkIdx_sale__employee_id ON public.sale(employee_id);
+CREATE INDEX fkIdx_sale__seller_id ON public.sale(seller_id);
 
 --  public.sale_product
 drop table if exists public.sale_product cascade;

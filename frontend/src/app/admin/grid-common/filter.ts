@@ -64,7 +64,7 @@ function prepareOperator(type: string): string{
     case "contains": return "CONTAINS"
     case "notContains": return "NOT_CONTAINS"
     case "startsWith": return "STARTS_WITH"
-    case "endsWith": return "STARTS_WITH"
+    case "endsWith": return "ENDS_WITH"
     case "notEqual": return "NOT_EQUALS"
     case "greaterThan": return "GREATER"
     case "lessThan": return "LESS"

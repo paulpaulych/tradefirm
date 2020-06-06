@@ -12,10 +12,3 @@ data class Seller(
         val salary: BigDecimal
 )
 
-data class PlainSeller(
-        val id: Long? = null,
-        val name: String,
-        val salesPointId: Long,
-        val salary: BigDecimal
-)
-

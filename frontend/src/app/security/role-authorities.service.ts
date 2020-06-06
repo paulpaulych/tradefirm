@@ -12,7 +12,7 @@ export class RoleAuthoritiesService {
       { name: "Продукты", link: "/" + ADMIN_PANEL_PATH + "/products" },
       { name: "Журнал покупок", link: "/" + ADMIN_PANEL_PATH + "/sales" },
       { name: "Точки продаж", link: "/" + ADMIN_PANEL_PATH + "/salesPoints" },
-      { name: "Сотрудники", link: "/" + ADMIN_PANEL_PATH + "/employees" },
+      { name: "Продавцы", link: "/" + ADMIN_PANEL_PATH + "/sellers" },
       { name: "Покупатели", link: "/" + ADMIN_PANEL_PATH + "/customers" },
       { name: "Аналитика", link: "/" + ADMIN_PANEL_PATH + "/analytics"}
     ],

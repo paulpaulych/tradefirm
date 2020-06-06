@@ -46,6 +46,8 @@ import {message} from "ag-grid-community/dist/lib/utils/general"
 import {ApolloLink, concat} from "apollo-link"
 import {Router, RouterModule} from "@angular/router";
 import {InMemoryCache} from "apollo-cache-inmemory";
+import { SaleComponent } from './admin/sale/sale.component';
+import { SellerComponent } from './admin/seller/seller.component';
 
 
 @NgModule({
@@ -77,7 +79,9 @@ import {InMemoryCache} from "apollo-cache-inmemory";
 
     CreateApplicationDialogComponent,
     DeliveryComponent,
-    CreateDeliveryDialogComponent
+    CreateDeliveryDialogComponent,
+    SaleComponent,
+    SellerComponent
   ],
     imports: [
         BrowserModule,
@@ -149,11 +153,11 @@ export class AppModule {
 
 const DEFAULT_APOLLO_OPTS: DefaultOptions = {
   watchQuery: {
-    fetchPolicy: "network-only",
+    fetchPolicy: "no-cache",
     errorPolicy: "all",
   },
   mutate: {
-    fetchPolicy: "network-only",
+    fetchPolicy: "no-cache",
     errorPolicy: "all",
   }
 }

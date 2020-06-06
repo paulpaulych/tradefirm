@@ -70,7 +70,7 @@ public class DataPopulator {
 //        addOrders();
         addProducts();
         addSalesPoints();
-        addEmployee();
+//        addEmployee();
         addSellers();
         addSales();
         addSaleProduct();
@@ -192,7 +192,7 @@ public class DataPopulator {
         log.info("inserting into sales");
         LocalDateTime date = LocalDateTime.now();
         for(int i = 1; i <= SALES_COUNT; i++){
-            jdbcTemplate.update("insert into sale(customer_id, sales_point_id, employee_id, date) values (?, ?, ?, ?) on conflict do nothing",
+            jdbcTemplate.update("insert into sale(customer_id, sales_point_id, seller_id, date) values (?, ?, ?, ?) on conflict do nothing",
                     intFromRange(1, CUSTOMER_COUNT),
                     intFromRange(1, SALES_POINT_COUNT),
                     intFromRange(1, SELLERS_COUNT),
@@ -210,12 +210,17 @@ public class DataPopulator {
         }
     }
 
-    private void addSellers(){
+    private void addSellers() throws IOException {
         log.info("inserting sellers");
+        String string = resourceLoader.load("origins/names.txt");
+        String[] names = string.split(" ");
+        Collections.reverse(Arrays.asList(names));
 
-        for(int i = 1; i < SELLERS_COUNT; i++){
-            jdbcTemplate.update("insert into seller(id) values (?) on conflict do nothing",
-                    i);
+        for(int i = SELLERS_MIN; i <= SELLERS_MAX ; i++){
+            jdbcTemplate.update("insert into seller(name, sales_point_id, salary) values (?, ?, ?) on conflict do nothing",
+                    names[i],
+                    intFromRange(1, SALES_POINT_COUNT),
+                    BigDecimal.valueOf(5000 * (i % 14)));
         }
     }
 

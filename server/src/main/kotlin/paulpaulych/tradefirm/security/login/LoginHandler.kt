@@ -7,6 +7,7 @@ import paulpaulych.tradefirm.security.jwt.JwtGenerator
 import paulpaulych.tradefirm.security.jwt.JwtUser
 import paulpaulych.utils.LoggerDelegate
 import reactor.core.publisher.Mono
+import reactor.kotlin.core.publisher.switchIfEmpty
 
 @RestController
 @RequestMapping("/login")
@@ -23,6 +24,7 @@ class LoginEndpoint(
         val tokenExpiration = System.currentTimeMillis() + 46000000
 
         return userService.findByUsername(req.username)
+                .switchIfEmpty { Mono.error(NotAuthenticatedException()) }
                 .map {
                     val matches = passwordEncoder.matches(req.password, it.password)
                     if (!matches) {

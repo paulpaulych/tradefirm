@@ -48,7 +48,7 @@ entities:
         column: name
 
   paulpaulych.tradefirm.seller.Seller:
-    table: employee
+    table: seller
     fields:
       id:
         isId: true
@@ -79,7 +79,7 @@ entities:
       seller:
         manyToOne:
           className: paulpaulych.tradefirm.seller.Seller
-          foreignKeyColumn: employee_id
+          foreignKeyColumn: seller_id
       date:
         column: date
       cartItems:

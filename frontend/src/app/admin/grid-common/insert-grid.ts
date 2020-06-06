@@ -51,7 +51,7 @@ export class InsertGrid<T> {
       alert("Сначала добавьте строк для вставки")
       return
     }
-    this.repo.saveMutation(data)
+    this.repo.save(data)
       .subscribe(({data}) => {
           console.log(`data updated: ${JSON.stringify(data)}`)
           showDataCommittedMessage()

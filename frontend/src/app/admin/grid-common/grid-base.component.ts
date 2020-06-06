@@ -1,5 +1,5 @@
 import {CellChangedEvent} from "ag-grid-community/dist/lib/entities/rowNode"
-import {IRepo, PageRequest, Sort} from "./i_repo"
+import {IRepo, Page, PageRequest, Sort} from "./i_repo"
 import {GridProperties} from "./grid_properties"
 import {InfiniteRowModelModule} from "@ag-grid-community/infinite-row-model"
 import {prepareFilterModel} from "./filter"
@@ -31,6 +31,7 @@ export class GridBaseComponent<T> implements OnInit{
       flex: 1,
       editable: true,
       sortable: true,
+      resizable: true,
       floatingFilter: true,
       filterParams: {
       resetButton: true,
@@ -93,11 +94,9 @@ export class GridBaseComponent<T> implements OnInit{
           pageSize,
           sorts)
         this.repo.queryForPage(filter, pageRequest)
-          .subscribe(({data, loading}) => {
-              if (data) {
-                console.log(`got: ${JSON.stringify(data)}`)
-                params.successCallback(data)
-              }
+          .subscribe(({ page, loading }) => {
+              console.log(`got: ${JSON.stringify(page.values)}`)
+              params.successCallback(page.values)
               this.loading = loading
             }
           )
@@ -108,7 +107,7 @@ export class GridBaseComponent<T> implements OnInit{
   cellValueChanged(event: CellChangedEvent) {
     const cleaned = JSON.parse(JSON.stringify(event.node.data))
     delete cleaned.__typename
-    this.repo.saveMutation([cleaned])
+    this.repo.save([cleaned])
       .subscribe(({data}) => {
           console.log(`data updated: ${JSON.stringify(data)}`)
           if (data) {
@@ -140,7 +139,7 @@ export class GridBaseComponent<T> implements OnInit{
       alert("Ничего не выбрано :(")
       return
     }
-    this.repo.deleteMutation(ids)
+    this.repo.delete(ids)
       .subscribe(({data}) => {
           console.log(`data deleted: ${JSON.stringify(data)}`)
           showDataCommittedMessage()
