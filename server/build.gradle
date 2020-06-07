@@ -74,3 +74,7 @@ bootWar{
 springBoot{
     mainClassName = "paulpaulych.tradefirm.AppKt"
 }
+
+bootRun{
+    systemProperties = System.properties
+}

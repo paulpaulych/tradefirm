@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core"
 import {GridBaseComponent} from "../grid-common/grid-base.component";
 import {PlainSeller, PlainSellerRepo} from "./seller-repo.service";
 import {GridProperties} from "../grid-common/grid_properties";
+import {PlainCustomerRepo} from "../customer/customer-repo.service";
+import {MatDialog} from "@angular/material/dialog";
 
 
 @Component({
@@ -11,7 +13,7 @@ import {GridProperties} from "../grid-common/grid_properties";
 })
 export class SellerComponent extends GridBaseComponent<PlainSeller> {
 
-  constructor(repo: PlainSellerRepo) {
+  constructor(repo: PlainSellerRepo, dialog: MatDialog) {
     const properties = new GridProperties()
 
     properties.title = "Продавцы"
@@ -38,7 +40,7 @@ export class SellerComponent extends GridBaseComponent<PlainSeller> {
         filter: "agNumberColumnFilter"
       }
     ]
-    super(repo, properties)
+    super(repo, properties, dialog)
   }
 
 }

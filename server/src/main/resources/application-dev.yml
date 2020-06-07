@@ -5,7 +5,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://13.49.73.184:5432/tradefirm
+    url: jdbc:postgresql://localhost:5432/tradefirm
     username: postgres
     password: 111111
     driver-class-name: org.postgresql.Driver
@@ -23,3 +23,6 @@ order:
 fakesupplier:
   createDelivery:
     fixedRateMillis: 60000
+
+
+

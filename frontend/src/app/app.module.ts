@@ -41,13 +41,15 @@ import { DeliveryComponent } from "./salespoint/delivery/delivery.component"
 import { CreateDeliveryDialogComponent } from "./salespoint/delivery/create-delivery-dialog/create-delivery-dialog.component"
 import { onError } from "apollo-link-error"
 import {GraphQLError} from "graphql"
-import {showErrorMessage} from "./admin/grid-common/insert-grid"
+import {showErrorMessage} from "./admin/grid-common/insert-dialog/insert-dialog.component"
 import {message} from "ag-grid-community/dist/lib/utils/general"
 import {ApolloLink, concat} from "apollo-link"
 import {Router, RouterModule} from "@angular/router";
 import {InMemoryCache} from "apollo-cache-inmemory";
 import { SaleComponent } from './admin/sale/sale.component';
 import { SellerComponent } from './admin/seller/seller.component';
+import { CustomerComponent } from './admin/customer/customer.component';
+import { InsertDialogComponent } from './admin/grid-common/insert-dialog/insert-dialog.component';
 
 
 @NgModule({
@@ -81,7 +83,9 @@ import { SellerComponent } from './admin/seller/seller.component';
     DeliveryComponent,
     CreateDeliveryDialogComponent,
     SaleComponent,
-    SellerComponent
+    SellerComponent,
+    CustomerComponent,
+    InsertDialogComponent
   ],
     imports: [
         BrowserModule,
@@ -130,11 +134,7 @@ export class AppModule {
             alert(graphQLError.message)
             return
           }
-          console.log(
-            `[GraphQL error]:
-              Message: ${graphQLError.message},
-              Location: ${graphQLError.locations},
-              Path: ${graphQLError.path}`)
+          showErrorMessage(graphQLError)
         })
       }
       if (networkError){
@@ -154,11 +154,11 @@ export class AppModule {
 const DEFAULT_APOLLO_OPTS: DefaultOptions = {
   watchQuery: {
     fetchPolicy: "no-cache",
-    errorPolicy: "all",
+    errorPolicy: "none",
   },
   mutate: {
     fetchPolicy: "no-cache",
-    errorPolicy: "all",
+    errorPolicy: "none",
   }
 }
 

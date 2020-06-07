@@ -2,11 +2,10 @@ import { Component, OnInit } from "@angular/core"
 import {MatDialog, MatDialogModule, MatDialogRef} from "@angular/material/dialog"
 import {Apollo} from "apollo-angular"
 import gql from "graphql-tag"
-import {showErrorMessage} from "../../../admin/grid-common/insert-grid"
 import {StorageRepoService} from "../../storage/storage-repo.service"
 import {CustomersRepoService} from "../../customers/customers-repo.service"
 import {AddCustomerDialogComponent} from "../../customers/add-customer-dialog/add-customer-dialog.component"
-import {FormBuilder, Validators} from "@angular/forms"
+import {FormBuilder} from "@angular/forms"
 
 class CartItem {
   productId

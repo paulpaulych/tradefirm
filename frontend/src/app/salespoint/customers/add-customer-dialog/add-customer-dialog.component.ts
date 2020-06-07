@@ -3,7 +3,7 @@ import {MatDialogRef} from "@angular/material/dialog"
 import {Apollo} from "apollo-angular"
 import {StorageRepoService} from "../../storage/storage-repo.service"
 import {CustomersRepoService} from "../customers-repo.service"
-import {showErrorMessage} from "../../../admin/grid-common/insert-grid"
+import {showErrorMessage} from "../../../admin/grid-common/insert-dialog/insert-dialog.component"
 
 @Component({
   selector: "app-add-customer-dialog",

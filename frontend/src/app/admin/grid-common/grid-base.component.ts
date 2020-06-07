@@ -3,8 +3,9 @@ import {IRepo, Page, PageRequest, Sort} from "./i_repo"
 import {GridProperties} from "./grid_properties"
 import {InfiniteRowModelModule} from "@ag-grid-community/infinite-row-model"
 import {prepareFilterModel} from "./filter"
-import {showErrorMessage, InsertGrid, InsertGridProperties, showDataCommittedMessage} from "./insert-grid"
+import {InsertDialogComponent, InsertGridProperties, showDataCommittedMessage} from "./insert-dialog/insert-dialog.component"
 import {OnInit} from "@angular/core"
+import {MatDialog} from "@angular/material/dialog"
 
 const PAGE_SIZE = 10
 
@@ -22,10 +23,10 @@ export class GridBaseComponent<T> implements OnInit{
   isDeleteButtonEnabled = false
   pageSize
 
-  insertGrid: InsertGrid<T> = null
-
   constructor(
-    protected repo: IRepo<T>, properties: GridProperties){
+    protected repo: IRepo<T>,
+    properties: GridProperties,
+    private dialog: MatDialog){
     this.title = properties.title
     this.defaultColDef = {
       flex: 1,
@@ -46,7 +47,16 @@ export class GridBaseComponent<T> implements OnInit{
     this.pageSize = PAGE_SIZE
     this.rowSelection = "multiple"
 
-    const insertGridProperties = new InsertGridProperties()
+
+    const onInsertCallback = () => {
+      // TODO: чета не работает обновление таблицы
+      this.gridApi.purgeInfiniteCache(null)
+      this.ngOnInit()
+    }
+  }
+
+  openInsertDialog(){
+    const properties = new InsertGridProperties()
     const insertGridColDefs = []
     this.columnDefs
       .filter((cd) => cd.editable !== false)
@@ -57,13 +67,12 @@ export class GridBaseComponent<T> implements OnInit{
           valueParser: cd.valueParser
         })
       })
-    insertGridProperties.colDefs = insertGridColDefs
-    const onInsertCallback = () => {
-      // TODO: чета не работает обновление таблицы
-      this.gridApi.purgeInfiniteCache(null)
-      this.ngOnInit()
-    }
-    this.insertGrid = new InsertGrid<T>(this.repo, onInsertCallback, insertGridProperties)
+    properties.colDefs = insertGridColDefs
+    properties.repo = this.repo
+    this.dialog.open(InsertDialogComponent, {
+      width: "80%",
+      data: properties
+    })
   }
 
   ngOnInit(): void {}
@@ -108,12 +117,7 @@ export class GridBaseComponent<T> implements OnInit{
     const cleaned = JSON.parse(JSON.stringify(event.node.data))
     delete cleaned.__typename
     this.repo.save([cleaned])
-      .subscribe(({data}) => {
-          console.log(`data updated: ${JSON.stringify(data)}`)
-          if (data) {
-            showDataCommittedMessage()
-          }
-      })
+      .subscribe(({ received }) => showDataCommittedMessage(received))
   }
 
   private rollbackCellChange(event: CellChangedEvent) {

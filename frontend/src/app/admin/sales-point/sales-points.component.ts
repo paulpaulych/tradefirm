@@ -3,6 +3,7 @@ import {GridBaseComponent} from "../grid-common/grid-base.component"
 import {SalesPoint} from "./sales-point"
 import {GridProperties, NumberParser} from "../grid-common/grid_properties"
 import {SalesPointsRepo} from "./sales-point-repo"
+import {MatDialog} from "@angular/material/dialog"
 
 @Component({
     selector: "app-sales-points",
@@ -11,7 +12,7 @@ import {SalesPointsRepo} from "./sales-point-repo"
 })
 export class SalesPointsComponent extends GridBaseComponent<SalesPoint> implements OnInit {
 
-    constructor(repo: SalesPointsRepo) {
+    constructor(repo: SalesPointsRepo, dialog: MatDialog) {
         const properties = new GridProperties()
         properties.title = "Точки продаж"
         properties.columnDefs = [
@@ -33,7 +34,7 @@ export class SalesPointsComponent extends GridBaseComponent<SalesPoint> implemen
                 filter: "agNumberColumnFilter"
             }
         ]
-        super(repo, properties)
+        super(repo, properties, dialog)
     }
 
     ngOnInit() {

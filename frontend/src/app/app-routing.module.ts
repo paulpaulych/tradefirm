@@ -14,6 +14,7 @@ import {ApplicationsComponent} from "./salespoint/applications/applications.comp
 import {DeliveryComponent} from "./salespoint/delivery/delivery.component"
 import {SaleComponent} from "./admin/sale/sale.component";
 import {SellerComponent} from "./admin/seller/seller.component";
+import {CustomerComponent} from "./admin/customer/customer.component";
 
 export const ADMIN_PANEL_PATH = "admin"
 
@@ -60,6 +61,10 @@ export const routes = [
           {
             path: "sellers",
             component: SellerComponent
+          },
+          {
+            path: "customers",
+            component: CustomerComponent
           }
         ]
       },

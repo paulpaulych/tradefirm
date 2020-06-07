@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core"
 import {MatDialogRef} from "@angular/material/dialog"
-import {showErrorMessage} from "../../../admin/grid-common/insert-grid"
+import {showErrorMessage} from "../../../admin/grid-common/insert-dialog/insert-dialog.component"
 import gql from "graphql-tag"
 import {Apollo} from "apollo-angular"
 import {DeliveryRepoService} from "../delivery-repo.service"

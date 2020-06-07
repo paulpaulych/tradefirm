@@ -46,7 +46,8 @@ class PlainSaleQuery(
 
     @Authorization("ROLE_ADMIN")
     suspend fun plainSalesPage(filter: GraphQLFilter?, pageRequest: PageRequest): SalesPage {
-        log.info("hello from ")
+        log.info("filter: $filter")
+        log.info("pageRequest: size: ${pageRequest.pageSize}, number: ${pageRequest.pageNumber}")
         val res = if(filter == null){
             PlainSale::class.findAll(pageRequest)
         } else {
@@ -55,6 +56,7 @@ class PlainSaleQuery(
                     pageRequest
             )
         }
+        log.info("fetched: ${res.values}")
         return SalesPage(res.values, PageInfo(res.values.size))
     }
 

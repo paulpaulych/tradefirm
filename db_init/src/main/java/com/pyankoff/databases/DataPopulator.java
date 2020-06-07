@@ -286,7 +286,7 @@ public class DataPopulator {
     private void addProducts() throws IOException {
         log.info("inserting products");
         String string = resourceLoader.load("origins/products.txt");
-        String[] products = string.split("\n");
+        String[] products = string.split("\r\n");
         for(String product :Arrays.asList(products)){
             jdbcTemplate.update("insert into product(name) values (?) on conflict do nothing",
                     product);

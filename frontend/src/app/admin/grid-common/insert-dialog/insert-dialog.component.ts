@@ -1,25 +1,35 @@
-import {IRepo} from "./i_repo"
+import {IRepo} from "../i_repo"
 import { AllCommunityModules } from "@ag-grid-community/all-modules"
+import {Component, Inject} from "@angular/core"
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog"
 
-export class InsertGridProperties {
+export class InsertGridProperties<T> {
   colDefs = []
+  repo: IRepo<T>
 }
 
-export class InsertGrid<T> {
+@Component({
+  selector: "app-insert-dialog",
+  templateUrl: "./insert-dialog.component.html",
+  styleUrls: ["./insert-dialog.component.css"]
+})
+export class InsertDialogComponent<T> {
   protected gridApi
 
   modules = AllCommunityModules
   defaultColDef
   columnDefs
 
+  private repo: IRepo<T>
+
   constructor(
-    protected repo: IRepo<T>,
-    protected onInsertCallback: () => void,
-    properties: InsertGridProperties) {
+    private dialogRef: MatDialogRef<InsertDialogComponent<T>>,
+    @Inject(MAT_DIALOG_DATA) properties: InsertGridProperties<T>) {
     this.defaultColDef = {
       editable: true,
       sortable: true,
     }
+    this.repo = properties.repo
     this.columnDefs = properties.colDefs
   }
 
@@ -37,34 +47,50 @@ export class InsertGrid<T> {
     this.gridApi.setRowData(data)
   }
 
-  onInsertClicked(){
+  removeRow() {
     const data = []
+    this.gridApi.forEachNode((node, index) => {
+      data.push(node.data)
+    })
+    data.pop()
+    this.gridApi.setRowData(data)
+  }
+
+  onInsertClicked(){
+    const rawData = []
     this.gridApi.forEachNode((node, index) => {
       if (Object.keys(node.data).length !== 0){
         const cleaned = JSON.parse(JSON.stringify(node.data))
         delete cleaned.__typename
         console.log(JSON.stringify(cleaned))
-        data.push(cleaned)
+        rawData.push(cleaned)
       }
     })
+    const data = rawData.filter((it) => it !== {})
     if (data.length === 0){
       alert("Сначала добавьте строк для вставки")
       return
     }
     this.repo.save(data)
-      .subscribe(({data}) => {
-          console.log(`data updated: ${JSON.stringify(data)}`)
-          showDataCommittedMessage()
+      .subscribe(({received}) => {
           this.gridApi.setRowData([{}])
-          this.onInsertCallback()
+          showDataCommittedMessage(received)
+          this.closeDialog()
       })
 
   }
 
+  closeDialog() {
+    this.dialogRef.close()
+  }
+
 }
 
-export function showDataCommittedMessage(){
-  alert("Изменения применены. Обновите страницу")
+export function showDataCommittedMessage(data = null){
+  if (data) {
+    console.log(`data updated: ${JSON.stringify(data)}`)
+  }
+  alert("Изменения применены.")
 }
 
 export function showErrorMessage(error: any) {

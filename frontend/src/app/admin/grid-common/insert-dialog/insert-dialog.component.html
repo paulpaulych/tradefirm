@@ -1,0 +1,20 @@
+<h2>Вставка</h2>
+<ag-grid-angular
+  style="width: 1600px;"
+  class="ag-theme-material"
+  domLayout="autoHeight"
+  [defaultColDef]="defaultColDef"
+  [columnDefs]="columnDefs"
+  (gridReady)="onGridReady($event)"
+  [modules]="modules"
+></ag-grid-angular>
+<button (click)="addRow()" >
+  <span class="material-icons">add</span>
+</button>
+<button (click)="removeRow()" >
+  <span class="material-icons">remove</span>
+</button>
+<div mat-dialog-actions>
+  <button mat-button (click)="closeDialog()">Закрыть без сохранения</button>
+  <button (click)="onInsertClicked()">Вставить значения</button>
+</div>

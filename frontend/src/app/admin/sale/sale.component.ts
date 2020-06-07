@@ -2,6 +2,8 @@ import { Component} from "@angular/core"
 import {GridProperties} from "../grid-common/grid_properties"
 import {GridBaseComponent} from "../grid-common/grid-base.component"
 import {PlainSaleRepo, PlainSale} from "./sale-repo.service"
+import {PlainCustomerRepo} from "../customer/customer-repo.service";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: "app-sale",
@@ -10,7 +12,7 @@ import {PlainSaleRepo, PlainSale} from "./sale-repo.service"
 })
 export class SaleComponent extends GridBaseComponent<PlainSale> {
 
-  constructor(repo: PlainSaleRepo) {
+  constructor(repo: PlainSaleRepo, dialog: MatDialog) {
     const properties = new GridProperties()
 
     properties.title = "Журнал покупок"
@@ -41,7 +43,7 @@ export class SaleComponent extends GridBaseComponent<PlainSale> {
         field: "date"
       },
     ]
-    super(repo, properties)
+    super(repo, properties, dialog)
   }
 
 }

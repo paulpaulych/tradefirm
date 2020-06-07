@@ -1,7 +1,7 @@
 <h1>{{title}}</h1>
 <div>
   <ag-grid-angular
-    style="width: 100%;"
+    style="width: 1500px;"
     class="ag-theme-material"
 
     animateRows
@@ -24,18 +24,5 @@
   </ag-grid-angular>
   <button *ngIf="isDeleteButtonEnabled" (click)="onDeleteClicked()">Удалить выбранное</button>
 </div>
+<button (click)="openInsertDialog()">Вставить значения</button>
 
-<div>
-  <h2>Вставка</h2>
-  <ag-grid-angular
-                   style="width: 1000px;"
-                   class="ag-theme-material"
-                   domLayout="autoHeight"
-                   [defaultColDef]="insertGrid.defaultColDef"
-                   [columnDefs]="insertGrid.columnDefs"
-                   (gridReady)="insertGrid.onGridReady($event)"
-                   [modules]="insertGrid.modules"
-  ></ag-grid-angular>
-  <button (click)="insertGrid.addRow()">Добавить пустую строку</button>
-  <button (click)="insertGrid.onInsertClicked()">Вставить значения</button>
-</div>

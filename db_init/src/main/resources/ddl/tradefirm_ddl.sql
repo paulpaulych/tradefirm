@@ -2,13 +2,13 @@
 drop table if exists public.supplier cascade;
 CREATE TABLE public.supplier(
  id  bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
- company_name varchar(256) NOT NULL
+ company_name text NOT NULL
 );
 -- public.customer
 drop table if exists public.customer cascade;
 CREATE TABLE public.customer(
  id   bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
- name varchar(256) NOT NULL
+ name text NOT NULL
 );
 -- public.area
 drop table if exists public.area cascade;
@@ -29,26 +29,16 @@ CREATE TABLE public.orders(
 drop table if exists public.product cascade;
 CREATE TABLE public.product(
  id   bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
- name varchar(256) NOT NULL
+ name text NOT NULL
 );
 --  public.sales_point
 drop table if exists public.sales_point cascade;
 CREATE TABLE public.sales_point(
  id bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
- type         varchar(256) NOT NULL,
+ type         text NOT NULL,
  area_id       bigint NULL REFERENCES public.area(id) on delete set null
 );
 CREATE INDEX sales_point_area_id_fkey ON public.sales_point(area_id);
-
--- --  public.employee
--- drop table if exists public.employee cascade;
--- CREATE TABLE public.employee(
---  id   bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
---  name         varchar(256) NOT NULL,
---  sales_point_id bigint NOT NULL,
---  salary numeric(64, 2) NOT NULL
--- );
--- CREATE INDEX fkIdx_employee__sales_point_id ON employee(id);
 
 -- Seller
 drop table if exists public.seller cascade;
@@ -168,23 +158,6 @@ CREATE UNIQUE INDEX pkInd_order_product ON public.order_product(
 CREATE INDEX fkIdx_order_product__order_id ON public.order_product( order_id);
 CREATE INDEX fkIdx_order_product__product_id ON public.order_product( product_id);
 CREATE INDEX fkIdx_order_product__sales_point_id ON public.order_product( sales_point_id);
-
---
--- -- public.section
--- drop table if exists public.section cascade;
--- CREATE TABLE public.section(
---  id bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
---  floor     integer NOT NULL
--- );
---
--- -- section_manager
--- drop table if exists public.section_manager cascade;
--- CREATE TABLE section_manager(
---  id bigint  REFERENCES employee ( id ) on delete cascade,
---  section_id  bigint  REFERENCES section ( id ) on delete cascade
--- );
--- CREATE UNIQUE INDEX fkIdx_section_manager__emloyee_id ON section_manager(id);
--- CREATE INDEX fkIdx_section_manager__section_id ON section_manager(section_id);
 
 --  public.storage
 drop table if exists public.storage cascade;
