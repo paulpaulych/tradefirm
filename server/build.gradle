@@ -7,6 +7,8 @@ plugins {
 
 apply plugin: 'war'
 apply plugin: "kotlin-spring"
+apply plugin: 'jacoco'
+apply plugin: "org.sonarqube"
 
 sourceCompatibility = 1.8
 //TODO:опубликовать simple-orm в репозиторий и нормально переиспользовать его зависимости
@@ -64,8 +66,30 @@ allOpen{
 
 test {
     useJUnitPlatform()
+    jacoco {
+        destinationFile = file("${buildDir}/jacoco/test.exec")
+    }
+    finalizedBy jacocoTestReport
 }
 
+jacoco{
+    toolVersion = "0.8.3"
+    reportsDir = file("$buildDir/reports")
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled false
+    }
+}
+
+sonarqube {
+    properties {
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.sources", "src/main"
+    }
+}
 
 bootWar{
     enabled = true

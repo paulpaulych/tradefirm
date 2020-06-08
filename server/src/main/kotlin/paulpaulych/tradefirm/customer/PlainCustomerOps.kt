@@ -3,10 +3,7 @@ package paulpaulych.tradefirm.customer
 import com.expediagroup.graphql.annotations.GraphQLIgnore
 import com.expediagroup.graphql.spring.operations.Mutation
 import org.springframework.stereotype.Component
-import paulpaulych.tradefirm.apicore.GraphQLFilter
-import paulpaulych.tradefirm.apicore.GraphQLFilterMapper
-import paulpaulych.tradefirm.apicore.PageInfo
-import paulpaulych.tradefirm.apicore.PlainQuery
+import paulpaulych.tradefirm.apicore.*
 import paulpaulych.tradefirm.security.Authorization
 import paulpaulych.utils.LoggerDelegate
 import simpleorm.core.delete
@@ -22,9 +19,7 @@ data class CustomerPage (
 )
 
 @Component
-class PlainCustomerQuery(
-        private val filterMapper: GraphQLFilterMapper
-): PlainQuery<Customer> {
+class PlainCustomerQuery: PlainQuery<Customer> {
 
     private val log by LoggerDelegate()
 
@@ -35,7 +30,7 @@ class PlainCustomerQuery(
             Customer::class.findAll(pageRequest)
         } else {
             Customer::class.findBy(
-                    filterMapper.getFetchFilter(Customer::class, filter),
+                    toFetchFilter(Customer::class, filter),
                     pageRequest
             )
         }

@@ -22,10 +22,7 @@ object DateCoercing : Coercing<Date, String> {
     }
 
     override fun parseLiteral(input: Any?): Date? {
-        if(input == null){
-            return null
-        }
-        return format.parse(input as String)
+        return parseValue(input)
     }
 
     override fun serialize(dataFetcherResult: Any?): String? {

@@ -29,3 +29,7 @@ dependencies {
 bootRun{
     systemProperties = System.properties
 }
+
+sonarqube {
+    skipProject = true
+}

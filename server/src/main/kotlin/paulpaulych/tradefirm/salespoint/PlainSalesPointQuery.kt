@@ -12,10 +12,7 @@ import simpleorm.core.pagination.PageRequest
 import kotlin.reflect.KClass
 
 @Component
-class PlainSalesPointQuery(
-        private val filterMapper: GraphQLFilterMapper,
-        private val pageRequestMapper: PageRequestMapper
-): PlainQuery<PlainSalesPoint>{
+class PlainSalesPointQuery: PlainQuery<PlainSalesPoint>{
 
     private val log by LoggerDelegate()
 
@@ -31,7 +28,7 @@ class PlainSalesPointQuery(
             PlainSalesPoint::class.findAll(pageRequest)
         } else {
             PlainSalesPoint::class.findBy(
-                    filterMapper.getFetchFilter(PlainSalesPoint::class, filter),
+                    toFetchFilter(PlainSalesPoint::class, filter),
                     pageRequest
             )
         }

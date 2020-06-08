@@ -4,9 +4,9 @@ import com.expediagroup.graphql.annotations.GraphQLIgnore
 import com.expediagroup.graphql.spring.operations.Mutation
 import org.springframework.stereotype.Component
 import paulpaulych.tradefirm.apicore.GraphQLFilter
-import paulpaulych.tradefirm.apicore.GraphQLFilterMapper
 import paulpaulych.tradefirm.apicore.PageInfo
 import paulpaulych.tradefirm.apicore.PlainQuery
+import paulpaulych.tradefirm.apicore.toFetchFilter
 import paulpaulych.tradefirm.security.Authorization
 import paulpaulych.utils.LoggerDelegate
 import simpleorm.core.delete
@@ -30,9 +30,7 @@ data class SellerPage(
 )
 
 @Component
-class PlainSellerQuery(
-        private val filterMapper: GraphQLFilterMapper
-): PlainQuery<PlainSeller> {
+class PlainSellerQuery: PlainQuery<PlainSeller> {
 
     private val log by LoggerDelegate()
 
@@ -43,7 +41,7 @@ class PlainSellerQuery(
             PlainSeller::class.findAll(pageRequest)
         } else {
             PlainSeller::class.findBy(
-                    filterMapper.getFetchFilter(PlainSeller::class, filter),
+                    toFetchFilter(PlainSeller::class, filter),
                     pageRequest
             )
         }
