@@ -1,0 +1,28 @@
+server:
+  port: 3000
+  error:
+    includeStacktrace=ALWAYS:spring: ALWAYS
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tradefirm
+    username: postgres
+    password: 111111
+    driver-class-name: org.postgresql.Driver
+
+graphql:
+  packages:
+    - "paulpaulych.tradefirm"
+    - "java.util"
+
+order:
+  create:
+    fixedRateMillis: 60000
+    fetchSize: 5
+
+fakesupplier:
+  createDelivery:
+    fixedRateMillis: 60000
+
+
+

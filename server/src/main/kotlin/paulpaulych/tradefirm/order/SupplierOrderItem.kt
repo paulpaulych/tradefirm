@@ -5,9 +5,9 @@ import paulpaulych.tradefirm.salespoint.SalesPoint
 import paulpaulych.utils.Open
 
 @Open
-data class OrderItem(
+data class SupplierOrderItem(
         val id: Long? = null,
-        val order: Order,
+        val supplierOrder: SupplierOrder,
         val product: Product,
         val salesPoint: SalesPoint,
         val count: Int

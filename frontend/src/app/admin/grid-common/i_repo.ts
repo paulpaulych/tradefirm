@@ -1,22 +1,18 @@
-import {Product} from '../products/product';
-import {ApolloQueryResult} from 'apollo-client';
-import {Filter} from "./filter";
+import {ApolloQueryResult} from "apollo-client"
+import {Filter} from "./filter"
 
 export interface IRepo<T> {
-    queryForAll()
     queryForPage(filter: Filter, pageRequest: PageRequest)
-    saveMutation(items: Product[]),
-    deleteMutation(ids: any[])
+    save(items: T[]),
+    delete(ids: any[])
 }
 
-export function prepareApolloResult(res: ApolloQueryResult<Page<any>>, queryName: string){
+export function unwrapPage<T>(res: ApolloQueryResult<Page<any>>, queryName: string): Page<T>{
+  const page = res.data[queryName]
   return {
-    data: res.data[queryName]['values'],
-    errors: res.errors,
-    loading: res.errors,
-    networkStatus: res.networkStatus,
-    stale: res.stale
-  };
+    values: page.values,
+    pageInfo: page.pageInfo
+  }
 }
 
 export class PageRequest{

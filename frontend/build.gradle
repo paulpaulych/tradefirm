@@ -1,0 +1,47 @@
+apply plugin: 'com.moowork.node'
+apply plugin: 'org.sonarqube'
+
+group 'paulpaulych.tradefirm'
+version '1.0-SNAPSHOT'
+
+node {
+  version = "13.5.0"
+  npmVersion = '6.14.5'
+  download = true
+  workDir = file("${project.buildDir}/node")
+  nodeModulesDir = file("${project.projectDir}")
+}
+
+task clean(type: Delete){
+  delete "dist"
+}
+
+task cleanAll(type: Delete){
+  delete "build"
+  delete "node_modules"
+}
+cleanAll.dependsOn(clean)
+
+
+task build(type: NpmTask) {
+  args = ['run', 'build']
+}
+build.dependsOn(npm_install)
+
+task runLocal(type: NpmTask){
+  args = ['start']
+}
+runLocal.dependsOn(npm_install)
+
+task test(type: NpmTask){
+  args = ['test']
+}
+test.dependsOn(build)
+
+sonarqube {
+  properties {
+    property "sonar.sources", "src/app"
+    property "sonar.testExecutionReportPaths", "test-report.xml"
+    property "sonar.test.inclusions", "**/*.spec.ts,**/*test.ts"
+  }
+}

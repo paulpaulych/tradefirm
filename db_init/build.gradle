@@ -25,3 +25,11 @@ dependencies {
     compileOnly "org.projectlombok:lombok:$lombokVersion"
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
 }
+
+bootRun{
+    systemProperties = System.properties
+}
+
+sonarqube {
+    skipProject = true
+}

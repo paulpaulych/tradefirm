@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import {AuthService} from '../../security/auth-service.service';
-import {Router} from '@angular/router';
+import { Component, OnInit } from "@angular/core"
+import {AuthService} from "../../security/auth-service.service"
+import {Router} from "@angular/router"
 
 @Component({
-  selector: 'app-user-info',
-  templateUrl: './user-info.component.html',
-  styleUrls: ['./user-info.component.css']
+  selector: "app-user-info",
+  templateUrl: "./user-info.component.html",
+  styleUrls: ["./user-info.component.css"]
 })
 export class UserInfoComponent implements OnInit {
 

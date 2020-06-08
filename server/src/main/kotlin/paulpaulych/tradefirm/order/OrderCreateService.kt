@@ -29,11 +29,14 @@ class OrderCreateService(
     fun createOrder(){
         val newApplications = fetchNewApplications()
         log.error("fetched new applications: ${newApplications.size}")
-        val savedOrder = save(Order(date = Date()))
+        if(newApplications.isEmpty()){
+            return
+        }
+        val savedOrder = save(SupplierOrder(date = Date()))
         newApplications.forEach { application ->
             application.items.forEach {applicationItem ->
-                val orderItem = OrderItem(
-                        order = savedOrder,
+                val orderItem = SupplierOrderItem(
+                        supplierOrder = savedOrder,
                         product = applicationItem.product,
                         salesPoint = application.salesPoint,
                         count = applicationItem.count)

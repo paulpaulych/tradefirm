@@ -1,10 +1,11 @@
-import {Injectable, OnInit} from '@angular/core';
-import {IRepo, Page, PageRequest, prepareApolloResult} from '../grid-common/i_repo';
-import {Product} from './product';
-import {Apollo} from 'apollo-angular';
-import {map} from 'rxjs/operators';
-import gql from "graphql-tag";
-import {Filter} from "../grid-common/filter";
+import {Injectable, OnInit} from "@angular/core"
+import {IRepo, Page, PageRequest, unwrapPage} from "../grid-common/i_repo"
+import {Product} from "./product"
+import {Apollo} from "apollo-angular"
+import {map} from "rxjs/operators"
+import gql from "graphql-tag"
+import {Filter} from "../grid-common/filter"
+import {DefaultRepo} from "../grid-common/default_repo";
 
 const GET_ALL = gql`
   query{
@@ -25,8 +26,8 @@ const SAVE_MUTATION = gql`
 `
 
 const GET_PAGE = gql`
-  query ProductsPages($filter: GraphQLFilterInput, $pageRequest: PageRequestDTOInput!){
-    productPages(filter: $filter, pageRequest: $pageRequest){
+  query ProductsPages($filter: GraphQLFilterInput, $pageRequest: PageRequestInput!){
+    productsPage(filter: $filter, pageRequest: $pageRequest){
       values{
         id
         name
@@ -39,57 +40,18 @@ const GET_PAGE = gql`
 `
 
 const DELETE_MUTATION = gql`
-  mutation DeleteProducts($values: [Long!]!){
-    deleteProducts(values: $values)
+  mutation DeleteProducts($ids: [Long!]!){
+    deleteProducts(ids: $ids)
   }
 `
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
-export class ProductRepo implements IRepo<Product>, OnInit {
+export class ProductRepo extends DefaultRepo<Product>{
 
-  constructor(private apollo: Apollo) {}
-
-  queryForAll() {
-    return this.apollo
-      .watchQuery<Product>({
-        query: GET_ALL,
-      })
-      .valueChanges;
+  constructor(apollo: Apollo) {
+    super(apollo, GET_PAGE, SAVE_MUTATION, DELETE_MUTATION, "productsPage")
   }
 
-  queryForPage(filter: Filter, pageRequest: PageRequest) {
-    return this.apollo
-      .watchQuery<Page<Product>>({
-        query: GET_PAGE,
-        variables: {
-          filter: filter,
-          pageRequest: pageRequest
-        }
-      })
-      .valueChanges
-      .pipe(map(r => prepareApolloResult(r, 'productPages')));
-  }
-
-  saveMutation(items: Product[]) {
-    return this.apollo.mutate({
-      mutation: SAVE_MUTATION,
-      variables: {
-        values: items
-      }
-    });
-  }
-
-  ngOnInit(): void {}
-
-  deleteMutation(ids: any[]) {
-    console.log(`products to delete: ${JSON.stringify(ids)}`)
-    return this.apollo.mutate({
-      mutation: DELETE_MUTATION,
-      variables: {
-        values: ids
-      }
-    });
-  }
 }

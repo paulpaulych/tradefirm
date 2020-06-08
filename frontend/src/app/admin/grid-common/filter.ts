@@ -1,4 +1,4 @@
-import {error} from "@angular/compiler/src/util";
+import {error} from "@angular/compiler/src/util"
 
 export class Filter {
   type: string
@@ -11,12 +11,12 @@ export class Filter {
 
 export function prepareFilterModel(filterModel): Filter {
   const columns = Object.keys(filterModel)
-  if(columns.length == 0){
+  if (columns.length == 0){
     return null
   }
   return columns
     .map((column) => prepareColumnFilter(column, filterModel[column]))
-    .reduce((prevFilter, curFilter)=>{
+    .reduce((prevFilter, curFilter) => {
       return {
         type: "STRUCTURAL",
         left: prevFilter,
@@ -29,7 +29,7 @@ export function prepareFilterModel(filterModel): Filter {
 }
 
 function prepareColumnFilter(column, filterParams): Filter{
-  if(filterParams.operator == "AND" || filterParams.operator == "AND"){
+  if (filterParams.operator === "AND" || filterParams.operator === "OR"){
     return structuralFilter(column, filterParams)
   }
   return {
@@ -64,7 +64,7 @@ function prepareOperator(type: string): string{
     case "contains": return "CONTAINS"
     case "notContains": return "NOT_CONTAINS"
     case "startsWith": return "STARTS_WITH"
-    case "endsWith": return "STARTS_WITH"
+    case "endsWith": return "ENDS_WITH"
     case "notEqual": return "NOT_EQUALS"
     case "greaterThan": return "GREATER"
     case "lessThan": return "LESS"

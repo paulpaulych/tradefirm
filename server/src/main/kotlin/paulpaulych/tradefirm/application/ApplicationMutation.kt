@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import paulpaulych.tradefirm.product.Product
 import paulpaulych.tradefirm.salespoint.SalesPoint
+import paulpaulych.tradefirm.salespoint.getSalesPoint
 import paulpaulych.tradefirm.security.Authorization
 import paulpaulych.tradefirm.security.MyGraphQLContext
 import paulpaulych.tradefirm.security.SellerUser
@@ -38,13 +39,6 @@ class ApplicationMutation: Mutation{
             )
         }
         return savedApplication
-    }
-
-    private fun getSalesPoint(context: MyGraphQLContext): SalesPoint {
-        val sellerUser = context.securityContext!!.authentication.principal as SellerUser
-        val seller = Seller::class.findById(sellerUser.sellerId)
-                ?: error("seller not found")
-        return seller.salesPoint
     }
 
 }

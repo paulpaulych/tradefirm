@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import gql from "graphql-tag";
-import {Apollo} from "apollo-angular";
-import {showErrorMessage} from "../../admin/grid-common/insert-grid";
+import { Injectable } from "@angular/core"
+import gql from "graphql-tag"
+import {Apollo} from "apollo-angular"
+import {showErrorMessage} from "../../admin/grid-common/insert-dialog/insert-dialog.component"
 
 const QUERY = gql`
   query{
@@ -22,33 +22,26 @@ const ADD_MUTATION = gql`
 `
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class CustomersRepoService {
 
   constructor(private apollo: Apollo) { }
 
   queryData(subscribe){
-    return this.apollo.watchQuery({
+    return this.apollo.watchQuery<any>({
       query: QUERY
     })
       .valueChanges
-      .subscribe({
-        next: ({data, loading, errors}) => {
-          if (data) {
-            console.log(`got: ${JSON.stringify(data)}`)
-            const preparedData = data["customers"]
-            subscribe(preparedData)
-          }
-          if (errors) {
-            showErrorMessage(errors)
-          }
-        }
+      .subscribe(({data}) => {
+          console.log(`got: ${JSON.stringify(data)}`)
+          const preparedData = data.customers
+          subscribe(preparedData)
       })
   }
 
   addCustomer(name: string){
-    return this.apollo.mutate({
+    return this.apollo.mutate<any>({
       mutation: ADD_MUTATION,
       variables: {
         customerName: name

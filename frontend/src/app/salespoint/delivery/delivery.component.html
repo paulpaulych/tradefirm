@@ -1,0 +1,21 @@
+<h2>Поставки</h2>
+<ag-grid-angular
+  style="width: 1000px"
+  class="ag-theme-material"
+
+  animateRows
+  [defaultColDef]="defaultColDef"
+  [columnDefs]="columnDefs"
+
+  pagination=true
+  paginationPageSize=10
+
+  [rowMultiSelectWithClick]="true"
+  domLayout="autoHeight"
+
+  (gridReady)="onGridReady($event)"
+>
+</ag-grid-angular>
+<button (click)="openCreateApplicationDialog()">Добавить поставку</button>
+<!--<button *ngIf="gridApi && gridApi.getSelectedRows().length != 0"-->
+<!--        (click)="openApplicationInfoDialog()">Подробнее о заявке</button>-->

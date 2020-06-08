@@ -1,6 +1,6 @@
 package paulpaulych.tradefirm.apicore
 
-open class GraphQLFilter(
+data class GraphQLFilter(
         val type: Type,
         val op: Op,
         val operands: List<String>,

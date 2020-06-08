@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   backendUrl: "http://localhost:3000/graphql",
   authUrl: "http://localhost:3000/login"
-};
+}
 
 /*
  * For easier debugging in development mode, you can import the following file

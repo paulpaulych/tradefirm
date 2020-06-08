@@ -1,7 +1,7 @@
 package paulpaulych.tradefirm.delivery
 
-import paulpaulych.tradefirm.order.Order
+import paulpaulych.tradefirm.order.SupplierOrder
 
 interface SupplierService{
-    fun applyOrder(order: Order)
+    fun applyOrder(supplierOrder: SupplierOrder)
 }

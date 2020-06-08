@@ -2,13 +2,13 @@
 drop table if exists public.supplier cascade;
 CREATE TABLE public.supplier(
  id  bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
- company_name varchar(256) NOT NULL
+ company_name text NOT NULL
 );
 -- public.customer
 drop table if exists public.customer cascade;
 CREATE TABLE public.customer(
  id   bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
- name varchar(50) NOT NULL
+ name text NOT NULL
 );
 -- public.area
 drop table if exists public.area cascade;
@@ -29,33 +29,24 @@ CREATE TABLE public.orders(
 drop table if exists public.product cascade;
 CREATE TABLE public.product(
  id   bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
- name varchar(50) NOT NULL
+ name text NOT NULL
 );
 --  public.sales_point
 drop table if exists public.sales_point cascade;
 CREATE TABLE public.sales_point(
  id bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
- type         varchar(50) NOT NULL,
+ type         text NOT NULL,
  area_id       bigint NULL REFERENCES public.area(id) on delete set null
 );
 CREATE INDEX sales_point_area_id_fkey ON public.sales_point(area_id);
 
---  public.employee
-drop table if exists public.employee cascade;
-CREATE TABLE public.employee(
- id   bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
- name         varchar(256) NOT NULL,
- sales_point_id bigint NOT NULL,
- salary numeric(64, 2) NOT NULL
-);
-CREATE INDEX fkIdx_employee__sales_point_id ON employee(id);
-
 -- Seller
 drop table if exists public.seller cascade;
 CREATE TABLE seller(
- id bigint primary key
-     REFERENCES employee (id)
-        on delete cascade
+ id   bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
+ name         text NOT NULL,
+ sales_point_id bigint NOT NULL,
+ salary numeric(64, 2) NOT NULL
 );
 
 -- public.sale
@@ -64,12 +55,12 @@ CREATE TABLE public.sale(
  id       bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
  customer_id   bigint, -- покупатель может быть не указан
  sales_point_id bigint REFERENCES public.sales_point(id) on delete set null,
- employee_id   bigint REFERENCES seller(id) on delete set null,
+ seller_id   bigint REFERENCES seller(id) on delete set null,
  date         timestamp NOT NULL
 );
 CREATE INDEX fkIdx_sale__customer_id ON public.sale(customer_id);
 CREATE INDEX fkIdx_sale__sales_point_id ON public.sale(sales_point_id);
-CREATE INDEX fkIdx_sale__employee_id ON public.sale(employee_id);
+CREATE INDEX fkIdx_sale__seller_id ON public.sale(seller_id);
 
 --  public.sale_product
 drop table if exists public.sale_product cascade;
@@ -120,23 +111,35 @@ CREATE TABLE public.delivery(
  supplier_id bigint,
  date       timestamp NOT NULL
 );
---  public.delivery_distribution
-drop table if exists public.delivery_distribution cascade;
-CREATE TABLE public.delivery_distribution(
+--  public.shop_delivery
+drop table if exists public.shop_delivery cascade;
+CREATE TABLE public.shop_delivery(
  id            bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
  delivery_id   bigint NOT NULL REFERENCES public.delivery(id) on delete cascade,
- product_id    bigint NOT NULL REFERENCES public.product(id) on delete cascade ,
- sales_point_id bigint NOT NULL REFERENCES public.sales_point(id) on delete cascade ,
- count        bigint NOT NULL
+ sales_point_id bigint NOT NULL REFERENCES public.sales_point(id) on delete cascade,
+ date       timestamp NOT NULL
 );
-CREATE UNIQUE INDEX pk_delivery_distribution ON public.delivery_distribution (
+CREATE UNIQUE INDEX pk_shop_delivery ON public.shop_delivery (
  delivery_id,
- product_id,
  sales_point_id
 );
-CREATE INDEX fkIdx_delivery_distribution__delivery_id ON public.delivery_distribution( delivery_id);
-CREATE INDEX fkIdx_delivery_distribution__product_id ON public.delivery_distribution( product_id);
-CREATE INDEX fkIdx_delivery_distribution__sales_point_id ON public.delivery_distribution ( sales_point_id);
+CREATE INDEX fkIdx_shop_delivery__delivery_id ON public.shop_delivery( delivery_id);
+CREATE INDEX fkIdx_shop_delivery__sales_point_id ON public.shop_delivery ( sales_point_id);
+
+--  public.shop_delivery_items
+drop table if exists public.shop_delivery_items cascade;
+CREATE TABLE public.shop_delivery_items(
+ id        bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
+ shop_delivery_id   bigint REFERENCES public.shop_delivery(id) on delete cascade,
+ product_id bigint REFERENCES public.product(id) on delete cascade,
+ count     integer NOT NULL
+);
+CREATE UNIQUE INDEX pkInd_shop_delivery__product ON public.shop_delivery_items(
+ shop_delivery_id,
+ product_id
+);
+CREATE INDEX fkIdx_product__shop_delivery_id ON public.shop_delivery_items( shop_delivery_id);
+CREATE INDEX fkIdx_shop_delivery__product_id ON public.shop_delivery_items( product_id);
 
 --  public.OrderProduct
 drop table if exists public.order_product cascade;
@@ -155,23 +158,6 @@ CREATE UNIQUE INDEX pkInd_order_product ON public.order_product(
 CREATE INDEX fkIdx_order_product__order_id ON public.order_product( order_id);
 CREATE INDEX fkIdx_order_product__product_id ON public.order_product( product_id);
 CREATE INDEX fkIdx_order_product__sales_point_id ON public.order_product( sales_point_id);
-
---
--- -- public.section
--- drop table if exists public.section cascade;
--- CREATE TABLE public.section(
---  id bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
---  floor     integer NOT NULL
--- );
---
--- -- section_manager
--- drop table if exists public.section_manager cascade;
--- CREATE TABLE section_manager(
---  id bigint  REFERENCES employee ( id ) on delete cascade,
---  section_id  bigint  REFERENCES section ( id ) on delete cascade
--- );
--- CREATE UNIQUE INDEX fkIdx_section_manager__emloyee_id ON section_manager(id);
--- CREATE INDEX fkIdx_section_manager__section_id ON section_manager(section_id);
 
 --  public.storage
 drop table if exists public.storage cascade;

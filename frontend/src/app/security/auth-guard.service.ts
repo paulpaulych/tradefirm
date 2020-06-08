@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import {AuthService} from './auth-service.service';
+import { Injectable } from "@angular/core"
+import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router"
+import {AuthService} from "./auth-service.service"
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class AuthGuard implements CanActivate {
   constructor(
     private router: Router,
@@ -12,15 +12,15 @@ export class AuthGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     if (this.authService.isLoggedIn()) {
       console.log("user is logged in")
-      return true;
+      return true
     }
     console.log("user is not logged in")
-    this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
-    return false;
+    this.router.navigate(["/login"], { queryParams: { returnUrl: state.url } })
+    return false
   }
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class AdminAuthGuard implements CanActivate {
   constructor(
     private router: Router,
@@ -28,10 +28,10 @@ export class AdminAuthGuard implements CanActivate {
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if(this.authService.getRole() != "ROLE_ADMIN"){
+    if (this.authService.getRole() != "ROLE_ADMIN"){
       alert("Страница недоступна для пользователя вас")
       return false
     }
-    return true;
+    return true
   }
 }
