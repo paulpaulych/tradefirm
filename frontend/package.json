@@ -13,7 +13,9 @@
     "preset": "jest-preset-angular",
     "setupTestFrameworkScriptFile": "<rootDir>/setupJest.ts",
     "testResultsProcessor": "jest-sonar-reporter",
-    "testPathIgnorePatterns": ["<rootDir>"]
+    "testPathIgnorePatterns": [
+      "<rootDir>"
+    ]
   },
   "jestSonar": {
     "sonar56x": true
