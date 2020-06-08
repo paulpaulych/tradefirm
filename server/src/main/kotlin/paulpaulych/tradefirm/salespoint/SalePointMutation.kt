@@ -29,9 +29,3 @@ class SalePointMutation: Mutation {
     }
 
 }
-
-//data class SalesPointSaveReq(
-//        val id: Long? = null,
-//        val type: String,
-//        val areaId: Long? = null
-//)

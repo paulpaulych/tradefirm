@@ -1,4 +1,4 @@
-rootProject.name = 'databases'
+rootProject.name = 'tradefirm'
 
 include 'db_init'
 include 'server'

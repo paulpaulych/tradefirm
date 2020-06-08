@@ -17,18 +17,16 @@ data class SalesPoint(
         val type: String,
         val area: Area?
 ){
+
     val storageItems: List<StorageItem>
         get() {
-            val id = id ?: error("id is not set yet")
             return StorageItem::class.findBy(
-                    EqFilter(StorageItem::salesPointId, id)
+                    EqFilter(StorageItem::salesPointId, toLong(id))
             )
         }
 
     val sales: List<Sale>
         get() {
-            val id = id
-                    ?: error("id is not set yet")
             return Sale::class.query(
                     """
                     select
@@ -37,34 +35,36 @@ data class SalesPoint(
                         join sales_point sp on s.sales_point_id = sp.id
                     where sp.id = ?
                 """.trimIndent(),
-                    listOf(id)
+                    listOf(toLong(id))
             )
         }
 
     val applications: List<Application>
         get(){
-            val id = id
-                    ?: error("id is not set yet")
             val applications = Application::class.query("""
                 select id from application where sales_point_id = ? order by date desc
                 """.trimIndent(),
-                listOf(id))
+                listOf(toLong(id)))
             log.info("applications: $applications")
             return applications
         }
 
     val shopDeliveries: List<ShopDelivery>
         get(){
-            val id = id
-                    ?: error("id is not set yet")
             val deliveries = ShopDelivery::class.query(
                 "select id from shop_delivery where sales_point_id = ? order by date desc",
-                listOf(id))
+                listOf(toLong(id)))
             log.info("deliveries: $deliveries")
             return deliveries
         }
 
     private val log by LoggerDelegate()
 
+    private fun toLong(id: Long?): Long{
+        if(id == null){
+            error("id is not set yet")
+        }
+        return id
+    }
 }
 

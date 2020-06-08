@@ -11,8 +11,4 @@ class CustomerMutation: Mutation{
         return save(Customer(name = name))
     }
 
-//    fun deleteCustomer(id: Long){
-//        Customer::class.delete(id)
-//    }
-
 }

@@ -29,7 +29,7 @@ export function prepareFilterModel(filterModel): Filter {
 }
 
 function prepareColumnFilter(column, filterParams): Filter{
-  if (filterParams.operator == "AND" || filterParams.operator == "AND"){
+  if (filterParams.operator === "AND" || filterParams.operator === "OR"){
     return structuralFilter(column, filterParams)
   }
   return {

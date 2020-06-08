@@ -12,9 +12,7 @@ import simpleorm.core.pagination.PageRequest
 import kotlin.reflect.KClass
 
 @Component
-class ProductQuery(
-        private val filterMapper: GraphQLFilterMapper
-): PlainQuery<Product>{
+class ProductQuery: PlainQuery<Product>{
 
     private val log by LoggerDelegate()
 
@@ -36,7 +34,7 @@ class ProductQuery(
             Product::class.findAll(pageRequest)
         }else {
             Product::class.findBy(
-                    filterMapper.getFetchFilter(Product::class, filter),
+                    toFetchFilter(Product::class, filter),
                     pageRequest
             )
         }
