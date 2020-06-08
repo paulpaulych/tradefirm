@@ -27,5 +27,5 @@ test:
       - frontend/test-report.xml
 
 coverage:
-  stage: coverage
+  stage: test
   script: ./gradlew sonarqube --stacktrace
