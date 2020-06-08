@@ -18,14 +18,10 @@ build:
 
 test:
   stage: test
-  script: ./gradlew test --stacktrace
+  script: ./gradlew test sonarqube --stacktrace
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: push
     paths:
       - server/build/reports
       - frontend/test-report.xml
-
-coverage:
-  stage: test
-  script: ./gradlew sonarqube --stacktrace
