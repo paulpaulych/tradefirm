@@ -37,7 +37,6 @@ runLocal.dependsOn(npm_install)
 task test(type: NpmTask){
   args = ['test']
 }
-test.dependsOn(build)
 
 sonarqube {
   properties {

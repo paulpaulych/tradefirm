@@ -5,14 +5,15 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
   "jest": {
     "preset": "jest-preset-angular",
     "setupTestFrameworkScriptFile": "<rootDir>/setupJest.ts",
-    "testResultsProcessor": "jest-sonar-reporter"
+    "testResultsProcessor": "jest-sonar-reporter",
+    "testPathIgnorePatterns": ["<rootDir>"]
   },
   "jestSonar": {
     "sonar56x": true
