@@ -3,6 +3,10 @@ image: adoptopenjdk/openjdk11
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
+stages:
+  - build
+  - test
+
 before_script:
   - chmod +x gradlew
 
@@ -13,7 +17,8 @@ build:
     key: "$CI_COMMIT_REF_NAME"
     policy: push
     paths:
-      - build
+      - server/build
+      - db-init/build
       - .gradle
 
 test:
