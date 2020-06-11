@@ -3,10 +3,12 @@ package paulpaulych.tradefirm.config.graphql
 import com.expediagroup.graphql.hooks.SchemaGeneratorHooks
 import graphql.schema.GraphQLType
 import org.springframework.stereotype.Component
+import paulpaulych.tradefirm.apicore.PageInfo
 import paulpaulych.tradefirm.apicore.SortDTO
 import paulpaulych.utils.LoggerDelegate
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import simpleorm.core.pagination.Page
 import simpleorm.core.pagination.PageRequest
 import java.util.*
 import kotlin.reflect.KClass
@@ -29,6 +31,8 @@ class Hooks : SchemaGeneratorHooks {
         SortDTO.Order::class -> orderType
         SortDTO::class -> sortType
         PageRequest::class -> pageRequestType
+        PageInfo::class -> pageInfoType
+        Page::class -> pageType
         else -> null
     }
 

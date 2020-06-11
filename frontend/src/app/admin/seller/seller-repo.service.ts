@@ -24,12 +24,7 @@ const SAVE_MUTATION = gql`
 const GET_PAGE = gql`
   query PlainSellersPages($filter: GraphQLFilterInput, $pageRequest: PageRequestInput!){
     plainSellersPage(filter: $filter, pageRequest: $pageRequest){
-      values{
-        id
-        name
-        salesPointId
-        salary
-      }
+      values
       pageInfo{
         pageSize
       }

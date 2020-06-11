@@ -48,6 +48,7 @@ dependencies {
     compile("com.expediagroup:graphql-kotlin-spring-server:$graphqlKotlinVersion"){
         exclude(group: 'com.fasterxml.jackson.module')
     }
+    compile 'com.graphql-java:graphql-java-extended-scalars:1.0'
 //    implementation("io.projectreactor:reactor-test:$reactorVersion")
 
 }

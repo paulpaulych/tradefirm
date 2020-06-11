@@ -40,16 +40,14 @@ import { CreateApplicationDialogComponent } from "./salespoint/applications/crea
 import { DeliveryComponent } from "./salespoint/delivery/delivery.component"
 import { CreateDeliveryDialogComponent } from "./salespoint/delivery/create-delivery-dialog/create-delivery-dialog.component"
 import { onError } from "apollo-link-error"
-import {GraphQLError} from "graphql"
 import {showErrorMessage} from "./admin/grid-common/insert-dialog/insert-dialog.component"
-import {message} from "ag-grid-community/dist/lib/utils/general"
-import {ApolloLink, concat} from "apollo-link"
-import {Router, RouterModule} from "@angular/router";
-import {InMemoryCache} from "apollo-cache-inmemory";
-import { SaleComponent } from './admin/sale/sale.component';
-import { SellerComponent } from './admin/seller/seller.component';
-import { CustomerComponent } from './admin/customer/customer.component';
-import { InsertDialogComponent } from './admin/grid-common/insert-dialog/insert-dialog.component';
+import {Router} from "@angular/router"
+import {InMemoryCache} from "apollo-cache-inmemory"
+import { SaleComponent } from "./admin/sale/sale.component"
+import { SellerComponent } from "./admin/seller/seller.component"
+import { CustomerComponent } from "./admin/customer/customer.component"
+import { InsertDialogComponent } from "./admin/grid-common/insert-dialog/insert-dialog.component"
+
 
 
 @NgModule({
@@ -128,7 +126,7 @@ export class AppModule {
     const errorLink = onError(({ graphQLErrors, networkError }) => {
       if (graphQLErrors) {
         graphQLErrors.map(graphQLError => {
-          const errorType = graphQLError["errorType"]
+          const errorType = graphQLError[`errorType`]
           console.log("error type: " + errorType)
           if (errorType === "READABLE_ERROR"){
             alert(graphQLError.message)

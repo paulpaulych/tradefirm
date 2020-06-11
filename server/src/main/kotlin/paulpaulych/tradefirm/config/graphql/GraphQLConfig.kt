@@ -1,5 +1,7 @@
 package paulpaulych.tradefirm.config.graphql
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import graphql.GraphQL
 import graphql.execution.*
 import graphql.execution.instrumentation.tracing.TracingInstrumentation
@@ -18,9 +20,7 @@ class GraphQLConfig {
             .queryExecutionStrategy(AsyncSerialExecutionStrategy(dataFetcherExceptionHandler))
             .mutationExecutionStrategy(AsyncSerialExecutionStrategy(dataFetcherExceptionHandler))
             .subscriptionExecutionStrategy(SubscriptionExecutionStrategy(dataFetcherExceptionHandler))
-//            .instrumentation(TracingInstrumentation())
             .build()
-
 
 }
 

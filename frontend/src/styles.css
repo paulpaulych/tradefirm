@@ -19,9 +19,9 @@ body {
   flex-direction: row;
 }
 
-/*router-outlet + *  {*/
-/*  padding: 0 16px;*/
-/*}*/
+router-outlet + *  {
+  padding: 0 16px;
+}
 
 /* Text */
 

@@ -15,9 +15,6 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
     @Autowired
     private DataPopulator dataPopulator;
 
-//    @Override
-//    public void run(String... args) throws IOException {
-//    }
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
 

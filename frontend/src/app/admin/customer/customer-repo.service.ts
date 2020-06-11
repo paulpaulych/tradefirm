@@ -20,10 +20,7 @@ const SAVE_MUTATION = gql`
 const GET_PAGE = gql`
   query PlainCustomersPages($filter: GraphQLFilterInput, $pageRequest: PageRequestInput!){
     plainCustomersPage(filter: $filter, pageRequest: $pageRequest){
-      values{
-        id
-        name
-      }
+      values
       pageInfo{
         pageSize
       }

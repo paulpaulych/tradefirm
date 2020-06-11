@@ -12,6 +12,7 @@ import paulpaulych.utils.LoggerDelegate
 import simpleorm.core.delete
 import simpleorm.core.findAll
 import simpleorm.core.findBy
+import simpleorm.core.pagination.Page
 import simpleorm.core.pagination.PageRequest
 import simpleorm.core.save
 import java.math.BigDecimal
@@ -24,28 +25,18 @@ data class PlainSeller(
         val salary: BigDecimal
 )
 
-data class SellerPage(
-        val values: List<PlainSeller>,
-        val pageInfo: PageInfo
-)
-
 @Component
 class PlainSellerQuery: PlainQuery<PlainSeller> {
 
     private val log by LoggerDelegate()
 
     @Authorization("ROLE_ADMIN")
-    suspend fun plainSellersPage(filter: GraphQLFilter?, pageRequest: PageRequest): SellerPage {
+    suspend fun plainSellersPage(filter: GraphQLFilter?, pageRequest: PageRequest): Page<PlainSeller> {
         log.info("hello from ")
-        val res = if(filter == null){
-            PlainSeller::class.findAll(pageRequest)
-        } else {
-            PlainSeller::class.findBy(
-                    toFetchFilter(PlainSeller::class, filter),
-                    pageRequest
-            )
-        }
-        return SellerPage(res.values, PageInfo(res.values.size))
+        return PlainSeller::class.findBy(
+                toFetchFilter(PlainSeller::class, filter),
+                pageRequest
+        )
     }
 
     @GraphQLIgnore
@@ -67,7 +58,6 @@ class PlainSellerMutation: Mutation {
 
     @Authorization("ROLE_ADMIN")
     suspend fun deletePlainSellers(ids: List<Long>): List<Long>{
-        println(ids)
         ids.forEach{ PlainSeller::class.delete(it) }
         return ids
     }

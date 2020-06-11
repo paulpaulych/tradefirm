@@ -11,6 +11,7 @@ import paulpaulych.utils.LoggerDelegate
 import simpleorm.core.delete
 import simpleorm.core.findAll
 import simpleorm.core.findBy
+import simpleorm.core.pagination.Page
 import simpleorm.core.pagination.PageRequest
 import simpleorm.core.save
 import java.util.*
@@ -24,11 +25,6 @@ data class PlainSale(
         val date: Date
 )
 
-data class SalesPage (
-        val values: List<PlainSale>,
-        val pageInfo: PageInfo
-)
-
 @Component
 class PlainSaleQuery: PlainQuery<PlainSale> {
 
@@ -40,19 +36,10 @@ class PlainSaleQuery: PlainQuery<PlainSale> {
     }
 
     @Authorization("ROLE_ADMIN")
-    suspend fun plainSalesPage(filter: GraphQLFilter?, pageRequest: PageRequest): SalesPage {
-        log.info("filter: $filter")
-        log.info("pageRequest: size: ${pageRequest.pageSize}, number: ${pageRequest.pageNumber}")
-        val res = if(filter == null){
-            PlainSale::class.findAll(pageRequest)
-        } else {
-            PlainSale::class.findBy(
+    suspend fun plainSalesPage(filter: GraphQLFilter?, pageRequest: PageRequest): Page<PlainSale> {
+        return PlainSale::class.findBy(
                     toFetchFilter(PlainSale::class, filter),
-                    pageRequest
-            )
-        }
-        log.info("fetched: ${res.values}")
-        return SalesPage(res.values, PageInfo(res.values.size))
+                    pageRequest)
     }
 
     @GraphQLIgnore
@@ -74,7 +61,6 @@ class PlainSaleMutation: Mutation{
 
     @Authorization("ROLE_ADMIN")
     suspend fun deletePlainSales(ids: List<Long>): List<Long>{
-        println(ids)
         ids.forEach{ PlainSale::class.delete(it)}
         return ids
     }

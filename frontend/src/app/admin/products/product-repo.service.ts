@@ -1,24 +1,12 @@
 import {Injectable, OnInit} from "@angular/core"
-import {IRepo, Page, PageRequest, unwrapPage} from "../grid-common/i_repo"
 import {Product} from "./product"
 import {Apollo} from "apollo-angular"
-import {map} from "rxjs/operators"
 import gql from "graphql-tag"
-import {Filter} from "../grid-common/filter"
-import {DefaultRepo} from "../grid-common/default_repo";
-
-const GET_ALL = gql`
-  query{
-    products{
-        id
-        name
-    }
-  }
-`
+import {DefaultRepo} from "../grid-common/default_repo"
 
 const SAVE_MUTATION = gql`
   mutation SaveProducts($values: [ProductInput!]!){
-    saveProducts(values: $values){
+    savePlainProducts(values: $values){
       id
       name
     }
@@ -27,11 +15,8 @@ const SAVE_MUTATION = gql`
 
 const GET_PAGE = gql`
   query ProductsPages($filter: GraphQLFilterInput, $pageRequest: PageRequestInput!){
-    productsPage(filter: $filter, pageRequest: $pageRequest){
-      values{
-        id
-        name
-      }
+    plainProductsPage(filter: $filter, pageRequest: $pageRequest){
+      values
       pageInfo{
         pageSize
       }
@@ -41,7 +26,7 @@ const GET_PAGE = gql`
 
 const DELETE_MUTATION = gql`
   mutation DeleteProducts($ids: [Long!]!){
-    deleteProducts(ids: $ids)
+    deletePlainProducts(ids: $ids)
   }
 `
 
@@ -51,7 +36,7 @@ const DELETE_MUTATION = gql`
 export class ProductRepo extends DefaultRepo<Product>{
 
   constructor(apollo: Apollo) {
-    super(apollo, GET_PAGE, SAVE_MUTATION, DELETE_MUTATION, "productsPage")
+    super(apollo, GET_PAGE, SAVE_MUTATION, DELETE_MUTATION, "plainProductsPage")
   }
 
 }

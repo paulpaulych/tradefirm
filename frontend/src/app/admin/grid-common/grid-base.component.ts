@@ -1,5 +1,5 @@
 import {CellChangedEvent} from "ag-grid-community/dist/lib/entities/rowNode"
-import {IRepo, Page, PageRequest, Sort} from "./i_repo"
+import {IRepo, PageRequest, Sort} from "./i_repo"
 import {GridProperties} from "./grid_properties"
 import {InfiniteRowModelModule} from "@ag-grid-community/infinite-row-model"
 import {prepareFilterModel} from "./filter"
@@ -22,6 +22,7 @@ export class GridBaseComponent<T> implements OnInit{
   rowSelection
   isDeleteButtonEnabled = false
   pageSize
+  components
 
   constructor(
     protected repo: IRepo<T>,
@@ -104,7 +105,6 @@ export class GridBaseComponent<T> implements OnInit{
           sorts)
         this.repo.queryForPage(filter, pageRequest)
           .subscribe(({ page, loading }) => {
-              console.log(`got: ${JSON.stringify(page.values)}`)
               params.successCallback(page.values)
               this.loading = loading
             }
@@ -153,5 +153,3 @@ export class GridBaseComponent<T> implements OnInit{
   }
 
 }
-
-

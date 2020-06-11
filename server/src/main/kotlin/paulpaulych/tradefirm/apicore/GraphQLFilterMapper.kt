@@ -1,12 +1,16 @@
 package paulpaulych.tradefirm.apicore
 
+import paulpaulych.tradefirm.config.graphql.badInputError
 import simpleorm.core.filter.*
 import simpleorm.core.utils.property
 import java.math.BigDecimal
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 
-fun toFetchFilter(requestedType: KClass<*>, graphQLFilter: GraphQLFilter): FetchFilter{
+fun toFetchFilter(requestedType: KClass<*>, graphQLFilter: GraphQLFilter?): FetchFilter?{
+    if(graphQLFilter == null){
+        return null
+    }
     return when(graphQLFilter.type){
         GraphQLFilter.Type.STRING ->{
             val property = requestedType.property(graphQLFilter.field!!)
@@ -23,12 +27,16 @@ fun toFetchFilter(requestedType: KClass<*>, graphQLFilter: GraphQLFilter): Fetch
 private fun toStructuralFilter(requestedType: KClass<*>, graphQLFilter: GraphQLFilter): FetchFilter{
     return when(graphQLFilter.op){
         GraphQLFilter.Op.AND -> AndFilter(
-                toFetchFilter(requestedType, graphQLFilter.left!!),
+                toFetchFilter(requestedType, graphQLFilter.left!!)
+                        ?: badInputError("AND filter left-side operand must be present"),
                 toFetchFilter(requestedType, graphQLFilter.right!!)
+                        ?: badInputError("AND filter left-side operand must be present")
         )
         GraphQLFilter.Op.OR -> OrFilter(
-                toFetchFilter(requestedType, graphQLFilter.left!!),
+                toFetchFilter(requestedType, graphQLFilter.left!!)
+                        ?: badInputError("OR filter left-side operand must be present"),
                 toFetchFilter(requestedType, graphQLFilter.right!!)
+                        ?: badInputError("OR filter left-side operand must be present")
         )
         else -> throwNotSupported(graphQLFilter.op, graphQLFilter.type)
     }
@@ -65,5 +73,5 @@ private fun toBigDecimalFilter(kProperty: KProperty1<*,*>, graphQLFilter: GraphQ
 }
 
 private fun throwNotSupported(operator: GraphQLFilter.Op, type: GraphQLFilter.Type): Nothing{
-    error("operator `${operator.name}` is not applied to filter `${type}`")
+    badInputError("operator `${operator.name}` is not applied to filter `${type}`")
 }

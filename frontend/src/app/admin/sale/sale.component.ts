@@ -2,8 +2,8 @@ import { Component} from "@angular/core"
 import {GridProperties} from "../grid-common/grid_properties"
 import {GridBaseComponent} from "../grid-common/grid-base.component"
 import {PlainSaleRepo, PlainSale} from "./sale-repo.service"
-import {PlainCustomerRepo} from "../customer/customer-repo.service";
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog} from "@angular/material/dialog"
+import * as moment from "moment"
 
 @Component({
   selector: "app-sale",
@@ -40,7 +40,17 @@ export class SaleComponent extends GridBaseComponent<PlainSale> {
       },
       {
         headerName: "Дата",
-        field: "date"
+        field: "date",
+        valueSetter: (params) => {
+          const date = moment(params.data, "dd-MM-yyyy HH:mm:ss")
+          console.log(JSON.stringify(date))
+          return date.format("MM/DD/YYYY HH:mm")
+        },
+        valueGetter: (params) => {
+          const date = moment(params.data, "MM/DD/YYYY HH:mm")
+          console.log(JSON.stringify(date))
+          return date.format("dd-MM-yyyy HH:mm:ss")
+        }
       },
     ]
     super(repo, properties, dialog)

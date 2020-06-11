@@ -4,19 +4,9 @@ import {Apollo} from "apollo-angular"
 import gql from "graphql-tag"
 import {DefaultRepo} from "../grid-common/default_repo"
 
-const GET_ALL = gql`
-  query{
-    salesPoints{
-        id
-        type
-        areaId
-    }
-  }
-`
-
 const SAVE_MUTATION = gql`
   mutation SaveSalesPoints($values: [PlainSalesPointInput!]!){
-    saveSalesPoints(values: $values){
+    savePlainSalesPoints(values: $values){
       id
       type
     }
@@ -25,18 +15,14 @@ const SAVE_MUTATION = gql`
 
 const DELETE_MUTATION = gql`
   mutation DeleteSalesPoints($ids: [Long!]!){
-    deleteSalesPoints(ids: $ids)
+    deletePlainSalesPoints(ids: $ids)
   }
 `
 
 const GET_PAGE = gql`
   query SalesPointPages($filter: GraphQLFilterInput, $pageRequest: PageRequestInput!){
-    salesPointsPage(filter: $filter, pageRequest: $pageRequest){
-      values{
-        id
-        type
-        areaId
-      }
+    plainSalesPointsPage(filter: $filter, pageRequest: $pageRequest){
+      values
       pageInfo{
         pageSize
       }
@@ -50,7 +36,7 @@ const GET_PAGE = gql`
 export class SalesPointsRepo extends DefaultRepo<SalesPoint>{
 
   constructor(apollo: Apollo) {
-    super(apollo, GET_PAGE, SAVE_MUTATION, DELETE_MUTATION, "salesPointsPage")
+    super(apollo, GET_PAGE, SAVE_MUTATION, DELETE_MUTATION, "plainSalesPointsPage")
   }
 
 }
