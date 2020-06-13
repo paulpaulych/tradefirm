@@ -5,8 +5,7 @@ import {ApplicationRepoService} from "../application-repo.service"
 
 @Component({
   selector: "app-create-application-dialog",
-  templateUrl: "./create-application-dialog.component.html",
-  styleUrls: ["./create-application-dialog.component.css"]
+  templateUrl: "./create-application-dialog.component.html"
 })
 export class CreateApplicationDialogComponent implements OnInit {
 

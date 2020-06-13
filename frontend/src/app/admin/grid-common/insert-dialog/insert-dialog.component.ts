@@ -22,7 +22,7 @@ export class InsertDialogComponent<T> {
   columnDefs
 
   private repo: CommonRepoService
-  private type;
+  private type
 
   constructor(
     private dialogRef: MatDialogRef<InsertDialogComponent<T>>,

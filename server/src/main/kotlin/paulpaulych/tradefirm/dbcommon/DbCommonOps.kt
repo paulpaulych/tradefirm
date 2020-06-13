@@ -4,12 +4,12 @@ import com.expediagroup.graphql.spring.operations.Mutation
 import com.expediagroup.graphql.spring.operations.Query
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.stereotype.Component
-import paulpaulych.tradefirm.apicore.GraphQLFilter
+import paulpaulych.tradefirm.apicore.FilterDTO
 import paulpaulych.tradefirm.apicore.PageRequestDTO
 import paulpaulych.tradefirm.apicore.PageRequestMapper
 import paulpaulych.tradefirm.apicore.toFetchFilter
 import paulpaulych.tradefirm.config.graphql.badInputError
-import paulpaulych.tradefirm.security.Authorization
+import paulpaulych.tradefirm.config.security.Authorization
 import paulpaulych.utils.LoggerDelegate
 import simpleorm.core.SimpleOrm
 import simpleorm.core.pagination.Page
@@ -22,11 +22,11 @@ class DbCommonQuery(
 ): Query {
 
     @Authorization("ROLE_ADMIN")
-    fun plainEntitiesPage(type: String, filter: GraphQLFilter?, pageRequestDTO: PageRequestDTO): Page<Any>{
+    fun plainEntitiesPage(type: String, filterDTO: FilterDTO?, pageRequestDTO: PageRequestDTO): Page<Any>{
         val kClass = plainClassesRegistry.getByTypeName(type)
         return SimpleOrm.findBy(
                 kClass,
-                filter = toFetchFilter(kClass, filter),
+                filter = toFetchFilter(kClass, filterDTO),
                 pageable = pageRequestMapper.getPageRequest(kClass, pageRequestDTO)
         )
     }

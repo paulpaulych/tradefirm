@@ -1,9 +1,9 @@
 import { NgModule } from "@angular/core"
 import { RouterModule } from "@angular/router"
-import {ProductsComponent} from "./admin/products/products.component"
+import {ProductsComponent} from "./admin/tables/products.component"
 import {AdminAuthGuard, AuthGuard} from "./security/auth-guard.service"
 import {LoginComponent} from "./security/login/login.component"
-import {SalesPointsComponent} from "./admin/sales-point/sales-points.component"
+import {SalesPointsComponent} from "./admin/tables/sales-points.component"
 import {AnalyticsComponent} from "./admin/analytics/analytics.component"
 import {WelcomeComponent} from "./welcome/welcome.component"
 import {StorageComponent} from "./salespoint/storage/storage.component"
@@ -11,10 +11,10 @@ import {CustomersComponent} from "./salespoint/customers/customers.component"
 import {SalesComponent} from "./salespoint/sales/sales.component"
 import {ApplicationsComponent} from "./salespoint/applications/applications.component"
 import {DeliveryComponent} from "./salespoint/delivery/delivery.component"
-import {SaleComponent} from "./admin/sale/sale.component"
-import {SellerComponent} from "./admin/seller/seller.component"
-import {CustomerComponent} from "./admin/customer/customer.component"
-import {AreaComponent} from "./admin/area/area.component";
+import {SaleComponent} from "./admin/tables/sale.component"
+import {SellerComponent} from "./admin/tables/seller.component"
+import {CustomerComponent} from "./admin/tables/customer.component"
+import {AreaComponent} from "./admin/tables/area.component";
 
 export const ADMIN_PANEL_PATH = "admin"
 

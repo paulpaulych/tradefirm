@@ -1,4 +1,4 @@
-import {AnalyticsQuery} from "./analyticsQuery"
+import {AnalyticsQuery} from "./analytics_query"
 import gql from "graphql-tag"
 
 export const ANALYTICS_QUERY_LIST: AnalyticsQuery[] = [

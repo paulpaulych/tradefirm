@@ -1,31 +1,3 @@
 <div *ngFor="let query of queries">
-  <button (click)="switchQuery(query.id)">{{query.name}}</button>
+  <button class="queryListItem" (click)="openQueryDialog(query.id)">{{query.name}}</button>
 </div>
-<div>
-  <form [formGroup]="form" *ngIf="activeQuery != null">
-    <fieldset>
-      <legend>{{activeQuery.name}}</legend>
-      <div *ngFor="let param of activeQuery.params; let i = index">
-        <div class="form-field">
-          <label>{{param.name}}</label>
-          <input name="{{param.name}}" formControlName="{{param.name}}">
-        </div>
-      </div>
-    </fieldset>
-    <div class="form-but tons">
-      <button class="button button-primary"
-              (click)="runQuery()">Запрос
-      </button>
-    </div>
-  </form>
-</div>
-<ag-grid-angular *ngIf="columnDefs != null"
-                 style="width: 1000px; height: 600px;"
-                 class="ag-theme-material"
-
-                 animateRows
-                 [defaultColDef]="defaultColDef"
-                 [columnDefs]="columnDefs"
-                 [rowData]="rowData"
->
-</ag-grid-angular>

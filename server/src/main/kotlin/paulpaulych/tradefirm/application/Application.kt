@@ -16,14 +16,8 @@ data class Application (
     val items: List<ApplicationItem>
         get() {
             val id = id
-                    ?: error("idis not set yet")
-            val items = ApplicationItem::class.query("""
-                select id from application_product where application_id = ?
-            """.trimIndent(),
-            listOf(id))
-            log.info("application items: $items")
-            return items
+                    ?: error("id is not set yet")
+            val sql = "select id from application_product where application_id = ?"
+            return ApplicationItem::class.query(sql, listOf(id))
         }
-
-    private val log by LoggerDelegate()
 }

@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional
 import paulpaulych.tradefirm.application.Application
 import paulpaulych.tradefirm.delivery.SupplierService
 import paulpaulych.utils.LoggerDelegate
-import simpleorm.core.batchInsert
 import simpleorm.core.filter.EqFilter
 import simpleorm.core.findBy
 import simpleorm.core.pagination.PageRequest
@@ -35,14 +34,14 @@ class OrderCreateService(
         }
         val savedOrder = persist(SupplierOrder(date = Date()))
         newApplications.forEach { application ->
-            val applicationItems = application.items.map {applicationItem ->
-                SupplierOrderItem(
+            application.items.forEach {applicationItem ->
+                val item = SupplierOrderItem(
                         supplierOrder = savedOrder,
                         product = applicationItem.product,
                         salesPoint = application.salesPoint,
                         count = applicationItem.count)
+                persist(item)
             }
-            batchInsert(applicationItems)
         }
         setNotNew(newApplications)
         log.info("order created: $savedOrder")
@@ -50,8 +49,10 @@ class OrderCreateService(
     }
 
     private fun setNotNew(applications: List<Application>){
-        val updatedApplications = applications.map { it.copy(newFlag = null)}
-        batchInsert(updatedApplications)
+        applications.forEach {
+            val notNew = it.copy(newFlag = null)
+            persist(notNew)
+        }
     }
 
     private fun fetchNewApplications(): List<Application>{

@@ -4,8 +4,7 @@ import {CustomersRepoService} from "../customers-repo.service"
 
 @Component({
   selector: "app-add-customer-dialog",
-  templateUrl: "./add-customer-dialog.component.html",
-  styleUrls: ["./add-customer-dialog.component.css"]
+  templateUrl: "./add-customer-dialog.component.html"
 })
 export class AddCustomerDialogComponent implements OnInit {
   customerName: string
@@ -24,7 +23,7 @@ export class AddCustomerDialogComponent implements OnInit {
     this.customersRepoService.addCustomer(this.customerName)
       .subscribe(({ data }) => {
         this.closeDialog()
-        alert(`Покупатель успешно добавлен: ${JSON.stringify(data.createCustomer)}`)
+        alert(`Покупатель успешно добавлен: id = ${data.addCustomer.id}`)
       })
   }
 }

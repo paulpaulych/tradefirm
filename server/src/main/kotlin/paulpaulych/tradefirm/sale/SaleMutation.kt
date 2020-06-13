@@ -4,14 +4,13 @@ import com.expediagroup.graphql.spring.operations.Mutation
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import paulpaulych.tradefirm.config.graphql.expectedError
-import paulpaulych.tradefirm.customer.Customer
+import paulpaulych.tradefirm.salespoint.Customer
 import paulpaulych.tradefirm.product.Product
-import paulpaulych.tradefirm.seller.Seller
-import paulpaulych.tradefirm.security.Authorization
-import paulpaulych.tradefirm.security.MyGraphQLContext
-import paulpaulych.tradefirm.security.SellerUser
-import paulpaulych.tradefirm.storage.StorageItem
-import simpleorm.core.batchInsert
+import paulpaulych.tradefirm.salespoint.Seller
+import paulpaulych.tradefirm.config.security.Authorization
+import paulpaulych.tradefirm.config.security.MyGraphQLContext
+import paulpaulych.tradefirm.config.security.SellerUser
+import paulpaulych.tradefirm.salespoint.StorageItem
 import simpleorm.core.findById
 import simpleorm.core.persist
 import simpleorm.core.query
@@ -34,15 +33,15 @@ class SaleMutation: Mutation{
             error("cart cannot be empty")
         }
 
-        batchInsert(cart.map { (productId, count) ->
+        cart.forEach { (productId, count) ->
             val storage = findStorage(salesPoint.id!!, productId)
                     ?: expectedError("Продукта $productId нет на складе")
             if(storage.count < count){
                 expectedError("Недостаточно товаров на складе")
             }
             //уменьшаем кол-во продуктов на складе
-            storage.copy(count = storage.count - count)
-        })
+            persist(storage.copy(count = storage.count - count))
+        }
 
         //если продавец указан и существует, добавим его к покупке
         val customer = customerId?.let {
@@ -59,11 +58,11 @@ class SaleMutation: Mutation{
                 Date()))
 
         //теперь сохраним список продуктов
-        batchInsert(cart.map{ (productId, count)->
+        cart.forEach{ (productId, count)->
             val product = Product::class.findById(productId)
                     ?: error("product with id: $productId not found")
-            CartItem(null, saved.id!!, product, count.toLong())
-        })
+            persist(CartItem(null, saved.id!!, product, count.toLong()))
+        }
 
         return saved
     }
@@ -75,7 +74,7 @@ class SaleMutation: Mutation{
         ).firstOrNull()
     }
 
-    private fun getSeller(context: MyGraphQLContext): Seller{
+    private fun getSeller(context: MyGraphQLContext): Seller {
         val seller = context.securityContext!!.authentication.principal as SellerUser
         return Seller::class.findById(seller.sellerId)
                 ?: error("seller not found")

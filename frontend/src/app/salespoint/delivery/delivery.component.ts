@@ -5,15 +5,15 @@ import {CreateDeliveryDialogComponent} from "./create-delivery-dialog/create-del
 
 @Component({
   selector: "app-delivery",
-  templateUrl: "./delivery.component.html",
-  styleUrls: ["./delivery.component.css"]
+  templateUrl: "./delivery.component.html"
 })
 export class DeliveryComponent implements OnInit {
 
   defaultColDef = {
+    flex: true,
+    resizable: true,
     editable: false,
-    sortable: false,
-    resizable: true
+    sortable: false
   }
   columnDefs = [
     {

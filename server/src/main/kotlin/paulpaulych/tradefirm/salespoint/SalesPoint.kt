@@ -4,7 +4,6 @@ import paulpaulych.tradefirm.application.Application
 import paulpaulych.tradefirm.area.Area
 import paulpaulych.tradefirm.delivery.ShopDelivery
 import paulpaulych.tradefirm.sale.Sale
-import paulpaulych.tradefirm.storage.StorageItem
 import paulpaulych.utils.LoggerDelegate
 import paulpaulych.utils.Open
 import simpleorm.core.filter.EqFilter
@@ -21,7 +20,7 @@ data class SalesPoint(
     val storageItems: List<StorageItem>
         get() {
             return StorageItem::class.findBy(
-                    EqFilter(StorageItem::salesPointId, toLong(id))
+                    EqFilter(StorageItem::salesPointId, getNotNullId())
             )
         }
 
@@ -35,36 +34,26 @@ data class SalesPoint(
                         join sales_point sp on s.sales_point_id = sp.id
                     where sp.id = ?
                 """.trimIndent(),
-                    listOf(toLong(id))
+                    listOf(getNotNullId())
             )
         }
 
     val applications: List<Application>
         get(){
-            val applications = Application::class.query("""
-                select id from application where sales_point_id = ? order by date desc
-                """.trimIndent(),
-                listOf(toLong(id)))
-            log.info("applications: $applications")
-            return applications
+            val sql = "select id from application where sales_point_id = ? order by date desc"
+            return  Application::class.query(sql, listOf(getNotNullId()))
         }
 
     val shopDeliveries: List<ShopDelivery>
         get(){
-            val deliveries = ShopDelivery::class.query(
-                "select id from shop_delivery where sales_point_id = ? order by date desc",
-                listOf(toLong(id)))
-            log.info("deliveries: $deliveries")
-            return deliveries
+            val sql = "select id from shop_delivery where sales_point_id = ? order by date desc"
+            return ShopDelivery::class.query(sql, listOf(getNotNullId()))
         }
 
     private val log by LoggerDelegate()
 
-    private fun toLong(id: Long?): Long{
-        if(id == null){
-            error("id is not set yet")
-        }
-        return id
+    private fun getNotNullId(): Long {
+        return id ?: error("id is not set yet")
     }
 }
 

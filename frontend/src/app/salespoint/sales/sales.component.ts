@@ -26,10 +26,11 @@ const SALES_QUERY = gql`
 @Component({
   selector: "app-sales",
   templateUrl: "./sales.component.html",
-  styleUrls: ["./sales.component.css"]
 })
 export class SalesComponent implements OnInit {
   defaultColDef = {
+    flex: true,
+    resizable: true,
     editable: false,
     sortable: false
   }

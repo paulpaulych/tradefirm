@@ -6,9 +6,8 @@ import org.springframework.transaction.annotation.Transactional
 import paulpaulych.tradefirm.config.graphql.expectedError
 import paulpaulych.tradefirm.product.Product
 import paulpaulych.tradefirm.salespoint.getSalesPoint
-import paulpaulych.tradefirm.security.Authorization
-import paulpaulych.tradefirm.security.MyGraphQLContext
-import simpleorm.core.batchInsert
+import paulpaulych.tradefirm.config.security.Authorization
+import paulpaulych.tradefirm.config.security.MyGraphQLContext
 import simpleorm.core.filter.AndFilter
 import simpleorm.core.filter.EqFilter
 import simpleorm.core.findBy
@@ -42,16 +41,15 @@ class ShopDeliveryMutation: Mutation {
                     date = Date())
         )
 
-        val shopDeliveryItems = items.map{ (productId, count) ->
+        items.forEach{ (productId, count) ->
             val product = Product::class.findById(productId)
                     ?: expectedError("продукт {ИД: $productId} не существует")
-            ShopDeliveryItem(
+            persist(ShopDeliveryItem(
                 shopDeliveryId = savedShopDelivery.id!!,
                 product = product,
                 count = count
-            )
+            ))
         }
-        batchInsert(shopDeliveryItems)
 
         return savedShopDelivery
     }

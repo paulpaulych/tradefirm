@@ -2,7 +2,6 @@ package paulpaulych.tradefirm.delivery
 
 import org.springframework.stereotype.Service
 import paulpaulych.tradefirm.order.SupplierOrder
-import paulpaulych.tradefirm.supplier.Supplier
 import paulpaulych.utils.LoggerDelegate
 import simpleorm.core.findAll
 import simpleorm.core.persist

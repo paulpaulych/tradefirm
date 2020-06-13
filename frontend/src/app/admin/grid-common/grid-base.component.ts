@@ -1,12 +1,12 @@
 import {CellChangedEvent} from "ag-grid-community/dist/lib/entities/rowNode"
-import {IRepo, PageRequest, Sort} from "./i_repo"
+import {PageRequest, Sort} from "./page"
 import {GridProperties} from "./grid_properties"
 import {InfiniteRowModelModule} from "@ag-grid-community/infinite-row-model"
 import {prepareFilterModel} from "./filter"
 import {InsertDialogComponent, InsertGridProperties, showDataCommittedMessage} from "./insert-dialog/insert-dialog.component"
 import {OnInit} from "@angular/core"
 import {MatDialog} from "@angular/material/dialog"
-import {catchError, map, tap} from "rxjs/operators"
+import {catchError} from "rxjs/operators"
 import {of} from "rxjs"
 import {CommonRepoService} from "../common-repo.service"
 
@@ -54,7 +54,6 @@ export class GridBaseComponent<T> implements OnInit{
 
 
     const onInsertCallback = () => {
-      // TODO: чета не работает обновление таблицы
       this.gridApi.purgeInfiniteCache(null)
       this.ngOnInit()
     }
@@ -93,34 +92,32 @@ export class GridBaseComponent<T> implements OnInit{
   datasource() {
     return {
       getRows: (params) => {
-        setTimeout( () => {
-          const pageSize = this.gridApi.paginationGetPageSize()
-          const sorts = params.sortModel.map((s) => {
-            return new Sort(s.colId, s.sort.toUpperCase())
-          })
-          if (sorts.length === 0) {
-            const defaultSort = new Sort(this.columnDefs[0].field, "ASC")
-            sorts.push(defaultSort)
-          }
-          console.log(`filter model: ${JSON.stringify(params.filterModel)}`)
-          const filter = prepareFilterModel(params.filterModel)
-          console.log(`prepared filter: ${JSON.stringify(filter)}`)
-          const pageRequest = new PageRequest(
-            params.startRow / pageSize,
-            pageSize,
-            sorts)
-          this.repo.queryForPage(this.type, filter, pageRequest)
-            .subscribe(({ page, loading }) => {
-                params.successCallback(page.values)
-                this.loading = loading
-              }
-            )
-        }, 0)
+        const pageSize = this.gridApi.paginationGetPageSize()
+        const sorts = params.sortModel.map((s) => {
+          return new Sort(s.colId, s.sort.toUpperCase())
+        })
+        if (sorts.length === 0) {
+          const defaultSort = new Sort(this.columnDefs[0].field, "ASC")
+          sorts.push(defaultSort)
+        }
+        console.log("filter model", params.filterModel)
+        const filter = prepareFilterModel(params.filterModel)
+        console.log("prepared filter", filter)
+        const pageRequest = new PageRequest(
+          params.startRow / pageSize,
+          pageSize,
+          sorts)
+        this.repo.queryForPage(this.type, filter, pageRequest)
+          .subscribe(({ page, loading }) => {
+              params.successCallback(page.values)
+              this.loading = loading
+            }
+          )
       }
     }
   }
 
-  cellValueChanged(event: CellChangedEvent) {
+  updateCellValue(event: CellChangedEvent) {
     const cleaned = JSON.parse(JSON.stringify(event.node.data))
     delete cleaned.__typename
     this.repo.update(this.type, cleaned)
@@ -155,7 +152,7 @@ export class GridBaseComponent<T> implements OnInit{
     this.isDeleteButtonEnabled = true
   }
 
-  onDeleteClicked() {
+  deleteSelected() {
     const selectedRows = this.gridApi.getSelectedRows()
     const idFieldName = this.columnDefs.find((it) => it.editable === false).field
     const ids = selectedRows.map((it) => it[idFieldName])
