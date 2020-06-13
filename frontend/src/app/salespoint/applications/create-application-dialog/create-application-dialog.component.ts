@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core"
 import {MatDialogRef} from "@angular/material/dialog"
 import {StorageRepoService} from "../../storage/storage-repo.service"
-import {showErrorMessage} from "../../../admin/grid-common/insert-dialog/insert-dialog.component"
 import {ApplicationRepoService} from "../application-repo.service"
 
 @Component({

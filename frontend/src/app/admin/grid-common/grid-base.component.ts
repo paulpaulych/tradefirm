@@ -6,6 +6,9 @@ import {prepareFilterModel} from "./filter"
 import {InsertDialogComponent, InsertGridProperties, showDataCommittedMessage} from "./insert-dialog/insert-dialog.component"
 import {OnInit} from "@angular/core"
 import {MatDialog} from "@angular/material/dialog"
+import {catchError, map, tap} from "rxjs/operators"
+import {of} from "rxjs"
+import {CommonRepoService} from "../common-repo.service"
 
 const PAGE_SIZE = 10
 
@@ -25,7 +28,8 @@ export class GridBaseComponent<T> implements OnInit{
   components
 
   constructor(
-    protected repo: IRepo<T>,
+    protected type: string,
+    protected repo: CommonRepoService,
     properties: GridProperties,
     private dialog: MatDialog){
     this.title = properties.title
@@ -68,6 +72,7 @@ export class GridBaseComponent<T> implements OnInit{
           valueParser: cd.valueParser
         })
       })
+    properties.type = this.type
     properties.colDefs = insertGridColDefs
     properties.repo = this.repo
     this.dialog.open(InsertDialogComponent, {
@@ -88,36 +93,51 @@ export class GridBaseComponent<T> implements OnInit{
   datasource() {
     return {
       getRows: (params) => {
-        const pageSize = this.gridApi.paginationGetPageSize()
-        const sorts = params.sortModel.map((s) => {
-          return new Sort(s.colId, s.sort.toUpperCase())
-        })
-        if (sorts.length === 0) {
-          const defaultSort = new Sort(this.columnDefs[0].field, "ASC")
-          sorts.push(defaultSort)
-        }
-        console.log(`filter model: ${JSON.stringify(params.filterModel)}`)
-        const filter = prepareFilterModel(params.filterModel)
-        console.log(`prepared filter: ${JSON.stringify(filter)}`)
-        const pageRequest = new PageRequest(
-          params.startRow / pageSize,
-          pageSize,
-          sorts)
-        this.repo.queryForPage(filter, pageRequest)
-          .subscribe(({ page, loading }) => {
-              params.successCallback(page.values)
-              this.loading = loading
-            }
-          )
-      },
+        setTimeout( () => {
+          const pageSize = this.gridApi.paginationGetPageSize()
+          const sorts = params.sortModel.map((s) => {
+            return new Sort(s.colId, s.sort.toUpperCase())
+          })
+          if (sorts.length === 0) {
+            const defaultSort = new Sort(this.columnDefs[0].field, "ASC")
+            sorts.push(defaultSort)
+          }
+          console.log(`filter model: ${JSON.stringify(params.filterModel)}`)
+          const filter = prepareFilterModel(params.filterModel)
+          console.log(`prepared filter: ${JSON.stringify(filter)}`)
+          const pageRequest = new PageRequest(
+            params.startRow / pageSize,
+            pageSize,
+            sorts)
+          this.repo.queryForPage(this.type, filter, pageRequest)
+            .subscribe(({ page, loading }) => {
+                params.successCallback(page.values)
+                this.loading = loading
+              }
+            )
+        }, 0)
+      }
     }
   }
 
   cellValueChanged(event: CellChangedEvent) {
     const cleaned = JSON.parse(JSON.stringify(event.node.data))
     delete cleaned.__typename
-    this.repo.save([cleaned])
-      .subscribe(({ received }) => showDataCommittedMessage(received))
+    this.repo.update(this.type, cleaned)
+      .pipe(
+        catchError((err, caught) => {
+          if (err.graphQLErrors){
+            this.rollbackCellChange(event)
+            console.log("error caught", JSON.stringify(err))
+          }
+          return of(undefined)
+        })
+      )
+      .subscribe((data) => {
+        if (data) {
+          showDataCommittedMessage(data)
+        }
+      })
   }
 
   private rollbackCellChange(event: CellChangedEvent) {
@@ -143,7 +163,7 @@ export class GridBaseComponent<T> implements OnInit{
       alert("Ничего не выбрано :(")
       return
     }
-    this.repo.delete(ids)
+    this.repo.delete(this.type, ids)
       .subscribe(({data}) => {
           console.log(`data deleted: ${JSON.stringify(data)}`)
           showDataCommittedMessage()

@@ -4,14 +4,12 @@ import com.expediagroup.graphql.spring.operations.Mutation
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import paulpaulych.tradefirm.product.Product
-import paulpaulych.tradefirm.salespoint.SalesPoint
 import paulpaulych.tradefirm.salespoint.getSalesPoint
 import paulpaulych.tradefirm.security.Authorization
 import paulpaulych.tradefirm.security.MyGraphQLContext
-import paulpaulych.tradefirm.security.SellerUser
-import paulpaulych.tradefirm.seller.Seller
+import simpleorm.core.batchInsert
 import simpleorm.core.findById
-import simpleorm.core.save
+import simpleorm.core.persist
 import java.util.*
 
 data class ApplicationItemInput(
@@ -26,18 +24,16 @@ class ApplicationMutation: Mutation{
     @Transactional
     fun createApplication(items: List<ApplicationItemInput>, context: MyGraphQLContext): Application{
         val application = Application(salesPoint = getSalesPoint(context), date = Date())
-        val savedApplication = save(application)
+        val savedApplication = persist(application)
 
-        items.forEach{ (productId, count) ->
+        val applicationItems = items.map { (productId, count) ->
             val product = Product::class.findById(productId)
                     ?: error("product $productId not found")
-            save(
-                    ApplicationItem(
-                            application = savedApplication,
+            ApplicationItem(application = savedApplication,
                             product = product,
                             count = count)
-            )
         }
+        batchInsert(applicationItems)
         return savedApplication
     }
 

@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core"
 import {ADMIN_PANEL_PATH, SALES_POINT_PATH} from "../app-routing.module"
-import {AuthService} from "./auth-service.service"
 
 @Injectable({
   providedIn: "root"
@@ -14,6 +13,7 @@ export class RoleAuthoritiesService {
       { name: "Точки продаж", link: "/" + ADMIN_PANEL_PATH + "/salesPoints" },
       { name: "Продавцы", link: "/" + ADMIN_PANEL_PATH + "/sellers" },
       { name: "Покупатели", link: "/" + ADMIN_PANEL_PATH + "/customers" },
+      { name: "Помещения", link: "/" + ADMIN_PANEL_PATH + "/areas"},
       { name: "Аналитика", link: "/" + ADMIN_PANEL_PATH + "/analytics"}
     ],
     ROLE_USER: [
@@ -31,8 +31,6 @@ export class RoleAuthoritiesService {
     ROLE_USER: "/welcome",
     default: "/welcome"
   }
-
-  constructor(private authService: AuthService) {}
 
   getNavigationBarContent(role){
     const content = this.navigationBarContent[role]

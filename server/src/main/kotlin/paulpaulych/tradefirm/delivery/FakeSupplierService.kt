@@ -5,7 +5,7 @@ import paulpaulych.tradefirm.order.SupplierOrder
 import paulpaulych.tradefirm.supplier.Supplier
 import paulpaulych.utils.LoggerDelegate
 import simpleorm.core.findAll
-import simpleorm.core.save
+import simpleorm.core.persist
 import java.util.*
 
 @Service
@@ -18,7 +18,7 @@ class FakeSupplierService: SupplierService {
                 supplierOrder = supplierOrder,
                 supplier = suppliers.random(),
                 date = Date())
-        val savedDelivery = save(delivery)
+        val savedDelivery = persist(delivery)
         log.info("delivery created: $savedDelivery")
     }
 

@@ -3,6 +3,7 @@ package paulpaulych.tradefirm.apicore
 import paulpaulych.tradefirm.config.graphql.badInputError
 import simpleorm.core.filter.*
 import simpleorm.core.utils.property
+import java.lang.NumberFormatException
 import java.math.BigDecimal
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
@@ -59,15 +60,29 @@ private fun toStringFilter(kProperty: KProperty1<*,*>, graphQLFilter: GraphQLFil
         else -> throwNotSupported(graphQLFilter.op, graphQLFilter.type)
     }
 }
+
+private fun safeToString(value: Any): String{
+    return value as? String
+            ?: badInputError("filter param must be string")
+}
+
+private fun bigDecimal(value: String): BigDecimal{
+    try {
+        return BigDecimal(value)
+    }catch (e: NumberFormatException){
+        badInputError("cannot parse filter operand as number")
+    }
+}
+
 private fun toBigDecimalFilter(kProperty: KProperty1<*,*>, graphQLFilter: GraphQLFilter): FetchFilter{
     val operands = graphQLFilter.operands
     return when(graphQLFilter.op){
-        GraphQLFilter.Op.EQUALS -> EqFilter(kProperty, BigDecimal(operands[0]))
-        GraphQLFilter.Op.NOT_EQUALS -> NotEqFilter(kProperty, BigDecimal(operands[0]))
-        GraphQLFilter.Op.LESS -> LessFilter(kProperty, BigDecimal(operands[0]))
-        GraphQLFilter.Op.GREATER -> GreaterFilter(kProperty, BigDecimal(operands[0]))
-        GraphQLFilter.Op.LESS_EQUALS -> LessEqFilter(kProperty, BigDecimal(operands[0]))
-        GraphQLFilter.Op.GREATER_EQUALS -> GreaterEqFilter(kProperty, BigDecimal(operands[0]))
+        GraphQLFilter.Op.EQUALS -> EqFilter(kProperty, bigDecimal(operands[0]))
+        GraphQLFilter.Op.NOT_EQUALS -> NotEqFilter(kProperty, bigDecimal(operands[0]))
+        GraphQLFilter.Op.LESS -> LessFilter(kProperty, bigDecimal(operands[0]))
+        GraphQLFilter.Op.GREATER -> GreaterFilter(kProperty, bigDecimal(operands[0]))
+        GraphQLFilter.Op.LESS_EQUALS -> LessEqFilter(kProperty, bigDecimal(operands[0]))
+        GraphQLFilter.Op.GREATER_EQUALS -> GreaterEqFilter(kProperty, bigDecimal(operands[0]))
         else -> throwNotSupported(GraphQLFilter.Op.STARTS_WITH, GraphQLFilter.Type.STRING)
     }
 }

@@ -8,11 +8,12 @@ import paulpaulych.tradefirm.product.Product
 import paulpaulych.tradefirm.salespoint.getSalesPoint
 import paulpaulych.tradefirm.security.Authorization
 import paulpaulych.tradefirm.security.MyGraphQLContext
+import simpleorm.core.batchInsert
 import simpleorm.core.filter.AndFilter
 import simpleorm.core.filter.EqFilter
 import simpleorm.core.findBy
 import simpleorm.core.findById
-import simpleorm.core.save
+import simpleorm.core.persist
 import java.util.*
 
 data class ShopDeliveryItemInput(
@@ -33,7 +34,7 @@ class ShopDeliveryMutation: Mutation {
 
         checkIfAlreadyExists(deliveryId, salesPoint.id!!)
 
-        val savedShopDelivery = save(
+        val savedShopDelivery = persist(
                 ShopDelivery(
                     delivery = delivery,
                     items = listOf(),
@@ -41,16 +42,16 @@ class ShopDeliveryMutation: Mutation {
                     date = Date())
         )
 
-        items.forEach{ (productId, count) ->
+        val shopDeliveryItems = items.map{ (productId, count) ->
             val product = Product::class.findById(productId)
                     ?: expectedError("продукт {ИД: $productId} не существует")
-            val shopDeliveryItem = ShopDeliveryItem(
+            ShopDeliveryItem(
                 shopDeliveryId = savedShopDelivery.id!!,
                 product = product,
                 count = count
             )
-            save(shopDeliveryItem)
         }
+        batchInsert(shopDeliveryItems)
 
         return savedShopDelivery
     }

@@ -1,18 +1,18 @@
-import {Component, OnInit} from "@angular/core"
+import {Component} from "@angular/core"
 import {GridBaseComponent} from "../grid-common/grid-base.component"
 import {Product} from "./product"
 import {GridProperties} from "../grid-common/grid_properties"
-import {ProductRepo} from "./product-repo.service"
 import {MatDialog} from "@angular/material/dialog"
+import {CommonRepoService} from "../common-repo.service"
 
 @Component({
   selector: "app-products",
   templateUrl: "../grid-common/grid-common.component.html",
   styleUrls: ["../grid-common/grid_common.component.css"]
 })
-export class ProductsComponent extends GridBaseComponent<Product> implements OnInit{
+export class ProductsComponent extends GridBaseComponent<Product>{
 
-  constructor(repo: ProductRepo, dialog: MatDialog) {
+  constructor(repo: CommonRepoService, dialog: MatDialog) {
     const properties = new GridProperties()
     properties.title = "Products"
     properties.columnDefs = [
@@ -28,11 +28,7 @@ export class ProductsComponent extends GridBaseComponent<Product> implements OnI
         filter: "agTextColumnFilter"
       },
     ]
-    super(repo, properties, dialog)
-  }
-
-  ngOnInit(){
-
+    super("product", repo, properties, dialog)
   }
 
 }

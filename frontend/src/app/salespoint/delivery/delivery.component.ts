@@ -1,7 +1,5 @@
 import { Component, OnInit } from "@angular/core"
-import {ApplicationRepoService} from "../applications/application-repo.service"
 import {MatDialog} from "@angular/material/dialog"
-import {CreateApplicationDialogComponent} from "../applications/create-application-dialog/create-application-dialog.component"
 import {DeliveryRepoService} from "./delivery-repo.service"
 import {CreateDeliveryDialogComponent} from "./create-delivery-dialog/create-delivery-dialog.component"
 
@@ -27,7 +25,7 @@ export class DeliveryComponent implements OnInit {
       field: "date"
     },
     {
-      headerName: "глобальный ИД поставки",
+      headerName: "Глобальный ИД поставки",
       field: "deliveryId"
     }]
   gridApi
@@ -45,7 +43,7 @@ export class DeliveryComponent implements OnInit {
   ngOnInit(): void {}
 
   openCreateApplicationDialog() {
-    const dialogRef = this.dialog.open(CreateDeliveryDialogComponent, {
+    this.dialog.open(CreateDeliveryDialogComponent, {
       width: "60%"
     })
   }

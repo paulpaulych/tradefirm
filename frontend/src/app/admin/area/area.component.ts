@@ -1,15 +1,15 @@
-import { Component} from "@angular/core"
+import {Component} from "@angular/core"
 import {GridProperties} from "../grid-common/grid_properties"
 import {GridBaseComponent} from "../grid-common/grid-base.component"
 import {MatDialog} from "@angular/material/dialog"
-import {CommonRepoService} from "../common-repo.service"
+import {CommonRepoService} from "../common-repo.service";
 
 @Component({
-  selector: "app-sale",
+  selector: "app-area",
   templateUrl: "../grid-common/grid-common.component.html",
   styleUrls: ["../grid-common/grid_common.component.css"]
 })
-export class SaleComponent extends GridBaseComponent<any> {
+export class AreaComponent extends GridBaseComponent<any> {
 
   constructor(repo: CommonRepoService, dialog: MatDialog) {
     const properties = new GridProperties()
@@ -23,26 +23,27 @@ export class SaleComponent extends GridBaseComponent<any> {
         filter: "agNumberColumnFilter"
       },
       {
-        headerName: "ИД Покупателя",
-        field: "customerId",
+        headerName: "Площадь(кв.м.)",
+        field: "square",
         filter: "agNumberColumnFilter"
       },
       {
-        headerName: "ИД Торговой точки",
-        field: "salesPointId",
+        headerName: "Стоимость аренды",
+        field: "rentPrice",
         filter: "agNumberColumnFilter"
       },
       {
-        headerName: "ИД Продавца",
-        field: "sellerId",
+        headerName: "Стоимость коммунальных услуг",
+        field: "municipalServicesPrice",
         filter: "agNumberColumnFilter"
       },
       {
-        headerName: "Дата",
-        field: "date"
+        headerName: "Количество прилавков",
+        field: "stallCount",
+        filter: "agNumberColumnFilter"
       }
     ]
-    super("sale", repo, properties, dialog)
+    super("area", repo, properties, dialog)
   }
 
 }

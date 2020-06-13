@@ -1,8 +1,13 @@
 import { Component} from "@angular/core"
 import {GridProperties} from "../grid-common/grid_properties"
 import {GridBaseComponent} from "../grid-common/grid-base.component"
-import {PlainCustomer, PlainCustomerRepo} from "./customer-repo.service"
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog} from "@angular/material/dialog"
+import {CommonRepoService} from "../common-repo.service"
+
+class PlainCustomer{
+  id: number
+  name: string
+}
 
 @Component({
   selector: "app-sale",
@@ -11,7 +16,7 @@ import {MatDialog} from "@angular/material/dialog";
 })
 export class CustomerComponent extends GridBaseComponent<PlainCustomer> {
 
-  constructor(repo: PlainCustomerRepo, dialog: MatDialog) {
+  constructor(repo: CommonRepoService, dialog: MatDialog) {
     const properties = new GridProperties()
 
     properties.title = "Журнал покупок"
@@ -28,7 +33,7 @@ export class CustomerComponent extends GridBaseComponent<PlainCustomer> {
         filter: "agTextColumnFilter"
       }
     ]
-    super(repo, properties, dialog)
+    super("customer", repo, properties, dialog)
   }
 
 }

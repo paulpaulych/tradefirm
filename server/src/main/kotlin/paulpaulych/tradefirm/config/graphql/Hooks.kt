@@ -1,15 +1,14 @@
 package paulpaulych.tradefirm.config.graphql
 
 import com.expediagroup.graphql.hooks.SchemaGeneratorHooks
+import graphql.scalars.ExtendedScalars
 import graphql.schema.GraphQLType
 import org.springframework.stereotype.Component
 import paulpaulych.tradefirm.apicore.PageInfo
-import paulpaulych.tradefirm.apicore.SortDTO
 import paulpaulych.utils.LoggerDelegate
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import simpleorm.core.pagination.Page
-import simpleorm.core.pagination.PageRequest
 import java.util.*
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
@@ -28,9 +27,7 @@ class Hooks : SchemaGeneratorHooks {
 
     override fun willGenerateGraphQLType(type: KType): GraphQLType? = when (type.classifier as? KClass<*>) {
         Date::class -> dateScalarType
-        SortDTO.Order::class -> orderType
-        SortDTO::class -> sortType
-        PageRequest::class -> pageRequestType
+        Any::class -> ExtendedScalars.Json
         PageInfo::class -> pageInfoType
         Page::class -> pageType
         else -> null

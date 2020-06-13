@@ -1,18 +1,14 @@
 package paulpaulych.tradefirm.config.graphql
 
-import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import graphql.schema.DataFetchingEnvironment
-import paulpaulych.tradefirm.apicore.PageInfo
 import paulpaulych.tradefirm.apicore.PageRequestDTO
 import paulpaulych.tradefirm.apicore.PageRequestMapper
 import paulpaulych.tradefirm.apicore.PlainQuery
 import paulpaulych.tradefirm.security.AuthorizationDataFetcher
 import paulpaulych.utils.LoggerDelegate
 import reactor.core.publisher.Mono
-import simpleorm.core.pagination.Page
 import simpleorm.core.pagination.PageRequest
-import java.util.concurrent.CompletableFuture
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
 import kotlin.reflect.KParameter
@@ -33,8 +29,6 @@ class CustomFunctionDataFetcher(
     private fun convertResult(result: Any?): Any? =
             when (result) {
                 is Mono<*> -> result.toFuture()
-                is Page<*> -> convertPageToPageDTO(result)
-                is CompletableFuture<*> -> result.thenApply(this::convertResult)
                 else -> result
             }
 
@@ -55,16 +49,4 @@ class CustomFunctionDataFetcher(
         }
     }
 
-    private fun convertPageToPageDTO(page: Page<*>): PageDTO{
-        return PageDTO(
-                PageInfo(page.values.size),
-                objectMapper.valueToTree(page.values)
-        )
-    }
-
 }
-
-data class PageDTO(
-        val pageInfo: PageInfo,
-        val values: JsonNode
-)

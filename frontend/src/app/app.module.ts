@@ -20,7 +20,6 @@ import {AuthInterceptor} from "./security/auth-interceptor.service"
 import { UserInfoComponent } from "./topbar/userinfo/user-info.component"
 import { TopbarComponent } from "./topbar/topbar.component"
 import {SalesPointsComponent} from "./admin/sales-point/sales-points.component"
-import {ProductRepo} from "./admin/products/product-repo.service"
 import { AnalyticsComponent } from "./admin/analytics/analytics.component"
 import {environment} from "../environments/environment"
 import { WelcomeComponent } from "./welcome/welcome.component"
@@ -41,12 +40,13 @@ import { DeliveryComponent } from "./salespoint/delivery/delivery.component"
 import { CreateDeliveryDialogComponent } from "./salespoint/delivery/create-delivery-dialog/create-delivery-dialog.component"
 import { onError } from "apollo-link-error"
 import {showErrorMessage} from "./admin/grid-common/insert-dialog/insert-dialog.component"
-import {Router} from "@angular/router"
 import {InMemoryCache} from "apollo-cache-inmemory"
 import { SaleComponent } from "./admin/sale/sale.component"
 import { SellerComponent } from "./admin/seller/seller.component"
 import { CustomerComponent } from "./admin/customer/customer.component"
 import { InsertDialogComponent } from "./admin/grid-common/insert-dialog/insert-dialog.component"
+import { AreaComponent } from "./admin/area/area.component"
+import {GraphQLError} from "graphql";
 
 
 
@@ -83,7 +83,8 @@ import { InsertDialogComponent } from "./admin/grid-common/insert-dialog/insert-
     SaleComponent,
     SellerComponent,
     CustomerComponent,
-    InsertDialogComponent
+    InsertDialogComponent,
+    AreaComponent
   ],
     imports: [
         BrowserModule,
@@ -105,7 +106,6 @@ import { InsertDialogComponent } from "./admin/grid-common/insert-dialog/insert-
         MatSelectModule
     ],
   providers: [
-    ProductRepo,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
@@ -117,30 +117,29 @@ import { InsertDialogComponent } from "./admin/grid-common/insert-dialog/insert-
 export class AppModule {
   constructor(
     apollo: Apollo,
-    httpLink: HttpLink,
-    router: Router
+    httpLink: HttpLink
   ) {
     const http = httpLink.create({ uri: environment.backendUrl })
 
 
-    const errorLink = onError(({ graphQLErrors, networkError }) => {
+    const errorLink = onError(({graphQLErrors, networkError}) => {
+      if (networkError){
+        onNetworkError(networkError)
+        return
+      }
       if (graphQLErrors) {
+        graphQLErrors.forEach((err) => console.log(JSON.stringify(err)))
+        const readableErrors = graphQLErrors.filter(isErrorReadable)
+        console.log("readable errors", readableErrors)
+        if (readableErrors.length !== 0){
+          readableErrors.forEach(showReadableError)
+          return
+        }
         graphQLErrors.map(graphQLError => {
-          const errorType = graphQLError[`errorType`]
-          console.log("error type: " + errorType)
-          if (errorType === "READABLE_ERROR"){
-            alert(graphQLError.message)
-            return
-          }
           showErrorMessage(graphQLError)
         })
       }
-      if (networkError){
-        onNetworkError(networkError)
-      }
     })
-
-
     apollo.create({
       link: errorLink.concat(http),
       defaultOptions: DEFAULT_APOLLO_OPTS,
@@ -163,4 +162,19 @@ const DEFAULT_APOLLO_OPTS: DefaultOptions = {
 export function onNetworkError(err) {
   alert("Сервер недоступен. Проверьте подключение.")
   console.log(`[NETWORK ERROR]: ${err}`)
+}
+
+function showReadableError(err: GraphQLError) {
+  console.log(err)
+  alert(`ОШИБКА: ${err.message}`)
+}
+
+function isErrorReadable(err: GraphQLError): boolean {
+  if (!err.message.match(".*[А-Я]|[а-я].*")){
+    return false
+  }
+  if (err.locations.length !== 0){
+    return false
+  }
+  return true
 }

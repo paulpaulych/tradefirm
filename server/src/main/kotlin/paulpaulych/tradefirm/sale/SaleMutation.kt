@@ -3,6 +3,7 @@ package paulpaulych.tradefirm.sale
 import com.expediagroup.graphql.spring.operations.Mutation
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import paulpaulych.tradefirm.config.graphql.expectedError
 import paulpaulych.tradefirm.customer.Customer
 import paulpaulych.tradefirm.product.Product
 import paulpaulych.tradefirm.seller.Seller
@@ -10,9 +11,10 @@ import paulpaulych.tradefirm.security.Authorization
 import paulpaulych.tradefirm.security.MyGraphQLContext
 import paulpaulych.tradefirm.security.SellerUser
 import paulpaulych.tradefirm.storage.StorageItem
+import simpleorm.core.batchInsert
 import simpleorm.core.findById
+import simpleorm.core.persist
 import simpleorm.core.query
-import simpleorm.core.save
 import java.util.*
 
 data class CartItemInput(
@@ -32,24 +34,24 @@ class SaleMutation: Mutation{
             error("cart cannot be empty")
         }
 
-        cart.forEach { (productId, count) ->
+        batchInsert(cart.map { (productId, count) ->
             val storage = findStorage(salesPoint.id!!, productId)
-                    ?: error("storage position not found for given sales point and product")
+                    ?: expectedError("Продукта $productId нет на складе")
             if(storage.count < count){
-                error("not enough item in storage: ${storage.count}")
+                expectedError("Недостаточно товаров на складе")
             }
             //уменьшаем кол-во продуктов на складе
-            save(storage.copy(count = storage.count - count))
-        }
+            storage.copy(count = storage.count - count)
+        })
 
-        //если продавец указан и существует, добваим его к покупке
+        //если продавец указан и существует, добавим его к покупке
         val customer = customerId?.let {
             Customer::class.findById(customerId)
         }
 
         //сохраняем Sale без списка товаров, получаем saleId
         //здесь save() - это из SimpleOrm
-        val saved = save(Sale(
+        val saved = persist(Sale(
                 null,
                 customer,
                 salesPoint,
@@ -57,13 +59,11 @@ class SaleMutation: Mutation{
                 Date()))
 
         //теперь сохраним список продуктов
-        cart.map{ (productId, count)->
+        batchInsert(cart.map{ (productId, count)->
             val product = Product::class.findById(productId)
                     ?: error("product with id: $productId not found")
             CartItem(null, saved.id!!, product, count.toLong())
-        }.forEach {
-            save(it)
-        }
+        })
 
         return saved
     }

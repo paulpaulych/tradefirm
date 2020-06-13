@@ -90,5 +90,43 @@ export const ANALYTICS_QUERY_LIST: AnalyticsQuery[] = [
         field: "totallySupplied"
       }
     ]
+  },
+  {
+    id: "customersByProductAndVolume",
+    name: "Покупатели которые купили заданный товар в суммарном объеме не менее заданного",
+    params: [
+      {
+        readableName: "ID продукта",
+        name: "productId",
+        value: 2
+      },
+      {
+        readableName: "Мин кол-во единиц товара",
+        name: "volume",
+        value: 0
+      },
+    ],
+    query: gql`
+      query Analytics($productId: Long!, $volume: Int!){
+        customersByProductAndVolume(productId: $productId, volume: $volume){
+          id
+          name
+          totallyBought
+        }
+      }`,
+    columnDefs: [
+      {
+        headerName: "ID покупателя",
+        field: "id"
+      },
+      {
+        headerName: "Имя",
+        field: "name"
+      },
+      {
+        headerName: "Всего куплено единиц",
+        field: "totallyBought"
+      }
+    ]
   }
 ]
