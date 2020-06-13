@@ -128,5 +128,22 @@ export const ANALYTICS_QUERY_LIST: AnalyticsQuery[] = [
         field: "totallyBought"
       }
     ]
+  },
+  {
+    id: "productionBySeller",
+    name: "Данные по выработке на одного продавца",
+    params: [],
+    query: gql`
+      query Analytics{
+        productionBySeller{
+          value
+        }
+      }`,
+    columnDefs: [
+      {
+        headerName: "Один продавец в среднем продал на столько-то рублей",
+        field: "value"
+      }
+    ]
   }
 ]

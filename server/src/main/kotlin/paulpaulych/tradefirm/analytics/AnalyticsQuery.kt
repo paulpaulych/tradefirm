@@ -3,6 +3,7 @@ package paulpaulych.tradefirm.analytics
 import com.expediagroup.graphql.annotations.GraphQLDescription
 import com.expediagroup.graphql.annotations.GraphQLName
 import com.expediagroup.graphql.spring.operations.Query
+import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Transactional
@@ -13,11 +14,14 @@ import paulpaulych.tradefirm.delivery.Supplier
 import paulpaulych.utils.ResourceLoader
 import simpleorm.core.findById
 import simpleorm.core.query
+import java.math.BigDecimal
 
 @Component
 @GraphQLName("Analytics")
 @Transactional(isolation = Isolation.REPEATABLE_READ)
-class AnalyticsQuery: Query {
+class AnalyticsQuery(
+        private val jdbc: JdbcTemplate
+): Query {
 
     @GraphQLDescription("Поставщики которые поставляли определенный продукт хотя бы раз")
     fun suppliersByProduct(productId: Long): List<Supplier>{
@@ -47,6 +51,13 @@ class AnalyticsQuery: Query {
         return CustomerInfo::class.query(sql, listOf(productId, volume))
     }
 
+    @GraphQLDescription("данные по выработке на одного продавца")
+    fun productionBySeller(): ProductionBySeller {
+        val sql = ResourceLoader.loadText("sql/analytics/seller/1.sql")
+        val result = jdbc.queryForObject(sql, BigDecimal::class.java)!!
+        return ProductionBySeller(result)
+    }
+
     /**
      * throws error if product does not exist
      */
@@ -58,6 +69,10 @@ class AnalyticsQuery: Query {
     }
 
 }
+
+data class ProductionBySeller(
+        val value: BigDecimal
+)
 
 data class SupplierInfo(
         val id: Long,

@@ -1,6 +1,6 @@
 
-<form class="queryParamForm" [formGroup]="form">
-  <fieldset>
+<form class="queryParamForm" [formGroup]="form" >
+  <fieldset *ngIf="queryProperties.params.length != 0">
     <legend>{{queryProperties.name}}</legend>
     <div *ngFor="let param of queryProperties.params; let i = index">
       <div class="form-field">

@@ -45,8 +45,12 @@ export class AnalyticsQueryDialogComponent implements OnInit{
     })
       .valueChanges
       .subscribe(({data}) => {
-          console.log("got analytics query result", data)
-          this.rowData = data[this.queryProperties.id]
+          console.log("got an|alytics query result", data)
+          let result = data[this.queryProperties.id]
+          if (!Array.isArray(result)){
+            result = [result]
+          }
+          this.rowData = result
         }
       )
   }
