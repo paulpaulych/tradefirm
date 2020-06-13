@@ -65,6 +65,13 @@ class AnalyticsQuery(
         return ProductionBySeller(result)
     }
 
+    @GraphQLDescription("Кол-во единиц проданного товара по контретной торговой точке")
+    fun productSoldBySalesPoint(productId: Long, salesPointId: Long): ProductSold {
+        val sql = ResourceLoader.loadText("sql/analytics/product/soldBySalesPoint.sql")
+        val result = jdbc.queryForObject(sql, arrayOf(productId, salesPointId), Long::class.java)!!
+        return ProductSold(result)
+    }
+
     /**
      * throws error if product does not exist
      */
@@ -76,6 +83,10 @@ class AnalyticsQuery(
     }
 
 }
+
+data class ProductSold(
+        val totallySold: Long
+)
 
 data class ProductionBySeller(
         val value: BigDecimal

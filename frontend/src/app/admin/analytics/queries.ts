@@ -162,8 +162,34 @@ export const ANALYTICS_QUERY_LIST: AnalyticsQuery[] = [
       }`,
     columnDefs: [
       {
-        headerName: "Один продавец в среднем продал на столько-то рублей",
+        headerName: "Выработка",
         field: "value"
+      }
+    ]
+  },
+  {
+    id: "productSoldBySalesPoint",
+    name: "Кол-во единиц проданного товара по контретной торговой точке",
+    params: [{
+        readableName: "ID продукта",
+        name: "productId",
+        value: 2
+      },
+      {
+        readableName: "ID торговой точки",
+        name: "salesPointId",
+        value: 5
+      }],
+    query: gql`
+      query Analytics($productId: Long!, $salesPointId: Long!){
+        productSoldBySalesPoint(productId: $productId, salesPointId: $salesPointId){
+          totallySold
+        }
+      }`,
+    columnDefs: [
+      {
+        headerName: "Один продавец в среднем продал на столько-то рублей",
+        field: "totallySold"
       }
     ]
   }
