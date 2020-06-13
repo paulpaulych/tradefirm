@@ -14,7 +14,18 @@ import {DeliveryComponent} from "./salespoint/delivery/delivery.component"
 import {SaleComponent} from "./admin/tables/sale.component"
 import {SellerComponent} from "./admin/tables/seller.component"
 import {CustomerComponent} from "./admin/tables/customer.component"
-import {AreaComponent} from "./admin/tables/area.component";
+import {AreaComponent} from "./admin/tables/area.component"
+import {DeliveryComponent as PlainDeliveryComponent} from "./admin/tables/delivery.component"
+import {ApplicationComponent as PlainApplicationComponent} from "./admin/tables/application.component"
+import {ApplicationProductComponent} from "./admin/tables/application-product.component"
+import {OrderComponent} from "./admin/tables/order.component"
+import {OrderProductComponent} from "./admin/tables/order-product.component"
+import {SaleProductComponent} from "./admin/tables/sale-product.component"
+import {SupplierComponent} from "./admin/tables/supplier.component"
+import {ShopDeliveryComponent} from "./admin/tables/shop_delivery.component"
+import {ShopDeliveryProductComponent} from "./admin/tables/shop-delivery-product.component"
+import {SalesPointProductComponent} from "./admin/tables/salespoint-product.component"
+import {SupplierPriceComponent} from "./admin/tables/supplier-price.component";
 
 export const ADMIN_PANEL_PATH = "admin"
 
@@ -59,6 +70,10 @@ export const routes = [
             component: SaleComponent
           },
           {
+            path: "sale_product",
+            component: SaleProductComponent
+          },
+          {
             path: "sellers",
             component: SellerComponent
           },
@@ -69,6 +84,46 @@ export const routes = [
           {
             path: "areas",
             component: AreaComponent
+          },
+          {
+            path: "delivery",
+            component: PlainDeliveryComponent
+          },
+          {
+            path: "application",
+            component: PlainApplicationComponent
+          },
+          {
+            path: "application_product",
+            component: ApplicationProductComponent
+          },
+          {
+            path: "order",
+            component: OrderComponent
+          },
+          {
+            path: "order_product",
+            component: OrderProductComponent
+          },
+          {
+            path: "supplier",
+            component: SupplierComponent
+          },
+          {
+            path: "shop_delivery",
+            component: ShopDeliveryComponent
+          },
+          {
+            path: "shop_delivery_product",
+            component: ShopDeliveryProductComponent
+          },
+          {
+            path: "storage",
+            component: SalesPointProductComponent
+          },
+          {
+            path: "supplier_price",
+            component: SupplierPriceComponent
           }
         ]
       },
@@ -95,7 +150,6 @@ export const routes = [
             path: "deliveries",
             component: DeliveryComponent
           },
-
         ]
       }
     ]

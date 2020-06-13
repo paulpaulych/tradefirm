@@ -49,9 +49,10 @@ class DbCommonMutation(
 
     @Authorization("ROLE_ADMIN")
     suspend fun updatePlainEntity(type: String, value: Any): Any {
-        log.error("hello")
         val kClass = plainClassesRegistry.getByTypeName(type)
-        return SimpleOrm.persist(kClass, convert(value, kClass))
+        val plainObject = convert(value, kClass)
+        log.error("value to save: $plainObject")
+        return SimpleOrm.persist(kClass, plainObject)
     }
 
     @Authorization("ROLE_ADMIN")
@@ -67,7 +68,7 @@ class DbCommonMutation(
         try {
             return objectMapper.convertValue(input, kClass.java)
         }catch (e: IllegalArgumentException){
-            throw badInputError("error on reading input veriables: ${e.message}")
+            throw badInputError("error on reading input variables: ${e.message}")
         }
     }
 }

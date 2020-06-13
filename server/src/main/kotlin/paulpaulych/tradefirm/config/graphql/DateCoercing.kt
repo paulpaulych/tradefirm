@@ -5,7 +5,7 @@ import paulpaulych.utils.LoggerDelegate
 import java.text.SimpleDateFormat
 import java.util.*
 
-private const val DATE_FORMAT_STRING = "dd-MM-yyyy HH:mm:ss Z"
+private const val DATE_FORMAT_STRING = "dd-MM-yyyy HH:mm:ss"
 
 object DateCoercing : Coercing<Date, String> {
 

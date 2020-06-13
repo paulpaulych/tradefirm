@@ -38,7 +38,7 @@ export class CreateApplicationDialogComponent implements OnInit {
     this.applicationRepoService.createApplication(this.items)
       .subscribe(({ data }) => {
         this.closeDialog()
-        alert(`Заявка успешно добавлена: ${JSON.stringify(data.createApplication)}`)
+        alert(`Заявка успешно добавлена: id = ${data.createApplication.id}`)
       })
   }
 

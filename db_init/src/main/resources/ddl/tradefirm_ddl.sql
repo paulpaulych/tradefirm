@@ -23,7 +23,7 @@ CREATE TABLE public.area(
 drop table if exists public.orders cascade;
 CREATE TABLE public.orders(
  id   bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
- date       timestamp NOT NULL
+ date       timestamp with time zone NOT NULL
 );
 -- public.product
 drop table if exists public.product cascade;
@@ -56,7 +56,7 @@ CREATE TABLE public.sale(
  customer_id   bigint, -- покупатель может быть не указан
  sales_point_id bigint REFERENCES public.sales_point(id) on delete set null,
  seller_id   bigint REFERENCES seller(id) on delete set null,
- date         timestamp NOT NULL
+ date         timestamp with time zone NOT NULL
 );
 CREATE INDEX fkIdx_sale__customer_id ON public.sale(customer_id);
 CREATE INDEX fkIdx_sale__sales_point_id ON public.sale(sales_point_id);
@@ -83,7 +83,7 @@ drop table if exists public.application cascade;
 CREATE TABLE public.application(
  id              bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
  sales_point_id  bigint REFERENCES public.sales_point(id) on delete set null ,
- date          timestamp NOT NULL,
+ date          timestamp with time zone NOT NULL,
  is_new boolean default true
 );
 CREATE INDEX fkIdx_357 ON application( sales_point_id);
@@ -109,7 +109,7 @@ CREATE TABLE public.delivery(
  id bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
  order_id bigint references public.orders(id),
  supplier_id bigint,
- date       timestamp NOT NULL
+ date       timestamp with time zone NOT NULL
 );
 --  public.shop_delivery
 drop table if exists public.shop_delivery cascade;
@@ -117,7 +117,7 @@ CREATE TABLE public.shop_delivery(
  id            bigint primary key GENERATED ALWAYS AS IDENTITY (start 1 ),
  delivery_id   bigint NOT NULL REFERENCES public.delivery(id) on delete cascade,
  sales_point_id bigint NOT NULL REFERENCES public.sales_point(id) on delete cascade,
- date       timestamp NOT NULL
+ date       timestamp with time zone NOT NULL
 );
 CREATE UNIQUE INDEX pk_shop_delivery ON public.shop_delivery (
  delivery_id,

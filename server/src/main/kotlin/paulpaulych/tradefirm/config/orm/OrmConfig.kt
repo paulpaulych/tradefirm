@@ -75,7 +75,11 @@ class OrmConfig(
 
 class PlainObjectNamingStrategy: INamingStrategy {
     override fun toColumnName(s: String): String {
-        return toSnakeCase(s)
+        val column = toSnakeCase(s)
+        if(column.endsWith("_flag")){
+            return "is_" + column.removeSuffix("_flag")
+        }
+        return column
     }
 
     override fun toTableName(s: String): String {

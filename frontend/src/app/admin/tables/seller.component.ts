@@ -12,7 +12,7 @@ class PlainSeller{
 }
 
 @Component({
-  selector: "app-sale",
+  selector: "app-admin-seller",
   templateUrl: "../grid-common/grid-base.component.html",
   styleUrls: ["../grid-common/grid_base.component.css"]
 })

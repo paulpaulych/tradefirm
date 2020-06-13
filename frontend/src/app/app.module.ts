@@ -46,9 +46,19 @@ import { SellerComponent } from "./admin/tables/seller.component"
 import { CustomerComponent } from "./admin/tables/customer.component"
 import { InsertDialogComponent } from "./admin/grid-common/insert-dialog/insert-dialog.component"
 import { AreaComponent } from "./admin/tables/area.component"
-import {GraphQLError} from "graphql";
-import { AnalyticsQueryDialogComponent } from './admin/analytics/analytics-query-dialog/analytics-query-dialog.component';
-
+import {GraphQLError} from "graphql"
+import { AnalyticsQueryDialogComponent } from "./admin/analytics/analytics-query-dialog/analytics-query-dialog.component"
+import {DeliveryComponent as PlainDeliveryComponent} from "./admin/tables/delivery.component"
+import { ApplicationComponent as PlainApplicationComponent} from "./admin/tables/application.component"
+import { ApplicationProductComponent } from "./admin/tables/application-product.component"
+import {OrderComponent} from "./admin/tables/order.component"
+import {OrderProductComponent} from "./admin/tables/order-product.component"
+import {SaleProductComponent} from "./admin/tables/sale-product.component"
+import { SupplierComponent } from "./admin/tables/supplier.component"
+import {ShopDeliveryComponent} from "./admin/tables/shop_delivery.component"
+import {ShopDeliveryProductComponent} from "./admin/tables/shop-delivery-product.component"
+import {SalesPointProductComponent} from "./admin/tables/salespoint-product.component";
+import {SupplierPriceComponent} from "./admin/tables/supplier-price.component";
 
 
 @NgModule({
@@ -86,7 +96,18 @@ import { AnalyticsQueryDialogComponent } from './admin/analytics/analytics-query
     CustomerComponent,
     InsertDialogComponent,
     AreaComponent,
-    AnalyticsQueryDialogComponent
+    AnalyticsQueryDialogComponent,
+    PlainDeliveryComponent,
+    PlainApplicationComponent,
+    ApplicationProductComponent,
+    OrderComponent,
+    OrderProductComponent,
+    SaleProductComponent,
+    SupplierComponent,
+    ShopDeliveryComponent,
+    ShopDeliveryProductComponent,
+    SalesPointProductComponent,
+    SupplierPriceComponent
   ],
     imports: [
         BrowserModule,
@@ -122,7 +143,6 @@ export class AppModule {
     httpLink: HttpLink
   ) {
     const http = httpLink.create({ uri: environment.backendUrl })
-
 
     const errorLink = onError(({graphQLErrors, networkError}) => {
       if (networkError){

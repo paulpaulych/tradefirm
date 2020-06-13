@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 @Slf4j
@@ -141,7 +142,6 @@ public class DataPopulator {
 
     private void addDeliveryDictributions(){
         log.info("inserting into delivery_distribution");
-        LocalDateTime date = LocalDateTime.now();
         for(int i = 1; i <=DELIVERY_DISTRIBUTION_COUNT; i++){
             jdbcTemplate.update("insert into delivery_distribution(delivery_id, product_id, sales_point_id, count) values (?, ?, ? ,?) on conflict do nothing",
                     intFromRange(1, DELIVERY_COUNT),
@@ -154,7 +154,7 @@ public class DataPopulator {
 
     private void addDelivery(){
         log.info("inserting into delivery");
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = now();
         for(int i = 1; i <=DELIVERY_COUNT; i++){
             jdbcTemplate.update("insert into delivery(supplier_id,order_id, date) values (?, ?, ?) on conflict do nothing",
                     intFromRange(1, 100),
@@ -180,7 +180,7 @@ public class DataPopulator {
 
     private void addApplication(){
         log.info("inserting into application");
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = now();
         for(int i = 1; i <= APPLICATION_COUNT; i++){
             jdbcTemplate.update("insert into application(sales_point_id, date) values (?, ?) on conflict do nothing",
                     intFromRange(1, SALES_POINT_COUNT),
@@ -190,7 +190,7 @@ public class DataPopulator {
 
     private void addSales(){
         log.info("inserting into sales");
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = now();
         for(int i = 1; i <= SALES_COUNT; i++){
             jdbcTemplate.update("insert into sale(customer_id, sales_point_id, seller_id, date) values (?, ?, ?, ?) on conflict do nothing",
                     intFromRange(1, CUSTOMER_COUNT),
@@ -287,10 +287,17 @@ public class DataPopulator {
         log.info("inserting products");
         String string = resourceLoader.load("origins/products.txt");
         String[] products = string.split("\r\n");
+        log.info(products[0].toString());
         for(String product :Arrays.asList(products)){
             jdbcTemplate.update("insert into product(name) values (?) on conflict do nothing",
                     product);
         }
+        List<String> res = jdbcTemplate.queryForList("select name from product", String.class);
+        log.info(res.get(1));
+    }
+
+    private LocalDateTime now(){
+        return LocalDateTime.now(ZoneId.systemDefault());
     }
 
 //    private void addOrders() {

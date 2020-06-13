@@ -8,13 +8,24 @@ export class RoleAuthoritiesService {
 
   private navigationBarContent = {
     ROLE_ADMIN: [
+      { name: "Аналитика", link: "/" + ADMIN_PANEL_PATH + "/analytics"},
       { name: "Продукты", link: "/" + ADMIN_PANEL_PATH + "/products" },
-      { name: "Журнал покупок", link: "/" + ADMIN_PANEL_PATH + "/sales" },
+      { name: "Покупки", link: "/" + ADMIN_PANEL_PATH + "/sales" },
+      { name: "Покупка-Товар", link: "/" + ADMIN_PANEL_PATH + "/sale_product" },
       { name: "Точки продаж", link: "/" + ADMIN_PANEL_PATH + "/salesPoints" },
       { name: "Продавцы", link: "/" + ADMIN_PANEL_PATH + "/sellers" },
       { name: "Покупатели", link: "/" + ADMIN_PANEL_PATH + "/customers" },
       { name: "Помещения", link: "/" + ADMIN_PANEL_PATH + "/areas"},
-      { name: "Аналитика", link: "/" + ADMIN_PANEL_PATH + "/analytics"}
+      { name: "Поставки", link: "/" + ADMIN_PANEL_PATH + "/delivery"},
+      { name: "Заявки", link: "/" + ADMIN_PANEL_PATH + "/application"},
+      { name: "Заявкa-Продукт", link: "/" + ADMIN_PANEL_PATH + "/application_product"},
+      { name: "Заказы", link: "/" + ADMIN_PANEL_PATH + "/order"},
+      { name: "Заказ-Продукт", link: "/" + ADMIN_PANEL_PATH + "/order_product"},
+      { name: "Поставщики", link: "/" + ADMIN_PANEL_PATH + "/supplier"},
+      { name: "Поставка в магазин", link: "/" + ADMIN_PANEL_PATH + "/shop_delivery"},
+      { name: "Поставка в магазин - Продукт", link: "/" + ADMIN_PANEL_PATH + "/shop_delivery_product"},
+      { name: "Склады торговых точек", link: "/" + ADMIN_PANEL_PATH + "/storage"},
+      { name: "Прайс поставщиков", link: "/" + ADMIN_PANEL_PATH + "/supplier_price"}
     ],
     ROLE_USER: [
       { name: "Склад", link: "/" + SALES_POINT_PATH + "/storage" },
