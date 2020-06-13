@@ -2,7 +2,7 @@ package paulpaulych.tradefirm.product
 
 import com.expediagroup.graphql.spring.operations.Query
 import org.springframework.stereotype.Component
-import paulpaulych.tradefirm.security.Authorization
+import paulpaulych.tradefirm.config.security.Authorization
 import paulpaulych.utils.LoggerDelegate
 import simpleorm.core.findAll
 

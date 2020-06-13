@@ -15,8 +15,7 @@ const PRODUCTS_QUERY = gql`
 
 @Component({
   selector: "app-create-delivery-dialog",
-  templateUrl: "./create-delivery-dialog.component.html",
-  styleUrls: ["./create-delivery-dialog.component.css"]
+  templateUrl: "./create-delivery-dialog.component.html"
 })
 export class CreateDeliveryDialogComponent implements OnInit {
 

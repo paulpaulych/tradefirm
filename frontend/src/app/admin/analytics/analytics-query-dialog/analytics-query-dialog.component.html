@@ -1,0 +1,26 @@
+
+<form class="queryParamForm" [formGroup]="form">
+  <fieldset>
+    <legend>{{queryProperties.name}}</legend>
+    <div *ngFor="let param of queryProperties.params; let i = index">
+      <div class="form-field">
+        <label>{{param.name}}</label>
+        <input name="{{param.name}}" formControlName="{{param.name}}">
+      </div>
+    </div>
+  </fieldset>
+  <div class="form-but tons">
+    <button class="button button-primary"
+            (click)="runQuery()">Запрос
+    </button>
+  </div>
+</form>
+<ag-grid-angular style="width: 1000px; height: 600px;"
+                 class="ag-theme-material"
+
+                 animateRows
+                 [defaultColDef]="defaultColDef"
+                 [columnDefs]="columnDefs"
+                 [rowData]="rowData"
+>
+</ag-grid-angular>

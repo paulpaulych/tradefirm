@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core"
-import {Page, PageRequest} from "./grid-common/i_repo"
+import {Page, PageRequest} from "./grid-common/page"
 import {Filter} from "./grid-common/filter"
 import {map} from "rxjs/operators"
 import gql from "graphql-tag"
@@ -68,8 +68,8 @@ export class CommonRepoService{
 }
 
 const PLAIN_QUERY = gql`
-  query queryPlainEntity($type: String!, $filter: GraphQLFilterInput, $pageRequest: PageRequestDTOInput!){
-    plainEntitiesPage(type: $type, filter: $filter, pageRequestDTO: $pageRequest){
+  query queryPlainEntity($type: String!, $filter: FilterDTOInput, $pageRequest: PageRequestDTOInput!){
+    plainEntitiesPage(type: $type, filterDTO: $filter, pageRequestDTO: $pageRequest){
       values
       pageInfo{
         pageSize

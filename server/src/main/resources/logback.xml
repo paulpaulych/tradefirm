@@ -28,7 +28,7 @@
 
     </appender>
 
-    <logger name="simpleorm" level="warn" additivity="false">
+    <logger name="simpleorm" level="trace" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
     </logger>

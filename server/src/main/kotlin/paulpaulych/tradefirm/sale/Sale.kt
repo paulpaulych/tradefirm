@@ -1,8 +1,8 @@
 package paulpaulych.tradefirm.sale
 
-import paulpaulych.tradefirm.customer.Customer
+import paulpaulych.tradefirm.salespoint.Customer
 import paulpaulych.tradefirm.salespoint.SalesPoint
-import paulpaulych.tradefirm.seller.Seller
+import paulpaulych.tradefirm.salespoint.Seller
 import paulpaulych.utils.Open
 import java.util.*
 

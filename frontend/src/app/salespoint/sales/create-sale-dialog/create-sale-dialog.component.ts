@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core"
-import {MatDialog, MatDialogModule, MatDialogRef} from "@angular/material/dialog"
+import {MatDialog, MatDialogRef} from "@angular/material/dialog"
 import {Apollo} from "apollo-angular"
 import gql from "graphql-tag"
 import {StorageRepoService} from "../../storage/storage-repo.service"
@@ -42,8 +42,7 @@ mutation CreateSale($customerId: Long, $cart: [CartItemInput!]!){
 
 @Component({
   selector: "app-create-sale-dialog",
-  templateUrl: "./create-sale-dialog.component.html",
-  styleUrls: ["./create-sale-dialog.component.css"]
+  templateUrl: "./create-sale-dialog.component.html"
 })
 export class CreateSaleDialogComponent implements OnInit {
 
@@ -104,7 +103,7 @@ export class CreateSaleDialogComponent implements OnInit {
     })
       .subscribe(({ data }) => {
         this.closeDialog()
-        alert(`Покупка успешно добавлена: ${JSON.stringify(data.createSale)}`)
+        alert(`Покупка успешно добавлена: id = ${data.createSale.id}`)
       })
   }
 

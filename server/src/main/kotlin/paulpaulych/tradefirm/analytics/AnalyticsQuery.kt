@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Transactional
 import paulpaulych.tradefirm.config.graphql.expectedError
-import paulpaulych.tradefirm.customer.Customer
+import paulpaulych.tradefirm.salespoint.Customer
 import paulpaulych.tradefirm.product.Product
-import paulpaulych.tradefirm.supplier.Supplier
+import paulpaulych.tradefirm.delivery.Supplier
 import paulpaulych.utils.ResourceLoader
 import simpleorm.core.findById
 import simpleorm.core.query

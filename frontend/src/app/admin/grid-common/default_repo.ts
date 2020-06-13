@@ -2,7 +2,7 @@ import {Apollo} from "apollo-angular"
 import {DocumentNode} from "graphql"
 import {Filter} from "./filter"
 import {map} from "rxjs/operators"
-import {IRepo, Page, PageRequest, unwrapPage} from "./i_repo"
+import {IRepo, Page, PageRequest, unwrapPage} from "./page"
 
 export class DefaultRepo<T> implements IRepo<T> {
 

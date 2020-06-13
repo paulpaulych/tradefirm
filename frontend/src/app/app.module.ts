@@ -8,7 +8,7 @@ import { NoopAnimationsModule } from "@angular/platform-browser/animations"
 import {MatMenuModule} from "@angular/material/menu"
 import {MatIconModule} from "@angular/material/icon"
 import {MatButtonModule} from "@angular/material/button"
-import {ProductsComponent} from "./admin/products/products.component"
+import {ProductsComponent} from "./admin/tables/products.component"
 import {AgGridModule} from "ag-grid-angular"
 import {Apollo, APOLLO_OPTIONS, ApolloModule} from "apollo-angular"
 
@@ -19,7 +19,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms"
 import {AuthInterceptor} from "./security/auth-interceptor.service"
 import { UserInfoComponent } from "./topbar/userinfo/user-info.component"
 import { TopbarComponent } from "./topbar/topbar.component"
-import {SalesPointsComponent} from "./admin/sales-point/sales-points.component"
+import {SalesPointsComponent} from "./admin/tables/sales-points.component"
 import { AnalyticsComponent } from "./admin/analytics/analytics.component"
 import {environment} from "../environments/environment"
 import { WelcomeComponent } from "./welcome/welcome.component"
@@ -41,12 +41,13 @@ import { CreateDeliveryDialogComponent } from "./salespoint/delivery/create-deli
 import { onError } from "apollo-link-error"
 import {showErrorMessage} from "./admin/grid-common/insert-dialog/insert-dialog.component"
 import {InMemoryCache} from "apollo-cache-inmemory"
-import { SaleComponent } from "./admin/sale/sale.component"
-import { SellerComponent } from "./admin/seller/seller.component"
-import { CustomerComponent } from "./admin/customer/customer.component"
+import { SaleComponent } from "./admin/tables/sale.component"
+import { SellerComponent } from "./admin/tables/seller.component"
+import { CustomerComponent } from "./admin/tables/customer.component"
 import { InsertDialogComponent } from "./admin/grid-common/insert-dialog/insert-dialog.component"
-import { AreaComponent } from "./admin/area/area.component"
+import { AreaComponent } from "./admin/tables/area.component"
 import {GraphQLError} from "graphql";
+import { AnalyticsQueryDialogComponent } from './admin/analytics/analytics-query-dialog/analytics-query-dialog.component';
 
 
 
@@ -84,7 +85,8 @@ import {GraphQLError} from "graphql";
     SellerComponent,
     CustomerComponent,
     InsertDialogComponent,
-    AreaComponent
+    AreaComponent,
+    AnalyticsQueryDialogComponent
   ],
     imports: [
         BrowserModule,

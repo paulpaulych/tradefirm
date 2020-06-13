@@ -13,7 +13,8 @@ class PlainClassesRegistry{
             "area" to PlainArea::class,
             "salesPoint" to PlainSalesPoint::class,
             "sale" to PlainSale::class,
-            "customer" to PlainCustomer::class
+            "customer" to PlainCustomer::class,
+            "delivery" to PlainDelivery::class
     )
 
     @Suppress("UNCHECKED_CAST")
@@ -61,4 +62,11 @@ data class PlainSale(
 data class PlainCustomer(
         val id: Long? = null,
         val name: String
+)
+
+data class PlainDelivery (
+        val id: Long? = null,
+        val orderId: Long,
+        val supplierId: Long,
+        val date: Date
 )

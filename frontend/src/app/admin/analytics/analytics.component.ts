@@ -1,9 +1,8 @@
 import { Component, OnInit } from "@angular/core"
-import gql from "graphql-tag"
-import {FormBuilder, FormGroup, Validators} from "@angular/forms"
-import {AnalyticsQuery} from "./analyticsQuery"
+import {AnalyticsQuery} from "./analytics_query"
 import {ANALYTICS_QUERY_LIST} from "./queries"
-import {Apollo} from "apollo-angular"
+import {MatDialog} from "@angular/material/dialog"
+import {AnalyticsQueryDialogComponent} from "./analytics-query-dialog/analytics-query-dialog.component";
 
 @Component({
   selector: "app-analytics",
@@ -14,55 +13,15 @@ export class AnalyticsComponent implements OnInit {
 
   queries: AnalyticsQuery[] = ANALYTICS_QUERY_LIST
 
-  activeQuery: AnalyticsQuery = null
-  form: FormGroup
-  defaultColDef
-  columnDefs = null
-  rowData
-
   constructor(
-    private fb: FormBuilder,
-    private apollo: Apollo
-  ) {
-
-    this.defaultColDef = {
-      flex: 1,
-      editable: false,
-      sortable: true,
-    }
-
-  }
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {}
 
-  switchQuery(newQueryId: string) {
-    const query = this.queries.find((q) => q.id == newQueryId)
-    const controlsConfig = {}
-    query.params.forEach(queryParam => {
-      controlsConfig[queryParam.name] = [queryParam.value, Validators.required]
-    })
-    this.form = this.fb
-      .group(controlsConfig)
-    this.activeQuery = query
-    this.columnDefs = null
+  openQueryDialog(newQueryId: string) {
+    const query = this.queries.find((q) => q.id === newQueryId)
+    this.dialog.open(AnalyticsQueryDialogComponent, { width: "80%", data: query})
   }
 
-  runQuery() {
-    const params = this.form.value
-    this.apollo.watchQuery({
-      query: this.activeQuery.query,
-      variables: params
-    })
-      .valueChanges
-      .subscribe(({data}) => {
-        console.log("got analytics query result: " + JSON.stringify(data))
-        this.activateGrid(data[this.activeQuery.id])
-      }
-     )
-  }
-
-  activateGrid(data){
-    this.columnDefs = this.activeQuery.columnDefs
-    this.rowData = data
-  }
 }

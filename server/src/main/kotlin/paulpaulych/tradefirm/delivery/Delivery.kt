@@ -1,7 +1,6 @@
 package paulpaulych.tradefirm.delivery
 
 import paulpaulych.tradefirm.order.SupplierOrder
-import paulpaulych.tradefirm.supplier.Supplier
 import paulpaulych.utils.Open
 import java.util.*
 

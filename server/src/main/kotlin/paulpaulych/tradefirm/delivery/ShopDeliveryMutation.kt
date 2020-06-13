@@ -6,8 +6,8 @@ import org.springframework.transaction.annotation.Transactional
 import paulpaulych.tradefirm.config.graphql.expectedError
 import paulpaulych.tradefirm.product.Product
 import paulpaulych.tradefirm.salespoint.getSalesPoint
-import paulpaulych.tradefirm.security.Authorization
-import paulpaulych.tradefirm.security.MyGraphQLContext
+import paulpaulych.tradefirm.config.security.Authorization
+import paulpaulych.tradefirm.config.security.MyGraphQLContext
 import simpleorm.core.batchInsert
 import simpleorm.core.filter.AndFilter
 import simpleorm.core.filter.EqFilter
