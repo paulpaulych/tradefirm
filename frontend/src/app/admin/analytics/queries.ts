@@ -145,5 +145,26 @@ export const ANALYTICS_QUERY_LIST: AnalyticsQuery[] = [
         field: "value"
       }
     ]
+  },
+  {
+    id: "productionByGivenSeller",
+    name: "Данные по выработке на конкретного продавца",
+    params: [{
+      readableName: "ID продавца",
+      name: "sellerId",
+      value: 2
+    }],
+    query: gql`
+      query Analytics($sellerId: Long!){
+        productionByGivenSeller(sellerId: $sellerId){
+          value
+        }
+      }`,
+    columnDefs: [
+      {
+        headerName: "Один продавец в среднем продал на столько-то рублей",
+        field: "value"
+      }
+    ]
   }
 ]

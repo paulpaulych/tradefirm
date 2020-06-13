@@ -58,6 +58,13 @@ class AnalyticsQuery(
         return ProductionBySeller(result)
     }
 
+    @GraphQLDescription("данные по выработке на одного продавца")
+    fun productionByGivenSeller(sellerId: Long): ProductionBySeller {
+        val sql = ResourceLoader.loadText("sql/analytics/seller/2.sql")
+        val result = jdbc.queryForObject(sql, arrayOf(sellerId), BigDecimal::class.java)!!
+        return ProductionBySeller(result)
+    }
+
     /**
      * throws error if product does not exist
      */

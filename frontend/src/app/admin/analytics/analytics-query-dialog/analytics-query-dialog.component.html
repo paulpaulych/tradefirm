@@ -4,7 +4,7 @@
     <legend>{{queryProperties.name}}</legend>
     <div *ngFor="let param of queryProperties.params; let i = index">
       <div class="form-field">
-        <label>{{param.name}}</label>
+        <label>{{param.readableName}}</label>
         <input name="{{param.name}}" formControlName="{{param.name}}">
       </div>
     </div>
