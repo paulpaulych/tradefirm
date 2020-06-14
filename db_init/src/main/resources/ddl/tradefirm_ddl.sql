@@ -191,6 +191,9 @@ CREATE INDEX fkIdx_supplier_price_list__supplier_id ON public.supplier_price_lis
 CREATE INDEX fkIdx_supplier_price_list__product_id ON public.supplier_price_list(product_id);
 
 --========================================================================================================
+
+--========================================================================================================
+--складывает люболе количество чисел
 CREATE OR REPLACE FUNCTION sum_any_number_of_numeric(VARIADIC arr numeric[]) RETURNS numeric AS $$
 SELECT
     sum(arr_element)
@@ -198,3 +201,30 @@ FROM (
          select unnest(arr) as arr_element
      ) as arr_elements;
 $$ LANGUAGE SQL;
+
+--========================================================================================================
+--содежит статус обработки заказа
+drop table if exists delivery_wfw cascade;
+create table delivery_wfw(
+     id bigint primary key generated always as identity,
+     order_id bigint references orders(id),
+     is_new boolean null
+);
+
+drop function if exists insert_into_delivery_wfw(id bigint);
+create or replace function insert_into_delivery_wfw() returns trigger as
+$$
+begin
+    insert into delivery_wfw(order_id, is_new) values (new.id, true);
+    return new;
+end
+$$ LANGUAGE plpgsql;
+
+--при вставке заказа, добавляет запись в таблицу со статусом
+DROP TRIGGER if exists on_order_created on orders;
+CREATE TRIGGER on_order_created
+    AFTER INSERT
+    ON orders
+    FOR EACH ROW
+    WHEN ( true )
+EXECUTE procedure insert_into_delivery_wfw();

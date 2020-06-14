@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Transactional
 import paulpaulych.tradefirm.application.Application
-import paulpaulych.tradefirm.delivery.SupplierService
 import paulpaulych.utils.LoggerDelegate
 import simpleorm.core.filter.EqFilter
 import simpleorm.core.findBy
@@ -18,8 +17,7 @@ import java.util.Date
 @Service
 class OrderCreateService(
         @Value("\${order.create.fetchSize}")
-        private var fetchSize: Int,
-        private val supplierService: SupplierService
+        private var fetchSize: Int
 ) {
 
     private val log by LoggerDelegate()
@@ -45,7 +43,6 @@ class OrderCreateService(
         }
         setNotNew(newApplications)
         log.info("order created: $savedOrder")
-        supplierService.applyOrder(savedOrder)
     }
 
     private fun setNotNew(applications: List<Application>){
