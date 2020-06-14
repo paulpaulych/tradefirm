@@ -358,4 +358,28 @@ export const ANALYTICS_QUERY_LIST: AnalyticsQuery[] = [
       }
     ]
   },
+  {
+    id: "productStatBySalesPoint",
+    name: "Данные о товарообороте данной торговой точки",
+    params: [{
+      readableName: "ID торговой точки",
+      name: "salesPointId",
+      value: 2
+    }],
+    query: gql`
+      query Analytics($salesPointId: Long!){
+        productStatBySalesPoint(salesPointId: $salesPointId){
+          id
+          totallySold
+        }
+      }`,
+    columnDefs: [{
+        headerName: "ID продукта",
+        field: "id"
+      },
+      {
+        headerName: "Всего продано",
+        field: "totallySold"
+      }]
+  },
 ]

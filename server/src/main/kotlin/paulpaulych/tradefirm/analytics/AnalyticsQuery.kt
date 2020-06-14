@@ -4,6 +4,8 @@ import com.expediagroup.graphql.annotations.GraphQLDescription
 import com.expediagroup.graphql.annotations.GraphQLName
 import com.expediagroup.graphql.spring.operations.Query
 import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.jdbc.core.ResultSetExtractor
+import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Transactional
@@ -140,6 +142,13 @@ class AnalyticsQuery(
         }
     }
 
+    @GraphQLDescription("Данные о товарообороте данной торговой точки")
+    fun productStatBySalesPoint(salesPointId: Long): List<ProductStat> {
+        checkSalesPointExistence(salesPointId)
+        val sql = ResourceLoader.loadText("sql/analytics/salespoint/totalProductsSold.sql")
+        return ProductStat::class.query(sql, listOf(salesPointId))
+    }
+
     /**
      * throws error if product does not exist
      */
@@ -175,6 +184,11 @@ class AnalyticsQuery(
     }
 
 }
+
+data class ProductStat(
+    val id: Long,
+    val totallySold: Long
+)
 
 data class CustomerSalesCount(
         val customerId: Long,
