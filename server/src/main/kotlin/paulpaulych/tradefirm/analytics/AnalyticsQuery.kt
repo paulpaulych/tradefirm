@@ -3,7 +3,9 @@ package paulpaulych.tradefirm.analytics
 import com.expediagroup.graphql.annotations.GraphQLDescription
 import com.expediagroup.graphql.annotations.GraphQLName
 import com.expediagroup.graphql.spring.operations.Query
+import org.springframework.jdbc.core.BeanPropertyRowMapper
 import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Transactional
@@ -11,6 +13,8 @@ import paulpaulych.tradefirm.config.graphql.expectedError
 import paulpaulych.tradefirm.salespoint.Customer
 import paulpaulych.tradefirm.product.Product
 import paulpaulych.tradefirm.delivery.Supplier
+import paulpaulych.tradefirm.salespoint.SalesPoint
+import paulpaulych.tradefirm.salespoint.Seller
 import paulpaulych.utils.ResourceLoader
 import simpleorm.core.findById
 import simpleorm.core.query
@@ -60,6 +64,7 @@ class AnalyticsQuery(
 
     @GraphQLDescription("данные по выработке на одного продавца")
     fun productionByGivenSeller(sellerId: Long): ProductionBySeller {
+        checkSellerExistence(sellerId)
         val sql = ResourceLoader.loadText("sql/analytics/seller/2.sql")
         val result = jdbc.queryForObject(sql, arrayOf(sellerId), BigDecimal::class.java)!!
         return ProductionBySeller(result)
@@ -67,9 +72,18 @@ class AnalyticsQuery(
 
     @GraphQLDescription("Кол-во единиц проданного товара по контретной торговой точке")
     fun productSoldBySalesPoint(productId: Long, salesPointId: Long): ProductSold {
+        checkProductExistence(productId)
+        checkSalesPointExistence(salesPointId)
         val sql = ResourceLoader.loadText("sql/analytics/product/soldBySalesPoint.sql")
         val result = jdbc.queryForObject(sql, arrayOf(productId, salesPointId), Long::class.java)!!
         return ProductSold(result)
+    }
+
+    @GraphQLDescription("Зарплаты продавцой данной торговой точки")
+    fun sellerSalaryBySalesPoint(salesPointId: Long): List<SellerSalary> {
+        checkSalesPointExistence(salesPointId)
+        val sql = ResourceLoader.loadText("sql/analytics/seller/salaryBySalesPoint.sql")
+        return SellerSalary::class.query(sql, listOf(salesPointId))
     }
 
     /**
@@ -80,6 +94,18 @@ class AnalyticsQuery(
             expectedError("продукт $productId не существует" )
         }
         return
+    }
+
+    private fun checkSalesPointExistence(salesPointId: Long){
+        if(SalesPoint::class.findById(salesPointId) == null){
+            expectedError("точка продаж $salesPointId не найдена")
+        }
+    }
+
+    private fun checkSellerExistence(sellerId: Long){
+        if(Seller::class.findById(sellerId) == null){
+            expectedError("продавец $sellerId не найден")
+        }
     }
 
 }
@@ -102,4 +128,9 @@ data class CustomerInfo(
         val id: Long,
         val name: String,
         val totallyBought: Int
+)
+
+data class SellerSalary(
+        val id: Long,
+        val salary: BigDecimal
 )

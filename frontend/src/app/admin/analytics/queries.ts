@@ -162,7 +162,7 @@ export const ANALYTICS_QUERY_LIST: AnalyticsQuery[] = [
       }`,
     columnDefs: [
       {
-        headerName: "Выработка",
+        headerName: "Выработка(р.)",
         field: "value"
       }
     ]
@@ -188,8 +188,34 @@ export const ANALYTICS_QUERY_LIST: AnalyticsQuery[] = [
       }`,
     columnDefs: [
       {
-        headerName: "Один продавец в среднем продал на столько-то рублей",
+        headerName: "Продано(ед.)",
         field: "totallySold"
+      }
+    ]
+  },
+  {
+    id: "sellerSalaryBySalesPoint",
+    name: "Зарплаты продавцой данной торговой точки",
+    params: [{
+      readableName: "ID торговой точки",
+      name: "salesPointId",
+      value: 2
+    }],
+    query: gql`
+      query Analytics($salesPointId: Long!){
+        sellerSalaryBySalesPoint(salesPointId: $salesPointId){
+          id
+          salary
+        }
+      }`,
+    columnDefs: [
+      {
+        headerName: "ID продавца",
+        field: "id"
+      },
+      {
+        headerName: "Оклад(р.)",
+        field: "salary"
       }
     ]
   }
