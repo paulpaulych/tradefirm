@@ -5,15 +5,15 @@ import {CreateApplicationDialogComponent} from "./create-application-dialog/crea
 
 @Component({
   selector: "app-applications",
-  templateUrl: "./applications.component.html",
-  styleUrls: ["./applications.component.css"]
+  templateUrl: "./applications.component.html"
 })
 export class ApplicationsComponent implements OnInit {
 
   defaultColDef = {
+    flex: true,
+    resizable: true,
     editable: false,
-    sortable: false,
-    resizable: true
+    sortable: false
   }
   columnDefs = [
     {

@@ -2,8 +2,8 @@
 select distinct on( s.id)
     s.id,
     s.company_name
---     count(distinct(s.company_name))
 from supplier s
     join delivery d on s.id = d.supplier_id
-    join delivery_distribution dd on dd.delivery_id = d.id
-where dd.product_id = ?;
+    join shop_delivery sd on d.id = sd.delivery_id
+    join shop_delivery_items i on i.shop_delivery_id = sd.id
+where i.product_id = ?;

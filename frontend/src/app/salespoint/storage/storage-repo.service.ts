@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core"
 import gql from "graphql-tag"
 import {Apollo} from "apollo-angular"
-import {showErrorMessage} from "../../admin/grid-common/insert-dialog/insert-dialog.component"
 
 const QUERY = gql`
   query{
@@ -31,7 +30,7 @@ export class StorageRepoService {
       query: QUERY
     })
       .valueChanges
-      .subscribe(({data, loading, errors}) => {
+      .subscribe(({data}) => {
           const preparedData = data.salesPoint.storageItems.map(raw => {
               return {
                 productId: raw.product.id,

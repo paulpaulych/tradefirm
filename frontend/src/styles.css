@@ -19,9 +19,9 @@ body {
   flex-direction: row;
 }
 
-/*router-outlet + *  {*/
-/*  padding: 0 16px;*/
-/*}*/
+router-outlet + *  {
+  padding: 0 16px;
+}
 
 /* Text */
 
@@ -52,8 +52,6 @@ a {
 a:hover {
   opacity: 0.8;
 }
-
-/* Input */
 
 input {
   font-size: 14px;

@@ -3,12 +3,13 @@ import {StorageRepoService} from "./storage-repo.service"
 
 @Component({
   selector: "app-storage",
-  templateUrl: "./storage.component.html",
-  styleUrls: ["./storage.component.css"]
+  templateUrl: "./storage.component.html"
 })
 export class StorageComponent implements OnInit {
   gridOptions
   defaultColDef = {
+    flex: true,
+    resizable: true,
     editable: false,
     sortable: false
   }

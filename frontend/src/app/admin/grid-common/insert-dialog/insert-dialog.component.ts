@@ -1,11 +1,12 @@
-import {IRepo} from "../i_repo"
 import { AllCommunityModules } from "@ag-grid-community/all-modules"
 import {Component, Inject} from "@angular/core"
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog"
+import {CommonRepoService} from "../../common-repo.service"
 
 export class InsertGridProperties<T> {
   colDefs = []
-  repo: IRepo<T>
+  type: string
+  repo: CommonRepoService
 }
 
 @Component({
@@ -20,7 +21,8 @@ export class InsertDialogComponent<T> {
   defaultColDef
   columnDefs
 
-  private repo: IRepo<T>
+  private repo: CommonRepoService
+  private type
 
   constructor(
     private dialogRef: MatDialogRef<InsertDialogComponent<T>>,
@@ -31,6 +33,7 @@ export class InsertDialogComponent<T> {
     }
     this.repo = properties.repo
     this.columnDefs = properties.colDefs
+    this.type = properties.type
   }
 
   onGridReady(params) {
@@ -71,10 +74,11 @@ export class InsertDialogComponent<T> {
       alert("Сначала добавьте строк для вставки")
       return
     }
-    this.repo.save(data)
-      .subscribe(({received}) => {
+    this.repo.insert(this.type, data)
+      // tslint:disable-next-line:no-shadowed-variable
+      .subscribe(({data}) => {
           this.gridApi.setRowData([{}])
-          showDataCommittedMessage(received)
+          showDataCommittedMessage(data)
           this.closeDialog()
       })
 

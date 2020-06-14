@@ -2,7 +2,6 @@ package paulpaulych.tradefirm.config.graphql
 
 import graphql.GraphQL
 import graphql.execution.*
-import graphql.execution.instrumentation.tracing.TracingInstrumentation
 import graphql.schema.GraphQLSchema
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -18,9 +17,7 @@ class GraphQLConfig {
             .queryExecutionStrategy(AsyncSerialExecutionStrategy(dataFetcherExceptionHandler))
             .mutationExecutionStrategy(AsyncSerialExecutionStrategy(dataFetcherExceptionHandler))
             .subscriptionExecutionStrategy(SubscriptionExecutionStrategy(dataFetcherExceptionHandler))
-//            .instrumentation(TracingInstrumentation())
             .build()
-
 
 }
 

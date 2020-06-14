@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core"
 import {MatDialogRef} from "@angular/material/dialog"
-import {showErrorMessage} from "../../../admin/grid-common/insert-dialog/insert-dialog.component"
 import gql from "graphql-tag"
 import {Apollo} from "apollo-angular"
 import {DeliveryRepoService} from "../delivery-repo.service"
@@ -16,8 +15,7 @@ const PRODUCTS_QUERY = gql`
 
 @Component({
   selector: "app-create-delivery-dialog",
-  templateUrl: "./create-delivery-dialog.component.html",
-  styleUrls: ["./create-delivery-dialog.component.css"]
+  templateUrl: "./create-delivery-dialog.component.html"
 })
 export class CreateDeliveryDialogComponent implements OnInit {
 

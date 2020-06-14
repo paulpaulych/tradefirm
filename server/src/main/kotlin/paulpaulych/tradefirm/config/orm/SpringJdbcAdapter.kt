@@ -17,7 +17,7 @@ class SpringJdbcAdapter(
     }
 
     override fun <T : Any> doInConnection(callback: (Connection) -> T): T {
-        return jdbc.execute(SpringConnectionCallback<T>{callback.invoke(it) })
+        return jdbc.execute(SpringConnectionCallback{ callback.invoke(it) })
                 ?: error("null value got")
     }
 
