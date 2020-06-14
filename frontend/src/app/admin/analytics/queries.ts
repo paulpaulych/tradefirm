@@ -271,5 +271,27 @@ export const ANALYTICS_QUERY_LIST: AnalyticsQuery[] = [
         field: "ratio"
       }
     ]
+  },
+  {
+    id: "profitability",
+    name: "Рентабельность торговых точек(отношение объема продаж к накладным расходам)",
+    params: [],
+    query: gql`
+      query Analytics{
+        profitability{
+          salesPointId
+          ratio
+        }
+      }`,
+    columnDefs: [
+      {
+        headerName: "ID торговой точки",
+        field: "salesPointId"
+      },
+      {
+        headerName: "Отношение",
+        field: "ratio"
+      }
+    ]
   }
 ]

@@ -104,6 +104,17 @@ class AnalyticsQuery(
             )
         }
     }
+
+    @GraphQLDescription("рентабельность торговых точек(отношение объема продаж к накладным расходам)")
+    fun profitability(): List<Profitability>{
+        val sql = ResourceLoader.loadText("sql/analytics/salespoint/profitability.sql")
+        return jdbc.query(sql){ rs, _ ->
+            Profitability(
+                    rs.getLong("sales_point_id"),
+                    rs.getBigDecimal("profitability")
+            )
+        }
+    }
     /**
      * throws error if product does not exist
      */
@@ -133,6 +144,11 @@ class AnalyticsQuery(
     }
 
 }
+
+data class Profitability(
+        val salesPointId: Long,
+        val ratio: BigDecimal
+)
 
 data class ProductionToSquareRatio(
         val salesPointId: Long,
