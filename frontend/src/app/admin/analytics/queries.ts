@@ -336,4 +336,26 @@ export const ANALYTICS_QUERY_LIST: AnalyticsQuery[] = [
       }
     }]
   },
+  {
+    id: "mostActiveCustomers",
+    name: "Топ покупателей по количеству покупок",
+    params: [],
+    query: gql`
+      query Analytics{
+        mostActiveCustomers{
+          customerId
+          salesCount
+        }
+      }`,
+    columnDefs: [
+      {
+        headerName: "ID покупателя",
+        field: "customerId"
+      },
+      {
+        headerName: "Кол-во покупок",
+        field: "salesCount"
+      }
+    ]
+  },
 ]

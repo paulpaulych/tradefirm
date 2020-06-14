@@ -129,6 +129,17 @@ class AnalyticsQuery(
         return jdbc.queryForList(sql, arrayOf(productId), Long::class.java)
     }
 
+    @GraphQLDescription("Топ покупателей по количеству покупок")
+    fun mostActiveCustomers(): List<CustomerSalesCount>{
+        val sql = ResourceLoader.loadText("sql/analytics/customers/mostActive.sql")
+        return jdbc.query(sql){ rs, _ ->
+            CustomerSalesCount(
+                    rs.getLong("customer_id"),
+                    rs.getLong("sales_count")
+            )
+        }
+    }
+
     /**
      * throws error if product does not exist
      */
@@ -164,6 +175,11 @@ class AnalyticsQuery(
     }
 
 }
+
+data class CustomerSalesCount(
+        val customerId: Long,
+        val salesCount: Long
+)
 
 data class Profitability(
         val salesPointId: Long,
