@@ -50,6 +50,9 @@ export class AnalyticsQueryDialogComponent implements OnInit{
           if (!Array.isArray(result)){
             result = [result]
           }
+          if (result.length === 0){
+            alert("Нет данных по запросу")
+          }
           this.rowData = result
         }
       )

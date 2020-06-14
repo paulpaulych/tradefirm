@@ -191,3 +191,10 @@ CREATE INDEX fkIdx_supplier_price_list__supplier_id ON public.supplier_price_lis
 CREATE INDEX fkIdx_supplier_price_list__product_id ON public.supplier_price_list(product_id);
 
 --========================================================================================================
+CREATE OR REPLACE FUNCTION sum_any_number_of_numeric(VARIADIC arr numeric[]) RETURNS numeric AS $$
+SELECT
+    sum(arr_element)
+FROM (
+         select unnest(arr) as arr_element
+     ) as arr_elements;
+$$ LANGUAGE SQL;

@@ -1,7 +1,10 @@
 --рентабельность торговых точек(отношение объема продаж к накладным расходам)
 select
     sp.id as sales_point_id,
-    sv.sales_voulme / (a.rent_price + a.municipal_services_price + tss.total_seller_salary) as profitability
+    sv.sales_voulme / sum_any_number_of_numeric(
+        a.rent_price,
+        a.municipal_services_price,
+        tss.total_seller_salary) as profitability
 from sales_point sp
          join area a on sp.area_id = a.id
          join (select--объем прдаж по всем ТТ

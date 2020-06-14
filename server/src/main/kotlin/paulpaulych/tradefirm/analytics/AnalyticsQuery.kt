@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Transactional
 import paulpaulych.tradefirm.config.graphql.expectedError
+import paulpaulych.tradefirm.config.security.Authorization
 import paulpaulych.tradefirm.dbcommon.PlainOrders
 import paulpaulych.tradefirm.salespoint.Customer
 import paulpaulych.tradefirm.product.Product
@@ -28,6 +29,7 @@ class AnalyticsQuery(
         private val jdbc: JdbcTemplate
 ): Query {
 
+    @Authorization("ROLE_ADMIN")
     @GraphQLDescription("Поставщики которые поставляли определенный продукт хотя бы раз")
     fun suppliersByProduct(productId: Long): List<Supplier>{
         checkProductExistence(productId)
@@ -35,6 +37,7 @@ class AnalyticsQuery(
         return Supplier::class.query(sql, listOf(productId))
     }
 
+    @Authorization("ROLE_ADMIN")
     @GraphQLDescription("Поставщики которые поставили заданный торав в суммарном объеме больше заданного")
     fun suppliersByProductAndVolume(productId: Long, volume: Int): List<SupplierInfo>{
         checkProductExistence(productId)
@@ -42,6 +45,7 @@ class AnalyticsQuery(
         return SupplierInfo::class.query(sql, listOf(productId, volume))
     }
 
+    @Authorization("ROLE_ADMIN")
     @GraphQLDescription("Покупатели, хотя бы раз покупавшие заданный товар")
     fun customersByProduct(productId: Long): List<Customer>{
         checkProductExistence(productId)
@@ -49,6 +53,7 @@ class AnalyticsQuery(
         return Customer::class.query(sql, listOf(productId))
     }
 
+    @Authorization("ROLE_ADMIN")
     @GraphQLDescription("Покупатели которые купили заданный товар в суммарном объеме не менее заданного")
     fun customersByProductAndVolume(productId: Long, volume: Int): List<CustomerInfo>{
         checkProductExistence(productId)
@@ -56,6 +61,7 @@ class AnalyticsQuery(
         return CustomerInfo::class.query(sql, listOf(productId, volume))
     }
 
+    @Authorization("ROLE_ADMIN")
     @GraphQLDescription("данные по выработке на одного продавца")
     fun productionBySeller(): ProductionBySeller {
         val sql = ResourceLoader.loadText("sql/analytics/seller/1.sql")
@@ -63,6 +69,7 @@ class AnalyticsQuery(
         return ProductionBySeller(result)
     }
 
+    @Authorization("ROLE_ADMIN")
     @GraphQLDescription("данные по выработке на одного продавца")
     fun productionByGivenSeller(sellerId: Long): ProductionBySeller {
         checkSellerExistence(sellerId)
@@ -71,6 +78,7 @@ class AnalyticsQuery(
         return ProductionBySeller(result)
     }
 
+    @Authorization("ROLE_ADMIN")
     @GraphQLDescription("Кол-во единиц проданного товара по контретной торговой точке")
     fun productSoldBySalesPoint(productId: Long, salesPointId: Long): ProductSold {
         checkProductExistence(productId)
@@ -80,6 +88,7 @@ class AnalyticsQuery(
         return ProductSold(result)
     }
 
+    @Authorization("ROLE_ADMIN")
     @GraphQLDescription("Зарплаты продавцой данной торговой точки")
     fun sellerSalaryBySalesPoint(salesPointId: Long): List<SellerSalary> {
         checkSalesPointExistence(salesPointId)
@@ -87,6 +96,7 @@ class AnalyticsQuery(
         return SellerSalary::class.query(sql, listOf(salesPointId))
     }
 
+    @Authorization("ROLE_ADMIN")
     @GraphQLDescription("поставки определенного товара указанным поставщиком")
     fun deliveryByProductAndSupplier(productId: Long, supplierId: Long): List<DeliveryInfo> {
         checkProductExistence(productId)
@@ -95,6 +105,7 @@ class AnalyticsQuery(
         return DeliveryInfo::class.query(sql, listOf(productId, supplierId))
     }
 
+    @Authorization("ROLE_ADMIN")
     @GraphQLDescription("Отношение объема продаж к объему торг площадей")
     fun productionToSquare(): List<ProductionToSquareRatio>{
         val sql = ResourceLoader.loadText("sql/analytics/salespoint/productionToSquare.sql")
@@ -106,6 +117,7 @@ class AnalyticsQuery(
         }
     }
 
+    @Authorization("ROLE_ADMIN")
     @GraphQLDescription("рентабельность торговых точек(отношение объема продаж к накладным расходам)")
     fun profitability(): List<Profitability>{
         val sql = ResourceLoader.loadText("sql/analytics/salespoint/profitability.sql")
@@ -117,6 +129,7 @@ class AnalyticsQuery(
         }
     }
 
+    @Authorization("ROLE_ADMIN")
     @GraphQLDescription("Сведения о поставках по номеру заказа")
     fun deliveriesByOrder(orderId: Long): List<Long>{
         checkOrderExistence(orderId)
@@ -124,6 +137,7 @@ class AnalyticsQuery(
         return jdbc.queryForList(sql, arrayOf(orderId), Long::class.java)
     }
 
+    @Authorization("ROLE_ADMIN")
     @GraphQLDescription("Покупатели, которые покупали данный товар")
     fun customerByProduct(productId: Long): List<Long>{
         checkProductExistence(productId)
@@ -131,6 +145,7 @@ class AnalyticsQuery(
         return jdbc.queryForList(sql, arrayOf(productId), Long::class.java)
     }
 
+    @Authorization("ROLE_ADMIN")
     @GraphQLDescription("Топ покупателей по количеству покупок")
     fun mostActiveCustomers(): List<CustomerSalesCount>{
         val sql = ResourceLoader.loadText("sql/analytics/customers/mostActive.sql")
@@ -142,6 +157,7 @@ class AnalyticsQuery(
         }
     }
 
+    @Authorization("ROLE_ADMIN")
     @GraphQLDescription("Данные о товарообороте данной торговой точки")
     fun productStatBySalesPoint(salesPointId: Long): List<ProductStat> {
         checkSalesPointExistence(salesPointId)
