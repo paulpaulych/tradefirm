@@ -293,5 +293,28 @@ export const ANALYTICS_QUERY_LIST: AnalyticsQuery[] = [
         field: "ratio"
       }
     ]
-  }
+  },
+  {
+    id: "deliveriesByOrder",
+    name: "Поставки по номеру заказа",
+    params: [{
+      readableName: "ID заказа",
+      name: "orderId",
+      value: 2
+    }],
+    query: gql`
+      query Analytics($orderId: Long!){
+        deliveriesByOrder(orderId: $orderId)
+      }`,
+    columnDefs: [
+      {
+        headerName: "ID поставки",
+        valueGetter: (param) => {
+          if (param.data){
+            return param.data
+          }
+        }
+      }
+    ]
+  },
 ]

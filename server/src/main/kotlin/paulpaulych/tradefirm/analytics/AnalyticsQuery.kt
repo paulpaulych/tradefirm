@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Transactional
 import paulpaulych.tradefirm.config.graphql.expectedError
+import paulpaulych.tradefirm.dbcommon.PlainOrders
 import paulpaulych.tradefirm.salespoint.Customer
 import paulpaulych.tradefirm.product.Product
 import paulpaulych.tradefirm.delivery.Supplier
@@ -115,6 +116,13 @@ class AnalyticsQuery(
             )
         }
     }
+
+    @GraphQLDescription("Сведения о поставках по номеру заказа")
+    fun deliveriesByOrder(orderId: Long): List<Long>{
+        checkOrderExistence(orderId)
+        val sql = ResourceLoader.loadText("sql/analytics/delivery/byOrder.sql")
+        return jdbc.queryForList(sql, arrayOf(orderId), Long::class.java)
+    }
     /**
      * throws error if product does not exist
      */
@@ -139,7 +147,13 @@ class AnalyticsQuery(
 
     private fun checkSupplierExistence(supplierId: Long){
         if(Supplier::class.findById(supplierId) == null){
-            expectedError("продавец $supplierId не найден")
+            expectedError("поставщик $supplierId не найден")
+        }
+    }
+
+    private fun checkOrderExistence(id: Long){
+        if(PlainOrders::class.findById(id) == null){
+            expectedError("заказ $id не найден")
         }
     }
 
