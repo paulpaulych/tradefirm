@@ -94,6 +94,16 @@ class AnalyticsQuery(
         return DeliveryInfo::class.query(sql, listOf(productId, supplierId))
     }
 
+    @GraphQLDescription("Отношение объема продаж к объему торг площадей")
+    fun productionToSquare(): List<ProductionToSquareRatio>{
+        val sql = ResourceLoader.loadText("sql/analytics/salespoint/productionToSquare.sql")
+        return jdbc.query(sql){ rs, _ ->
+            ProductionToSquareRatio(
+                    rs.getLong("sales_point_id"),
+                    rs.getBigDecimal("ratio")
+            )
+        }
+    }
     /**
      * throws error if product does not exist
      */
@@ -123,6 +133,11 @@ class AnalyticsQuery(
     }
 
 }
+
+data class ProductionToSquareRatio(
+        val salesPointId: Long,
+        val ratio: BigDecimal
+)
 
 data class ProductSold(
         val totallySold: Long

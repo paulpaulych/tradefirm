@@ -249,5 +249,27 @@ export const ANALYTICS_QUERY_LIST: AnalyticsQuery[] = [
         field: "count"
       }
     ]
+  },
+  {
+    id: "productionToSquare",
+    name: "Отношение объема продаж к объему торговых площадей",
+    params: [],
+    query: gql`
+      query Analytics{
+        productionToSquare{
+          salesPointId
+          ratio
+        }
+      }`,
+    columnDefs: [
+      {
+        headerName: "ID торговой точки",
+        field: "salesPointId"
+      },
+      {
+        headerName: "Отношение",
+        field: "ratio"
+      }
+    ]
   }
 ]
