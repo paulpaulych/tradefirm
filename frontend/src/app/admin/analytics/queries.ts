@@ -218,5 +218,36 @@ export const ANALYTICS_QUERY_LIST: AnalyticsQuery[] = [
         field: "salary"
       }
     ]
+  },
+  {
+    id: "deliveryByProductAndSupplier",
+    name: "Поставки определенного товара указанным поставщиком",
+    params: [{
+        readableName: "ID продукта",
+        name: "productId",
+        value: 2
+      },
+      {
+        readableName: "ID поставщика",
+        name: "supplierId",
+        value: 2
+      }],
+    query: gql`
+      query Analytics($productId: Long!, $supplierId: Long!){
+        deliveryByProductAndSupplier(productId: $productId, supplierId: $supplierId){
+          id
+          count
+        }
+      }`,
+    columnDefs: [
+      {
+        headerName: "ID поставки",
+        field: "id"
+      },
+      {
+        headerName: "Объем товара(ед.)",
+        field: "count"
+      }
+    ]
   }
 ]

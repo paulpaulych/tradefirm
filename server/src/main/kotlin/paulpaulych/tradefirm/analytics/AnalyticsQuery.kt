@@ -86,6 +86,14 @@ class AnalyticsQuery(
         return SellerSalary::class.query(sql, listOf(salesPointId))
     }
 
+    @GraphQLDescription("поставки определенного товара указанным поставщиком")
+    fun deliveryByProductAndSupplier(productId: Long, supplierId: Long): List<DeliveryInfo> {
+        checkProductExistence(productId)
+        checkSupplierExistence(supplierId)
+        val sql = ResourceLoader.loadText("sql/analytics/product/suppliedBySupplier.sql")
+        return DeliveryInfo::class.query(sql, listOf(productId, supplierId))
+    }
+
     /**
      * throws error if product does not exist
      */
@@ -105,6 +113,12 @@ class AnalyticsQuery(
     private fun checkSellerExistence(sellerId: Long){
         if(Seller::class.findById(sellerId) == null){
             expectedError("продавец $sellerId не найден")
+        }
+    }
+
+    private fun checkSupplierExistence(supplierId: Long){
+        if(Supplier::class.findById(supplierId) == null){
+            expectedError("продавец $supplierId не найден")
         }
     }
 
@@ -133,4 +147,9 @@ data class CustomerInfo(
 data class SellerSalary(
         val id: Long,
         val salary: BigDecimal
+)
+
+data class DeliveryInfo(
+        val id: Long,
+        val count: Long
 )
