@@ -3,9 +3,7 @@ package paulpaulych.tradefirm.analytics
 import com.expediagroup.graphql.annotations.GraphQLDescription
 import com.expediagroup.graphql.annotations.GraphQLName
 import com.expediagroup.graphql.spring.operations.Query
-import org.springframework.jdbc.core.BeanPropertyRowMapper
 import org.springframework.jdbc.core.JdbcTemplate
-import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Transactional
@@ -123,6 +121,14 @@ class AnalyticsQuery(
         val sql = ResourceLoader.loadText("sql/analytics/delivery/byOrder.sql")
         return jdbc.queryForList(sql, arrayOf(orderId), Long::class.java)
     }
+
+    @GraphQLDescription("Покупатели, которые покупали данный товар")
+    fun customerByProduct(productId: Long): List<Long>{
+        checkProductExistence(productId)
+        val sql = ResourceLoader.loadText("sql/analytics/product/customerByProduct.sql")
+        return jdbc.queryForList(sql, arrayOf(productId), Long::class.java)
+    }
+
     /**
      * throws error if product does not exist
      */

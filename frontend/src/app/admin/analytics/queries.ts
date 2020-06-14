@@ -306,15 +306,34 @@ export const ANALYTICS_QUERY_LIST: AnalyticsQuery[] = [
       query Analytics($orderId: Long!){
         deliveriesByOrder(orderId: $orderId)
       }`,
-    columnDefs: [
-      {
-        headerName: "ID поставки",
-        valueGetter: (param) => {
-          if (param.data){
-            return param.data
-          }
+    columnDefs: [{
+      headerName: "ID поставки",
+      valueGetter: (param) => {
+        if (param.data){
+          return param.data
         }
       }
-    ]
+    }]
+  },
+  {
+    id: "customerByProduct",
+    name: "Покупатели, которые покупали данный товар",
+    params: [{
+      readableName: "ID продукта",
+      name: "productId",
+      value: 2
+    }],
+    query: gql`
+      query Analytics($productId: Long!){
+        customerByProduct(productId: $productId)
+      }`,
+    columnDefs: [{
+      headerName: "ID покупателя",
+      valueGetter: (param) => {
+        if (param.data){
+          return param.data
+        }
+      }
+    }]
   },
 ]
