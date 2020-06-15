@@ -1,4 +1,4 @@
-package paulpaulych.tradefirm.config.security
+package paulpaulych.tradefirm.config.security.common
 
 import com.expediagroup.graphql.spring.GraphQLConfigurationProperties
 import com.expediagroup.graphql.spring.execution.ContextWebFilter

@@ -1,4 +1,4 @@
-package paulpaulych.tradefirm.config.security
+package paulpaulych.tradefirm.config.security.common
 
 import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken

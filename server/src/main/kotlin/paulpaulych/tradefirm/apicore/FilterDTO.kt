@@ -3,7 +3,7 @@ package paulpaulych.tradefirm.apicore
 data class FilterDTO(
         val type: Type,
         val op: Op,
-        val operands: List<String>,
+        val operands: List<String> = listOf(),
         val field: String? = null,
         val left: FilterDTO? = null,
         val right: FilterDTO? = null

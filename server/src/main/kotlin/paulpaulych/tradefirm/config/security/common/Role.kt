@@ -1,4 +1,4 @@
-package paulpaulych.tradefirm.config.security
+package paulpaulych.tradefirm.config.security.common
 
 
 enum class Role {

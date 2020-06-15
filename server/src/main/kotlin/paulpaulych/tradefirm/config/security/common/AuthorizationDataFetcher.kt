@@ -1,4 +1,4 @@
-package paulpaulych.tradefirm.config.security
+package paulpaulych.tradefirm.config.security.common
 
 import com.expediagroup.graphql.execution.FunctionDataFetcher
 import com.fasterxml.jackson.databind.ObjectMapper

@@ -2,9 +2,9 @@ package paulpaulych.tradefirm.salespoint
 
 import com.expediagroup.graphql.spring.operations.Query
 import org.springframework.stereotype.Component
-import paulpaulych.tradefirm.config.security.Authorization
-import paulpaulych.tradefirm.config.security.MyGraphQLContext
-import paulpaulych.tradefirm.config.security.SellerUser
+import paulpaulych.tradefirm.config.security.common.Authorization
+import paulpaulych.tradefirm.config.security.common.MyGraphQLContext
+import paulpaulych.tradefirm.config.security.common.SellerUser
 import simpleorm.core.findById
 
 @Component

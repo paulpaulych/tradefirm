@@ -1,4 +1,4 @@
-package paulpaulych.tradefirm.config.security
+package paulpaulych.tradefirm.config.security.common
 
 import com.expediagroup.graphql.execution.GraphQLContext
 import com.expediagroup.graphql.spring.execution.GraphQLContextFactory
@@ -28,7 +28,7 @@ class MyGraphQLContextFactory: GraphQLContextFactory<MyGraphQLContext> {
         return MyGraphQLContext(securityContext)
     }
 
-    suspend fun generateContext(securityContext: SecurityContext?): MyGraphQLContext{
+    suspend fun generateContext(securityContext: SecurityContext?): MyGraphQLContext {
         return MyGraphQLContext(securityContext)
     }
 }
