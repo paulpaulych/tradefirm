@@ -23,6 +23,7 @@ build:
       - .gradle
       - frontend/build
       - frontend/dist
+      - frontend/.gradle
       - frontend/node_modules
 
 test:
@@ -37,6 +38,7 @@ test:
       - .gradle
       - frontend/build
       - frontend/dist
+      - frontend/.gradle/npm
       - frontend/node_modules
 
 build_images:

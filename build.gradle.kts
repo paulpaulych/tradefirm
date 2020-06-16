@@ -77,8 +77,6 @@ sonarqube {
                 "sonar.host.url" to "http://84.237.50.237:9000",
                 "sonar.login" to "97923e51ec08b50140881779b189514cf99a3cc4",
                 "sonar.logging.level" to "trace",
-//            "sonar.typescript.node" to project(":frontend")
-//                    .container<com.moowork.gradle.node.NodeExtension>().
                 "sonar.skipPackageDesign" to "true",
                 "sonar.skipDesign" to "true",
                 "sonar.coverage.exclusions" to exclusionList
@@ -87,7 +85,7 @@ sonarqube {
 }
 
 val exclusionList = arrayOf(
-//        "frontend/**",
+        "frontend/**",
         "server/src/main/kotlin/paulpaulych/tradefirm/config/graphql/**",
         "server/src/main/kotlin/paulpaulych/tradefirm/config/orm/**",
         "server/src/main/kotlin/paulpaulych/tradefirm/analytics/**")
