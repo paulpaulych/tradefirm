@@ -20,6 +20,9 @@ build:
       - server/build
       - db-init/build
       - .gradle
+      - frontend/build
+      - frontend/dist
+      - frontend/node_modules
 
 test:
   stage: test
@@ -28,5 +31,9 @@ test:
     key: "$CI_COMMIT_REF_NAME"
     policy: push
     paths:
-      - server/build/reports
-      - frontend/test-report.xml
+      - server/build
+      - db-init/build
+      - .gradle
+      - frontend/build
+      - frontend/dist
+      - frontend/node_modules
