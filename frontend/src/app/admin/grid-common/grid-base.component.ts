@@ -1,11 +1,14 @@
 import {CellChangedEvent} from "ag-grid-community/dist/lib/entities/rowNode"
-import {IRepo, Page, PageRequest, Sort} from "./i_repo"
+import {PageRequest, Sort} from "./page"
 import {GridProperties} from "./grid_properties"
 import {InfiniteRowModelModule} from "@ag-grid-community/infinite-row-model"
 import {prepareFilterModel} from "./filter"
 import {InsertDialogComponent, InsertGridProperties, showDataCommittedMessage} from "./insert-dialog/insert-dialog.component"
 import {OnInit} from "@angular/core"
 import {MatDialog} from "@angular/material/dialog"
+import {catchError} from "rxjs/operators"
+import {of} from "rxjs"
+import {CommonRepoService} from "../common-repo.service"
 
 const PAGE_SIZE = 10
 
@@ -22,9 +25,11 @@ export class GridBaseComponent<T> implements OnInit{
   rowSelection
   isDeleteButtonEnabled = false
   pageSize
+  components
 
   constructor(
-    protected repo: IRepo<T>,
+    protected type: string,
+    protected repo: CommonRepoService,
     properties: GridProperties,
     private dialog: MatDialog){
     this.title = properties.title
@@ -49,7 +54,6 @@ export class GridBaseComponent<T> implements OnInit{
 
 
     const onInsertCallback = () => {
-      // TODO: чета не работает обновление таблицы
       this.gridApi.purgeInfiniteCache(null)
       this.ngOnInit()
     }
@@ -67,6 +71,7 @@ export class GridBaseComponent<T> implements OnInit{
           valueParser: cd.valueParser
         })
       })
+    properties.type = this.type
     properties.colDefs = insertGridColDefs
     properties.repo = this.repo
     this.dialog.open(InsertDialogComponent, {
@@ -95,29 +100,41 @@ export class GridBaseComponent<T> implements OnInit{
           const defaultSort = new Sort(this.columnDefs[0].field, "ASC")
           sorts.push(defaultSort)
         }
-        console.log(`filter model: ${JSON.stringify(params.filterModel)}`)
+        console.log("filter model", params.filterModel)
         const filter = prepareFilterModel(params.filterModel)
-        console.log(`prepared filter: ${JSON.stringify(filter)}`)
+        console.log("prepared filter", filter)
         const pageRequest = new PageRequest(
           params.startRow / pageSize,
           pageSize,
           sorts)
-        this.repo.queryForPage(filter, pageRequest)
+        this.repo.queryForPage(this.type, filter, pageRequest)
           .subscribe(({ page, loading }) => {
-              console.log(`got: ${JSON.stringify(page.values)}`)
               params.successCallback(page.values)
               this.loading = loading
             }
           )
-      },
+      }
     }
   }
 
-  cellValueChanged(event: CellChangedEvent) {
+  updateCellValue(event: CellChangedEvent) {
     const cleaned = JSON.parse(JSON.stringify(event.node.data))
     delete cleaned.__typename
-    this.repo.save([cleaned])
-      .subscribe(({ received }) => showDataCommittedMessage(received))
+    this.repo.update(this.type, cleaned)
+      .pipe(
+        catchError((err, caught) => {
+          if (err.graphQLErrors){
+            this.rollbackCellChange(event)
+            console.log("error caught", JSON.stringify(err))
+          }
+          return of(undefined)
+        })
+      )
+      .subscribe((data) => {
+        if (data) {
+          showDataCommittedMessage(data)
+        }
+      })
   }
 
   private rollbackCellChange(event: CellChangedEvent) {
@@ -135,7 +152,7 @@ export class GridBaseComponent<T> implements OnInit{
     this.isDeleteButtonEnabled = true
   }
 
-  onDeleteClicked() {
+  deleteSelected() {
     const selectedRows = this.gridApi.getSelectedRows()
     const idFieldName = this.columnDefs.find((it) => it.editable === false).field
     const ids = selectedRows.map((it) => it[idFieldName])
@@ -143,7 +160,7 @@ export class GridBaseComponent<T> implements OnInit{
       alert("Ничего не выбрано :(")
       return
     }
-    this.repo.delete(ids)
+    this.repo.delete(this.type, ids)
       .subscribe(({data}) => {
           console.log(`data deleted: ${JSON.stringify(data)}`)
           showDataCommittedMessage()
@@ -153,5 +170,3 @@ export class GridBaseComponent<T> implements OnInit{
   }
 
 }
-
-

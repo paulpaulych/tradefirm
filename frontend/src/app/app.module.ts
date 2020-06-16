@@ -8,7 +8,7 @@ import { NoopAnimationsModule } from "@angular/platform-browser/animations"
 import {MatMenuModule} from "@angular/material/menu"
 import {MatIconModule} from "@angular/material/icon"
 import {MatButtonModule} from "@angular/material/button"
-import {ProductsComponent} from "./admin/products/products.component"
+import {ProductsComponent} from "./admin/tables/products.component"
 import {AgGridModule} from "ag-grid-angular"
 import {Apollo, APOLLO_OPTIONS, ApolloModule} from "apollo-angular"
 
@@ -19,8 +19,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms"
 import {AuthInterceptor} from "./security/auth-interceptor.service"
 import { UserInfoComponent } from "./topbar/userinfo/user-info.component"
 import { TopbarComponent } from "./topbar/topbar.component"
-import {SalesPointsComponent} from "./admin/sales-point/sales-points.component"
-import {ProductRepo} from "./admin/products/product-repo.service"
+import {SalesPointsComponent} from "./admin/tables/sales-points.component"
 import { AnalyticsComponent } from "./admin/analytics/analytics.component"
 import {environment} from "../environments/environment"
 import { WelcomeComponent } from "./welcome/welcome.component"
@@ -40,16 +39,26 @@ import { CreateApplicationDialogComponent } from "./salespoint/applications/crea
 import { DeliveryComponent } from "./salespoint/delivery/delivery.component"
 import { CreateDeliveryDialogComponent } from "./salespoint/delivery/create-delivery-dialog/create-delivery-dialog.component"
 import { onError } from "apollo-link-error"
-import {GraphQLError} from "graphql"
 import {showErrorMessage} from "./admin/grid-common/insert-dialog/insert-dialog.component"
-import {message} from "ag-grid-community/dist/lib/utils/general"
-import {ApolloLink, concat} from "apollo-link"
-import {Router, RouterModule} from "@angular/router";
-import {InMemoryCache} from "apollo-cache-inmemory";
-import { SaleComponent } from './admin/sale/sale.component';
-import { SellerComponent } from './admin/seller/seller.component';
-import { CustomerComponent } from './admin/customer/customer.component';
-import { InsertDialogComponent } from './admin/grid-common/insert-dialog/insert-dialog.component';
+import {InMemoryCache} from "apollo-cache-inmemory"
+import { SaleComponent } from "./admin/tables/sale.component"
+import { SellerComponent } from "./admin/tables/seller.component"
+import { CustomerComponent } from "./admin/tables/customer.component"
+import { InsertDialogComponent } from "./admin/grid-common/insert-dialog/insert-dialog.component"
+import { AreaComponent } from "./admin/tables/area.component"
+import {GraphQLError} from "graphql"
+import { AnalyticsQueryDialogComponent } from "./admin/analytics/analytics-query-dialog/analytics-query-dialog.component"
+import {DeliveryComponent as PlainDeliveryComponent} from "./admin/tables/delivery.component"
+import { ApplicationComponent as PlainApplicationComponent} from "./admin/tables/application.component"
+import { ApplicationProductComponent } from "./admin/tables/application-product.component"
+import {OrderComponent} from "./admin/tables/order.component"
+import {OrderProductComponent} from "./admin/tables/order-product.component"
+import {SaleProductComponent} from "./admin/tables/sale-product.component"
+import { SupplierComponent } from "./admin/tables/supplier.component"
+import {ShopDeliveryComponent} from "./admin/tables/shop_delivery.component"
+import {ShopDeliveryProductComponent} from "./admin/tables/shop-delivery-product.component"
+import {SalesPointProductComponent} from "./admin/tables/salespoint-product.component";
+import {SupplierPriceComponent} from "./admin/tables/supplier-price.component";
 
 
 @NgModule({
@@ -85,7 +94,20 @@ import { InsertDialogComponent } from './admin/grid-common/insert-dialog/insert-
     SaleComponent,
     SellerComponent,
     CustomerComponent,
-    InsertDialogComponent
+    InsertDialogComponent,
+    AreaComponent,
+    AnalyticsQueryDialogComponent,
+    PlainDeliveryComponent,
+    PlainApplicationComponent,
+    ApplicationProductComponent,
+    OrderComponent,
+    OrderProductComponent,
+    SaleProductComponent,
+    SupplierComponent,
+    ShopDeliveryComponent,
+    ShopDeliveryProductComponent,
+    SalesPointProductComponent,
+    SupplierPriceComponent
   ],
     imports: [
         BrowserModule,
@@ -107,7 +129,6 @@ import { InsertDialogComponent } from './admin/grid-common/insert-dialog/insert-
         MatSelectModule
     ],
   providers: [
-    ProductRepo,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
@@ -119,30 +140,28 @@ import { InsertDialogComponent } from './admin/grid-common/insert-dialog/insert-
 export class AppModule {
   constructor(
     apollo: Apollo,
-    httpLink: HttpLink,
-    router: Router
+    httpLink: HttpLink
   ) {
     const http = httpLink.create({ uri: environment.backendUrl })
 
-
-    const errorLink = onError(({ graphQLErrors, networkError }) => {
+    const errorLink = onError(({graphQLErrors, networkError}) => {
+      if (networkError){
+        onNetworkError(networkError)
+        return
+      }
       if (graphQLErrors) {
+        graphQLErrors.forEach((err) => console.log(JSON.stringify(err)))
+        const readableErrors = graphQLErrors.filter(isErrorReadable)
+        console.log("readable errors", readableErrors)
+        if (readableErrors.length !== 0){
+          readableErrors.forEach(showReadableError)
+          return
+        }
         graphQLErrors.map(graphQLError => {
-          const errorType = graphQLError["errorType"]
-          console.log("error type: " + errorType)
-          if (errorType === "READABLE_ERROR"){
-            alert(graphQLError.message)
-            return
-          }
           showErrorMessage(graphQLError)
         })
       }
-      if (networkError){
-        onNetworkError(networkError)
-      }
     })
-
-
     apollo.create({
       link: errorLink.concat(http),
       defaultOptions: DEFAULT_APOLLO_OPTS,
@@ -165,4 +184,19 @@ const DEFAULT_APOLLO_OPTS: DefaultOptions = {
 export function onNetworkError(err) {
   alert("Сервер недоступен. Проверьте подключение.")
   console.log(`[NETWORK ERROR]: ${err}`)
+}
+
+function showReadableError(err: GraphQLError) {
+  console.log(err)
+  alert(`ОШИБКА: ${err.message}`)
+}
+
+function isErrorReadable(err: GraphQLError): boolean {
+  if (!err.message.match(".*[А-Я]|[а-я].*")){
+    return false
+  }
+  if (err.locations.length !== 0){
+    return false
+  }
+  return true
 }

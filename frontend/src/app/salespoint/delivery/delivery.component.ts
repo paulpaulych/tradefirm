@@ -1,21 +1,19 @@
 import { Component, OnInit } from "@angular/core"
-import {ApplicationRepoService} from "../applications/application-repo.service"
 import {MatDialog} from "@angular/material/dialog"
-import {CreateApplicationDialogComponent} from "../applications/create-application-dialog/create-application-dialog.component"
 import {DeliveryRepoService} from "./delivery-repo.service"
 import {CreateDeliveryDialogComponent} from "./create-delivery-dialog/create-delivery-dialog.component"
 
 @Component({
   selector: "app-delivery",
-  templateUrl: "./delivery.component.html",
-  styleUrls: ["./delivery.component.css"]
+  templateUrl: "./delivery.component.html"
 })
 export class DeliveryComponent implements OnInit {
 
   defaultColDef = {
+    flex: true,
+    resizable: true,
     editable: false,
-    sortable: false,
-    resizable: true
+    sortable: false
   }
   columnDefs = [
     {
@@ -27,7 +25,7 @@ export class DeliveryComponent implements OnInit {
       field: "date"
     },
     {
-      headerName: "глобальный ИД поставки",
+      headerName: "Глобальный ИД поставки",
       field: "deliveryId"
     }]
   gridApi
@@ -45,7 +43,7 @@ export class DeliveryComponent implements OnInit {
   ngOnInit(): void {}
 
   openCreateApplicationDialog() {
-    const dialogRef = this.dialog.open(CreateDeliveryDialogComponent, {
+    this.dialog.open(CreateDeliveryDialogComponent, {
       width: "60%"
     })
   }

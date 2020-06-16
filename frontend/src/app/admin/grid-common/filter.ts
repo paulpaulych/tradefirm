@@ -11,7 +11,7 @@ export class Filter {
 
 export function prepareFilterModel(filterModel): Filter {
   const columns = Object.keys(filterModel)
-  if (columns.length == 0){
+  if (columns.length === 0){
     return null
   }
   return columns

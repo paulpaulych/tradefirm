@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core"
 import {Apollo} from "apollo-angular"
-import {showErrorMessage} from "../../admin/grid-common/insert-dialog/insert-dialog.component"
 import gql from "graphql-tag"
 
 const QUERY = gql`

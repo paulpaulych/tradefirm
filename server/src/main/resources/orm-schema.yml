@@ -38,7 +38,7 @@ entities:
           className: paulpaulych.tradefirm.area.Area
           foreignKeyColumn: area_id
 
-  paulpaulych.tradefirm.customer.Customer:
+  paulpaulych.tradefirm.salespoint.Customer:
     table: customer
     fields:
       id:
@@ -47,7 +47,7 @@ entities:
       name:
         column: name
 
-  paulpaulych.tradefirm.seller.Seller:
+  paulpaulych.tradefirm.salespoint.Seller:
     table: seller
     fields:
       id:
@@ -70,7 +70,7 @@ entities:
         column: id
       customer:
         manyToOne:
-          className: paulpaulych.tradefirm.customer.Customer
+          className: paulpaulych.tradefirm.salespoint.Customer
           foreignKeyColumn: customer_id
       salesPoint:
         manyToOne:
@@ -78,7 +78,7 @@ entities:
           foreignKeyColumn: sales_point_id
       seller:
         manyToOne:
-          className: paulpaulych.tradefirm.seller.Seller
+          className: paulpaulych.tradefirm.salespoint.Seller
           foreignKeyColumn: seller_id
       date:
         column: date
@@ -87,7 +87,7 @@ entities:
           className: paulpaulych.tradefirm.sale.CartItem
           keyField: saleId
 
-  paulpaulych.tradefirm.storage.StorageItem:
+  paulpaulych.tradefirm.salespoint.StorageItem:
     table: storage
     fields:
       id:
@@ -119,7 +119,7 @@ entities:
       count:
         column: count
 
-  paulpaulych.tradefirm.supplier.Supplier:
+  paulpaulych.tradefirm.delivery.Supplier:
     table: supplier
     fields:
       id:
@@ -202,7 +202,7 @@ entities:
           foreignKeyColumn: order_id
       supplier:
         manyToOne:
-          className: paulpaulych.tradefirm.supplier.Supplier
+          className: paulpaulych.tradefirm.delivery.Supplier
           foreignKeyColumn: supplier_id
       date:
         column: date
@@ -231,7 +231,7 @@ entities:
         isId: true
         column: id
         manyToOne:
-          className: paulpaulych.tradefirm.supplier.Supplier
+          className: paulpaulych.tradefirm.delivery.Supplier
           foreignKeyColumn: supplier_id
       delivery:
         manyToOne:

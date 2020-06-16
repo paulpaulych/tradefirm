@@ -5,11 +5,12 @@ import {CustomersRepoService} from "./customers-repo.service"
 
 @Component({
   selector: "app-customers",
-  templateUrl: "./customers.component.html",
-  styleUrls: ["./customers.component.css"]
+  templateUrl: "./customers.component.html"
 })
 export class CustomersComponent implements OnInit {
   defaultColDef = {
+    flex: true,
+    resizable: true,
     editable: false,
     sortable: false
   }

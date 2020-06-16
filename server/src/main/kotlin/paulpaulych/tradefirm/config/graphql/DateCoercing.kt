@@ -1,14 +1,12 @@
 package paulpaulych.tradefirm.config.graphql
 
 import graphql.schema.Coercing
-import org.springframework.stereotype.Component
 import paulpaulych.utils.LoggerDelegate
 import java.text.SimpleDateFormat
 import java.util.*
 
-private const val DATE_FORMAT_STRING = "dd-MM-yyyy HH:mm:ss Z"
+private const val DATE_FORMAT_STRING = "dd-MM-yyyy HH:mm:ss"
 
-@Component
 object DateCoercing : Coercing<Date, String> {
 
     private val format = SimpleDateFormat(DATE_FORMAT_STRING)

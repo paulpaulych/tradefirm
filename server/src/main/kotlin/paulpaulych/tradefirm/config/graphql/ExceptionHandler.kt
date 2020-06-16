@@ -14,8 +14,16 @@ class ExpectedError(
         message: String
 ): RuntimeException(message)
 
+class BadInputError(
+        message: String
+): RuntimeException(message)
+
 internal fun expectedError(message: String): Nothing{
     throw ExpectedError(message)
+}
+
+internal fun badInputError(message: String): Nothing{
+    throw BadInputError(message)
 }
 
 @Component
@@ -40,6 +48,25 @@ class ExceptionHandler : DataFetcherExceptionHandler{
         val error: GraphQLError = ExpectedGraphQLError(message = message)
         return DataFetcherExceptionHandlerResult.newResult(error).build()
     }
+
+    fun onBadInputError(message: String): DataFetcherExceptionHandlerResult{
+        val error: GraphQLError = BadRequestGraphQLError(message = message)
+        return DataFetcherExceptionHandlerResult.newResult(error).build()
+    }
+}
+
+class BadRequestGraphQLError(
+        private val message: String
+): GraphQLError{
+    override fun getMessage(): String = message
+
+    override fun getErrorType(): ErrorClassification{
+        return ErrorType.BAD_REQUEST_ERROR
+    }
+
+    override fun getLocations(): MutableList<SourceLocation> {
+        return mutableListOf()
+    }
 }
 
 class ExpectedGraphQLError(
@@ -59,5 +86,6 @@ class ExpectedGraphQLError(
 }
 
 enum class ErrorType: ErrorClassification{
-    READABLE_ERROR
+    READABLE_ERROR,
+    BAD_REQUEST_ERROR
 }

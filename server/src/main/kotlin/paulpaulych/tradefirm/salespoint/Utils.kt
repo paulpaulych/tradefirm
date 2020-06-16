@@ -1,8 +1,7 @@
 package paulpaulych.tradefirm.salespoint
 
-import paulpaulych.tradefirm.security.MyGraphQLContext
-import paulpaulych.tradefirm.security.SellerUser
-import paulpaulych.tradefirm.seller.Seller
+import paulpaulych.tradefirm.config.security.common.MyGraphQLContext
+import paulpaulych.tradefirm.config.security.common.SellerUser
 import simpleorm.core.findById
 
 fun getSalesPoint(context: MyGraphQLContext): SalesPoint {

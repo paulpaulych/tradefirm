@@ -1,8 +1,8 @@
 package paulpaulych.tradefirm.config.graphql
 
 import graphql.Scalars
+import graphql.scalars.ExtendedScalars
 import graphql.schema.*
-
 
 internal val orderType = GraphQLEnumType.newEnum()
         .name("Order")
@@ -41,4 +41,23 @@ internal val pageRequestType = GraphQLInputObjectType.newInputObject()
                 .name("sorts")
                 .type(GraphQLList.list(sortType))
                 .build())
+        .build()
+
+internal val pageInfoType = GraphQLObjectType.newObject()
+        .name("PageInfo")
+        .field(GraphQLFieldDefinition.newFieldDefinition()
+                .name("pageSize")
+                .type(Scalars.GraphQLInt)
+                .build())
+        .build()
+
+internal val pageType = GraphQLObjectType.newObject()
+        .name("Page")
+        .field(GraphQLFieldDefinition.newFieldDefinition()
+                .name("pageInfo")
+                .type(pageInfoType)
+                .build())
+        .field(GraphQLFieldDefinition.newFieldDefinition()
+                .name("values")
+                .type(ExtendedScalars.Json))
         .build()
