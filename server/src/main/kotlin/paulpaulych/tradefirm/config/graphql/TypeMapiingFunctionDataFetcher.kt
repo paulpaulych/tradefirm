@@ -2,7 +2,7 @@ package paulpaulych.tradefirm.config.graphql
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import graphql.schema.DataFetchingEnvironment
-import paulpaulych.tradefirm.config.security.AuthorizationDataFetcher
+import paulpaulych.tradefirm.config.security.common.AuthorizationDataFetcher
 import reactor.core.publisher.Mono
 import kotlin.reflect.KFunction
 

@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import paulpaulych.tradefirm.product.Product
 import paulpaulych.tradefirm.salespoint.getSalesPoint
-import paulpaulych.tradefirm.config.security.Authorization
-import paulpaulych.tradefirm.config.security.MyGraphQLContext
+import paulpaulych.tradefirm.config.security.common.Authorization
+import paulpaulych.tradefirm.config.security.common.MyGraphQLContext
 import simpleorm.core.findById
 import simpleorm.core.persist
 import java.util.*

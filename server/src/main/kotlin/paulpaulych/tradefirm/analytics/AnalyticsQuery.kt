@@ -4,13 +4,11 @@ import com.expediagroup.graphql.annotations.GraphQLDescription
 import com.expediagroup.graphql.annotations.GraphQLName
 import com.expediagroup.graphql.spring.operations.Query
 import org.springframework.jdbc.core.JdbcTemplate
-import org.springframework.jdbc.core.ResultSetExtractor
-import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Transactional
 import paulpaulych.tradefirm.config.graphql.expectedError
-import paulpaulych.tradefirm.config.security.Authorization
+import paulpaulych.tradefirm.config.security.common.Authorization
 import paulpaulych.tradefirm.dbcommon.PlainOrders
 import paulpaulych.tradefirm.salespoint.Customer
 import paulpaulych.tradefirm.product.Product

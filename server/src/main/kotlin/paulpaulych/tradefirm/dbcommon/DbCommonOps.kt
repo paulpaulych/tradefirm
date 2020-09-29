@@ -9,7 +9,7 @@ import paulpaulych.tradefirm.apicore.PageRequestDTO
 import paulpaulych.tradefirm.apicore.PageRequestMapper
 import paulpaulych.tradefirm.apicore.toFetchFilter
 import paulpaulych.tradefirm.config.graphql.badInputError
-import paulpaulych.tradefirm.config.security.Authorization
+import paulpaulych.tradefirm.config.security.common.Authorization
 import paulpaulych.utils.LoggerDelegate
 import simpleorm.core.SimpleOrm
 import simpleorm.core.pagination.Page

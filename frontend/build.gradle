@@ -1,11 +1,11 @@
-apply plugin: 'com.moowork.node'
+apply plugin: "com.github.node-gradle.node"
 apply plugin: 'org.sonarqube'
 
 group 'paulpaulych.tradefirm'
 version '1.0-SNAPSHOT'
 
 node {
-  version = "13.5.0"
+  version = "14.4.0"
   npmVersion = '6.14.5'
   download = true
   workDir = file("${project.buildDir}/node")
@@ -36,7 +36,6 @@ runLocal.dependsOn(npm_install)
 task test(type: NpmTask){
   args = ['test']
 }
-test.dependsOn(build)
 
 sonarqube {
   properties {

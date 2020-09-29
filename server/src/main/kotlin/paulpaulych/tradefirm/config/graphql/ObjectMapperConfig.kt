@@ -1,4 +1,4 @@
-package paulpaulych.tradefirm.config
+package paulpaulych.tradefirm.config.graphql
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule

@@ -7,9 +7,9 @@ import paulpaulych.tradefirm.config.graphql.expectedError
 import paulpaulych.tradefirm.salespoint.Customer
 import paulpaulych.tradefirm.product.Product
 import paulpaulych.tradefirm.salespoint.Seller
-import paulpaulych.tradefirm.config.security.Authorization
-import paulpaulych.tradefirm.config.security.MyGraphQLContext
-import paulpaulych.tradefirm.config.security.SellerUser
+import paulpaulych.tradefirm.config.security.common.Authorization
+import paulpaulych.tradefirm.config.security.common.MyGraphQLContext
+import paulpaulych.tradefirm.config.security.common.SellerUser
 import paulpaulych.tradefirm.salespoint.StorageItem
 import simpleorm.core.findById
 import simpleorm.core.persist
