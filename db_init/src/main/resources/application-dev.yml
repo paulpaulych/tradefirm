@@ -1,6 +1,6 @@
 spring:
     datasource:
         driverClassName: org.postgresql.Driver
-        password: 111111
         url: jdbc:postgresql://localhost:5432/tradefirm
         username: postgres
+        password: 111111

@@ -68,20 +68,13 @@ public class DataPopulator {
         addSuppliers();
         addCustomers();
         addArea();
-//        addOrders();
         addProducts();
         addSalesPoints();
-//        addEmployee();
         addSellers();
         addSales();
         addSaleProduct();
         addApplication();
         addApplicationProduct();
-//        addDelivery();
-//        addDeliveryDictributions();
-//        addOrderProduct();
-//        addSections();
-//        addSectionManager();
         addStorage();
         addSupplierPriceList();
     }
@@ -126,19 +119,6 @@ public class DataPopulator {
             );
         }
     }
-
-//    private void addOrderProduct() {
-//        log.info("inserting into order_product");
-//        LocalDateTime date = LocalDateTime.now();
-//        for(int i = 1; i <=ORDER_PRODUCT_COUNT; i++){
-//            jdbcTemplate.update("insert into order_product(order_id, product_id, sales_point_id, count) values (?, ?, ?, ?) on conflict do nothing",
-//                    intFromRange(1, ORDER_COUNT),
-//                    intFromRange(1, PRODUCT_COUNT),
-//                    intFromRange(1, SALES_POINT_COUNT),
-//                    intFromRange(1, 100)
-//            );
-//        }
-//    }
 
     private void addDeliveryDictributions(){
         log.info("inserting into delivery_distribution");
@@ -286,27 +266,16 @@ public class DataPopulator {
     private void addProducts() throws IOException {
         log.info("inserting products");
         String string = resourceLoader.load("origins/products.txt");
-        String[] products = string.split("\r\n");
-        log.info(products[0].toString());
+        String[] products = string.split(System.lineSeparator());
+        log.info(products[0]);
         for(String product :Arrays.asList(products)){
             jdbcTemplate.update("insert into product(name) values (?) on conflict do nothing",
                     product);
         }
         List<String> res = jdbcTemplate.queryForList("select name from product", String.class);
-        log.info(res.get(1));
     }
 
     private LocalDateTime now(){
         return LocalDateTime.now(ZoneId.systemDefault());
     }
-
-//    private void addOrders() {
-//        log.info("inserting orders");
-//        LocalDateTime date = LocalDateTime.now();
-//        for(int i = 1; i <=ORDER_COUNT; i++){
-//            jdbcTemplate.update("insert into \"order\" (date) values ( ? ) on conflict do nothing",
-//                date.minusDays(i)
-//            );
-//        }
-//    }
 }
