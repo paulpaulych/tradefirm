@@ -1,6 +1,6 @@
 entities:
 
-  paulpaulych.tradefirm.product.Product:
+  paulpaulych.tradefirm.sellerapi.product.Product:
     table: product
     fields:
       id:
@@ -9,7 +9,7 @@ entities:
       name:
         column: name
 
-  paulpaulych.tradefirm.area.Area:
+  paulpaulych.tradefirm.sellerapi.area.Area:
     table: area
     fields:
       id:
@@ -25,7 +25,7 @@ entities:
         column: stall_count
 
 
-  paulpaulych.tradefirm.salespoint.SalesPoint:
+  paulpaulych.tradefirm.sellerapi.salespoint.SalesPoint:
     table: sales_point
     fields:
       id:
@@ -35,10 +35,10 @@ entities:
         column: type
       area:
         manyToOne:
-          className: paulpaulych.tradefirm.area.Area
+          className: paulpaulych.tradefirm.sellerapi.area.Area
           foreignKeyColumn: area_id
 
-  paulpaulych.tradefirm.salespoint.Customer:
+  paulpaulych.tradefirm.sellerapi.salespoint.Customer:
     table: customer
     fields:
       id:
@@ -47,7 +47,7 @@ entities:
       name:
         column: name
 
-  paulpaulych.tradefirm.salespoint.Seller:
+  paulpaulych.tradefirm.sellerapi.salespoint.Seller:
     table: seller
     fields:
       id:
@@ -57,12 +57,12 @@ entities:
         column: name
       salesPoint:
         manyToOne:
-          className: paulpaulych.tradefirm.salespoint.SalesPoint
+          className: paulpaulych.tradefirm.sellerapi.salespoint.SalesPoint
           foreignKeyColumn: sales_point_id
       salary:
         column: salary
 
-  paulpaulych.tradefirm.sale.Sale:
+  paulpaulych.tradefirm.sellerapi.sale.Sale:
     table: sale
     fields:
       id:
@@ -70,24 +70,24 @@ entities:
         column: id
       customer:
         manyToOne:
-          className: paulpaulych.tradefirm.salespoint.Customer
+          className: paulpaulych.tradefirm.sellerapi.salespoint.Customer
           foreignKeyColumn: customer_id
       salesPoint:
         manyToOne:
-          className: paulpaulych.tradefirm.salespoint.SalesPoint
+          className: paulpaulych.tradefirm.sellerapi.salespoint.SalesPoint
           foreignKeyColumn: sales_point_id
       seller:
         manyToOne:
-          className: paulpaulych.tradefirm.salespoint.Seller
+          className: paulpaulych.tradefirm.sellerapi.salespoint.Seller
           foreignKeyColumn: seller_id
       date:
         column: date
       cartItems:
         oneToMany:
-          className: paulpaulych.tradefirm.sale.CartItem
+          className: paulpaulych.tradefirm.sellerapi.sale.CartItem
           keyField: saleId
 
-  paulpaulych.tradefirm.salespoint.StorageItem:
+  paulpaulych.tradefirm.sellerapi.salespoint.StorageItem:
     table: storage
     fields:
       id:
@@ -97,14 +97,14 @@ entities:
         column: sales_point_id
       product:
         manyToOne:
-          className: paulpaulych.tradefirm.product.Product
+          className: paulpaulych.tradefirm.sellerapi.product.Product
           foreignKeyColumn: product_id
       count:
         column: count
       price:
         column: price
 
-  paulpaulych.tradefirm.sale.CartItem:
+  paulpaulych.tradefirm.sellerapi.sale.CartItem:
     table: sale_product
     fields:
       id:
@@ -114,12 +114,12 @@ entities:
         column: sale_id
       product:
         manyToOne:
-          className: paulpaulych.tradefirm.product.Product
+          className: paulpaulych.tradefirm.sellerapi.product.Product
           foreignKeyColumn: product_id
       count:
         column: count
 
-  paulpaulych.tradefirm.delivery.Supplier:
+  paulpaulych.tradefirm.sellerapi.delivery.Supplier:
     table: supplier
     fields:
       id:
@@ -128,7 +128,7 @@ entities:
       companyName:
         column: company_name
 
-  paulpaulych.tradefirm.application.Application:
+  paulpaulych.tradefirm.sellerapi.application.Application:
     table: application
     fields:
       id:
@@ -136,14 +136,14 @@ entities:
         column: id
       salesPoint:
         manyToOne:
-          className: paulpaulych.tradefirm.salespoint.SalesPoint
+          className: paulpaulych.tradefirm.sellerapi.salespoint.SalesPoint
           foreignKeyColumn: sales_point_id
       date:
         column: date
       newFlag:
         column: is_new
 
-  paulpaulych.tradefirm.application.ApplicationItem:
+  paulpaulych.tradefirm.sellerapi.application.ApplicationItem:
     table: application_product
     fields:
       id:
@@ -151,16 +151,16 @@ entities:
         column: id
       product:
         manyToOne:
-          className: paulpaulych.tradefirm.product.Product
+          className: paulpaulych.tradefirm.sellerapi.product.Product
           foreignKeyColumn: product_id
       application:
         manyToOne:
-          className: paulpaulych.tradefirm.application.Application
+          className: paulpaulych.tradefirm.sellerapi.application.Application
           foreignKeyColumn: application_id
       count:
         column: count
 
-  paulpaulych.tradefirm.order.SupplierOrder:
+  paulpaulych.tradefirm.sellerapi.order.SupplierOrder:
     table: orders
     fields:
       id:
@@ -169,7 +169,7 @@ entities:
       date:
         column: date
 
-  paulpaulych.tradefirm.order.SupplierOrderItem:
+  paulpaulych.tradefirm.sellerapi.order.SupplierOrderItem:
     table: order_product
     fields:
       id:
@@ -177,20 +177,20 @@ entities:
         column: id
       supplierOrder:
         manyToOne:
-          className: paulpaulych.tradefirm.order.SupplierOrder
+          className: paulpaulych.tradefirm.sellerapi.order.SupplierOrder
           foreignKeyColumn: order_id
       product:
         manyToOne:
-          className: paulpaulych.tradefirm.product.Product
+          className: paulpaulych.tradefirm.sellerapi.product.Product
           foreignKeyColumn: product_id
       salesPoint:
         manyToOne:
-          className: paulpaulych.tradefirm.salespoint.SalesPoint
+          className: paulpaulych.tradefirm.sellerapi.salespoint.SalesPoint
           foreignKeyColumn: sales_point_id
       count:
         column: count
 
-  paulpaulych.tradefirm.delivery.Delivery:
+  paulpaulych.tradefirm.sellerapi.delivery.Delivery:
     table: delivery
     fields:
       id:
@@ -198,17 +198,17 @@ entities:
         column: id
       supplierOrder:
         manyToOne:
-          className: paulpaulych.tradefirm.order.SupplierOrder
+          className: paulpaulych.tradefirm.sellerapi.order.SupplierOrder
           foreignKeyColumn: order_id
       supplier:
         manyToOne:
-          className: paulpaulych.tradefirm.delivery.Supplier
+          className: paulpaulych.tradefirm.sellerapi.delivery.Supplier
           foreignKeyColumn: supplier_id
       date:
         column: date
 
 
-  paulpaulych.tradefirm.delivery.ShopDeliveryItem:
+  paulpaulych.tradefirm.sellerapi.delivery.ShopDeliveryItem:
     table: shop_delivery_items
     fields:
       id:
@@ -216,7 +216,7 @@ entities:
         column: id
       product:
         manyToOne:
-          className: paulpaulych.tradefirm.product.Product
+          className: paulpaulych.tradefirm.sellerapi.product.Product
           foreignKeyColumn: product_id
       count:
         column: count
@@ -224,26 +224,26 @@ entities:
         column: shop_delivery_id
 
 
-  paulpaulych.tradefirm.delivery.ShopDelivery:
+  paulpaulych.tradefirm.sellerapi.delivery.ShopDelivery:
     table: shop_delivery
     fields:
       id:
         isId: true
         column: id
         manyToOne:
-          className: paulpaulych.tradefirm.delivery.Supplier
+          className: paulpaulych.tradefirm.sellerapi.delivery.Supplier
           foreignKeyColumn: supplier_id
       delivery:
         manyToOne:
-          className: paulpaulych.tradefirm.delivery.Delivery
+          className: paulpaulych.tradefirm.sellerapi.delivery.Delivery
           foreignKeyColumn: delivery_id
       items:
         oneToMany:
-          className: paulpaulych.tradefirm.delivery.ShopDeliveryItem
+          className: paulpaulych.tradefirm.sellerapi.delivery.ShopDeliveryItem
           keyField: shopDeliveryId
       salesPoint:
         manyToOne:
-          className: paulpaulych.tradefirm.salespoint.SalesPoint
+          className: paulpaulych.tradefirm.sellerapi.salespoint.SalesPoint
           foreignKeyColumn: sales_point_id
       date:
         column: date

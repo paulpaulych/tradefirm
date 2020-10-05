@@ -2,9 +2,11 @@ package paulpaulych.tradefirm.apicore
 
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.FunSpec
-import org.junit.jupiter.api.Order
-import paulpaulych.tradefirm.product.Product
-import simpleorm.core.pagination.PageRequest
+import paulpaulych.tradefirm.admin.crudapi.PageInfoDTO
+import paulpaulych.tradefirm.admin.crudapi.PageRequestDTO
+import paulpaulych.tradefirm.admin.crudapi.PageRequestMapper
+import paulpaulych.tradefirm.admin.crudapi.SortDTO
+import paulpaulych.tradefirm.sellerapi.product.Product
 import simpleorm.core.pagination.Sort
 
 internal class PageRequestMapperTest: FunSpec(){
@@ -13,7 +15,7 @@ internal class PageRequestMapperTest: FunSpec(){
 
         val mapper = PageRequestMapper()
 
-        PageInfo(1)
+        PageInfoDTO(1)
 
         test("asc"){
             val dto = PageRequestDTO(0, 0,

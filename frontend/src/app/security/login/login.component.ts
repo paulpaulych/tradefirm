@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms"
 import {AuthService} from "../auth-service.service"
 import {Router} from "@angular/router"
 import {RoleAuthoritiesService} from "../role-authorities.service"
-import {onNetworkError} from "../../app.module";
+import {onNetworkError} from "../../error-handler"
 
 @Component({
   selector: "app-login",

@@ -20,6 +20,4 @@ class SpringJdbcAdapter(
         return jdbc.execute(SpringConnectionCallback{ callback.invoke(it) })
                 ?: error("null value got")
     }
-
-
 }

@@ -6,7 +6,6 @@ import {catchError} from "rxjs/operators"
 
 
 const AUTH_TOKEN = "auth_token"
-const AUTH_EXPIRES_AT = "auth_exp"
 const AUTH_ROLE = "auth_role"
 const AUTH_USERNAME = "auth_username"
 
@@ -26,7 +25,7 @@ export class AuthService {
   login(username: string, password: string, callback: LoginCallback) {
     this.http.post<any>(environment.authUrl, { username, password })
       .pipe(
-        catchError((err: HttpErrorResponse, caught) => {
+        catchError((err: HttpErrorResponse, _) => {
           if (err.status === 401){
             callback.unauthorized()
           } else {
@@ -45,30 +44,23 @@ export class AuthService {
 
   private setSession(authResult) {
     localStorage.setItem(AUTH_TOKEN, authResult.token)
-    localStorage.setItem(AUTH_EXPIRES_AT, authResult.expiration )
     localStorage.setItem(AUTH_ROLE, authResult.role)
     localStorage.setItem(AUTH_USERNAME, authResult.username )
   }
 
   logout() {
     localStorage.removeItem(AUTH_TOKEN)
-    localStorage.removeItem(AUTH_EXPIRES_AT)
     localStorage.removeItem(AUTH_ROLE)
     localStorage.removeItem(AUTH_USERNAME)
     return new Observable()
   }
 
   public isLoggedIn() {
-    const now = new Date().valueOf()
-    return now < Number(this.getExpiration()) && this.getToken()
+    return this.getToken() != null && this.getToken() != undefined
   }
 
   public getToken(){
     return localStorage.getItem(AUTH_TOKEN)
-  }
-
-  private getExpiration() {
-    return localStorage.getItem(AUTH_EXPIRES_AT)
   }
 
   public getUsername(){

@@ -82,7 +82,6 @@ class ExpectedGraphQLError(
     override fun getLocations(): MutableList<SourceLocation> {
         return mutableListOf()
     }
-
 }
 
 enum class ErrorType: ErrorClassification{

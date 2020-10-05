@@ -1,5 +1,8 @@
 import { Injectable } from "@angular/core"
-import {ADMIN_PANEL_PATH, SALES_POINT_PATH} from "../app-routing.module"
+
+
+export const ADMIN_PANEL_PATH = "admin"
+export const SALES_POINT_PATH = "salesPoint"
 
 @Injectable({
   providedIn: "root"
@@ -27,7 +30,7 @@ export class RoleAuthoritiesService {
       { name: "Склады торговых точек", link: "/" + ADMIN_PANEL_PATH + "/storage"},
       { name: "Прайс поставщиков", link: "/" + ADMIN_PANEL_PATH + "/supplier_price"}
     ],
-    ROLE_USER: [
+    ROLE_SELLER: [
       { name: "Склад", link: "/" + SALES_POINT_PATH + "/storage" },
       { name: "Покупки", link: "/" + SALES_POINT_PATH + "/sales" },
       { name: "Заявки", link: "/" + SALES_POINT_PATH + "/applications" },
@@ -39,7 +42,7 @@ export class RoleAuthoritiesService {
 
   private welcomePagePath = {
     ROLE_ADMIN: "/welcome",
-    ROLE_USER: "/welcome",
+    ROLE_SELLER: "/welcome",
     default: "/welcome"
   }
 

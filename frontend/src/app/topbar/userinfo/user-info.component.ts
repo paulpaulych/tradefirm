@@ -22,5 +22,4 @@ export class UserInfoComponent implements OnInit {
   ngOnInit(): void {
     this.username = this.authService.getUsername()
   }
-
 }

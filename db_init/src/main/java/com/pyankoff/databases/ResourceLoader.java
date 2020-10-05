@@ -4,30 +4,17 @@ import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.stream.Collectors;
 
 @Service
 public class ResourceLoader {
 
-    public String load(String fname) throws IOException {
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(
-                        this.getClass().getClassLoader().getResourceAsStream(fname)));
-        String line;
-        StringBuilder  stringBuilder = new StringBuilder();
-        String ls = System.getProperty("line.separator");
-
-        try {
-            while((line = reader.readLine()) != null) {
-                stringBuilder.append(line);
-                stringBuilder.append(ls);
-            }
-            if(stringBuilder.toString() != null){
-                return stringBuilder.toString();
-            }
-            throw new RuntimeException("cannot read file " + fname);
-        } finally {
-            reader.close();
-        }
+    public String load(String fname){
+        InputStream resource = this.getClass().getClassLoader().getResourceAsStream(fname);
+        assert resource != null;
+        BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
+        return reader.lines().collect(Collectors.joining(System.lineSeparator()));
     }
 }

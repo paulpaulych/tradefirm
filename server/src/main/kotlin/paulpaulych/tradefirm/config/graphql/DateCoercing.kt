@@ -1,7 +1,6 @@
 package paulpaulych.tradefirm.config.graphql
 
 import graphql.schema.Coercing
-import paulpaulych.utils.LoggerDelegate
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -10,7 +9,6 @@ private const val DATE_FORMAT_STRING = "dd-MM-yyyy HH:mm:ss"
 object DateCoercing : Coercing<Date, String> {
 
     private val format = SimpleDateFormat(DATE_FORMAT_STRING)
-    private val log by LoggerDelegate()
 
     override fun parseValue(input: Any?): Date? {
         if(input == null){

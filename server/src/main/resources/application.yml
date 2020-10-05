@@ -3,11 +3,14 @@ server:
   error:
     includeStacktrace=ALWAYS:spring: ALWAYS
 
+jwt:
+  secret-key: blablablablablablablalbalbalbalbalbalbalbalba
+
 spring:
   datasource:
-    url: jdbc:postgresql://13.49.73.184:5432/tradefirm
-    username: postgres
-    password: 111111
+    url: jdbc:postgresql://localhost:5433/pgdb
+    username: user
+    password: changeme
     driver-class-name: org.postgresql.Driver
 
 graphql:

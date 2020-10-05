@@ -8,7 +8,7 @@ import { NoopAnimationsModule } from "@angular/platform-browser/animations"
 import {MatMenuModule} from "@angular/material/menu"
 import {MatIconModule} from "@angular/material/icon"
 import {MatButtonModule} from "@angular/material/button"
-import {ProductsComponent} from "./admin/tables/products.component"
+import {ProductsComponent} from "./admin/crud-tables/products.component"
 import {AgGridModule} from "ag-grid-angular"
 import {Apollo, APOLLO_OPTIONS, ApolloModule} from "apollo-angular"
 
@@ -19,7 +19,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms"
 import {AuthInterceptor} from "./security/auth-interceptor.service"
 import { UserInfoComponent } from "./topbar/userinfo/user-info.component"
 import { TopbarComponent } from "./topbar/topbar.component"
-import {SalesPointsComponent} from "./admin/tables/sales-points.component"
+import {SalesPointsComponent} from "./admin/crud-tables/sales-points.component"
 import { AnalyticsComponent } from "./admin/analytics/analytics.component"
 import {environment} from "../environments/environment"
 import { WelcomeComponent } from "./welcome/welcome.component"
@@ -39,26 +39,27 @@ import { CreateApplicationDialogComponent } from "./salespoint/applications/crea
 import { DeliveryComponent } from "./salespoint/delivery/delivery.component"
 import { CreateDeliveryDialogComponent } from "./salespoint/delivery/create-delivery-dialog/create-delivery-dialog.component"
 import { onError } from "apollo-link-error"
-import {showErrorMessage} from "./admin/grid-common/insert-dialog/insert-dialog.component"
+import {showErrorMessage} from "./admin/crud-tables/common/insert-dialog/insert-dialog.component"
 import {InMemoryCache} from "apollo-cache-inmemory"
-import { SaleComponent } from "./admin/tables/sale.component"
-import { SellerComponent } from "./admin/tables/seller.component"
-import { CustomerComponent } from "./admin/tables/customer.component"
-import { InsertDialogComponent } from "./admin/grid-common/insert-dialog/insert-dialog.component"
-import { AreaComponent } from "./admin/tables/area.component"
+import { SaleComponent } from "./admin/crud-tables/sale.component"
+import { SellerComponent } from "./admin/crud-tables/seller.component"
+import { CustomerComponent } from "./admin/crud-tables/customer.component"
+import { InsertDialogComponent } from "./admin/crud-tables/common/insert-dialog/insert-dialog.component"
+import { AreaComponent } from "./admin/crud-tables/area.component"
 import {GraphQLError} from "graphql"
 import { AnalyticsQueryDialogComponent } from "./admin/analytics/analytics-query-dialog/analytics-query-dialog.component"
-import {DeliveryComponent as PlainDeliveryComponent} from "./admin/tables/delivery.component"
-import { ApplicationComponent as PlainApplicationComponent} from "./admin/tables/application.component"
-import { ApplicationProductComponent } from "./admin/tables/application-product.component"
-import {OrderComponent} from "./admin/tables/order.component"
-import {OrderProductComponent} from "./admin/tables/order-product.component"
-import {SaleProductComponent} from "./admin/tables/sale-product.component"
-import { SupplierComponent } from "./admin/tables/supplier.component"
-import {ShopDeliveryComponent} from "./admin/tables/shop_delivery.component"
-import {ShopDeliveryProductComponent} from "./admin/tables/shop-delivery-product.component"
-import {SalesPointProductComponent} from "./admin/tables/salespoint-product.component";
-import {SupplierPriceComponent} from "./admin/tables/supplier-price.component";
+import {DeliveryComponent as PlainDeliveryComponent} from "./admin/crud-tables/delivery.component"
+import { ApplicationComponent as PlainApplicationComponent} from "./admin/crud-tables/application.component"
+import { ApplicationProductComponent } from "./admin/crud-tables/application-product.component"
+import {OrderComponent} from "./admin/crud-tables/order.component"
+import {OrderProductComponent} from "./admin/crud-tables/order-product.component"
+import {SaleProductComponent} from "./admin/crud-tables/sale-product.component"
+import { SupplierComponent } from "./admin/crud-tables/supplier.component"
+import {ShopDeliveryComponent} from "./admin/crud-tables/shop_delivery.component"
+import {ShopDeliveryProductComponent} from "./admin/crud-tables/shop-delivery-product.component"
+import {SalesPointProductComponent} from "./admin/crud-tables/salespoint-product.component";
+import {SupplierPriceComponent} from "./admin/crud-tables/supplier-price.component";
+import {onNetworkError} from "./error-handler";
 
 
 @NgModule({
@@ -181,11 +182,6 @@ const DEFAULT_APOLLO_OPTS: DefaultOptions = {
   }
 }
 
-export function onNetworkError(err) {
-  alert("Сервер недоступен. Проверьте подключение.")
-  console.log(`[NETWORK ERROR]: ${err}`)
-}
-
 function showReadableError(err: GraphQLError) {
   console.log(err)
   alert(`ОШИБКА: ${err.message}`)
@@ -195,8 +191,5 @@ function isErrorReadable(err: GraphQLError): boolean {
   if (!err.message.match(".*[А-Я]|[а-я].*")){
     return false
   }
-  if (err.locations.length !== 0){
-    return false
-  }
-  return true
+  return err.locations.length === 0;
 }
